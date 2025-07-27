@@ -1,0 +1,313 @@
+# Daftar Lengkap dan Mendalam Konsep Linux:
+
+# ====================================================================
+# I. DASAR-DASAR LINUX
+# ====================================================================
+
+Apa itu Linux? =
+    Linux adalah keluarga sistem operasi mirip Unix yang menggunakan kernel Linux.
+    Distribusi Linux: Versi lengkap sistem operasi Linux, yang mencakup kernel Linux, GNU tools, desktop environment (GNOME, KDE), dan aplikasi lainnya (misalnya Ubuntu, Fedora, Debian, CentOS, Arch Linux).
+
+Kernel = Inti dari sistem operasi yang mengelola sumber daya perangkat keras dan perangkat lunak.
+
+Shell = Program baris perintah (command-line interpreter) yang memungkinkan pengguna berinteraksi dengan sistem operasi.
+    Shell populer: Bash (Bourne Again SHell), Zsh, Fish.
+
+Terminal / Konsol = Antarmuka teks untuk berinteraksi dengan shell.
+
+Prompt Perintah = Teks yang muncul di terminal yang menunjukkan bahwa shell siap menerima input (misalnya `user@hostname:~$`).
+
+Root User = Pengguna dengan hak akses tertinggi di sistem (administrator). Mirip dengan Administrator di Windows.
+    Simbol prompt: `#` (untuk root) vs `$` (untuk pengguna biasa).
+
+Sudo = Perintah yang memungkinkan pengguna biasa menjalankan perintah dengan hak akses root (Superuser Do).
+    Contoh: `sudo apt update`
+
+# ====================================================================
+# II. SISTEM FILE LINUX
+# ====================================================================
+
+Struktur Direktori Hirarkis = Linux menggunakan struktur direktori berbentuk pohon, dimulai dari root (`/`).
+
+Root Directory (`/`) = Direktori paling atas dalam sistem file.
+
+Direktori Penting =
+    `/bin`: Binary executables (perintah dasar seperti `ls`, `cp`).
+    `/sbin`: System binaries (perintah sistem untuk root, seperti `reboot`).
+    `/etc`: Configuration files (file konfigurasi sistem).
+    `/home`: Direktori home untuk pengguna biasa (misalnya `/home/username`).
+    `/root`: Direktori home untuk pengguna root.
+    `/usr`: User programs (aplikasi dan library yang diinstal).
+    `/var`: Variable data (log files, spool files, databases).
+    `/tmp`: Temporary files (dihapus saat reboot).
+    `/dev`: Device files (representasi perangkat keras).
+    `/proc`: Process information (virtual filesystem untuk informasi proses).
+    `/mnt` / `/media`: Mount points untuk filesystem sementara (USB drive, CD/DVD).
+    `/opt`: Optional software packages (aplikasi pihak ketiga).
+    `/lib` / `/lib64`: Library files.
+
+Path = Lokasi file atau direktori dalam sistem file.
+    Absolute Path: Dimulai dari root (`/`). Contoh: `/home/user/documents/file.txt`
+    Relative Path: Relatif terhadap direktori kerja saat ini. Contoh: `documents/file.txt`
+
+Direktori Khusus =
+    `.`: Direktori saat ini.
+    `..`: Direktori induk (parent directory).
+    `~`: Direktori home pengguna saat ini.
+
+# ====================================================================
+# III. PERINTAH DASAR SHELL
+# ====================================================================
+
+Navigasi Direktori =
+    `pwd`: Print Working Directory (menampilkan direktori saat ini).
+    `ls`: List (menampilkan isi direktori).
+        `ls -l`: Long listing format (detail).
+        `ls -a`: All (menampilkan file tersembunyi).
+        `ls -lh`: Long listing dengan ukuran yang mudah dibaca.
+    `cd [direktori]`: Change Directory (berpindah direktori).
+        `cd ..`: Pindah ke direktori induk.
+        `cd ~`: Pindah ke direktori home.
+        `cd -`: Pindah ke direktori sebelumnya.
+
+Manajemen File dan Direktori =
+    `mkdir [nama_direktori]`: Make Directory (membuat direktori baru).
+        `mkdir -p a/b/c`: Membuat direktori bersarang.
+    `rmdir [nama_direktori]`: Remove Directory (menghapus direktori kosong).
+    `rm [file]`: Remove (menghapus file).
+        `rm -r [direktori]`: Menghapus direktori dan isinya secara rekursif.
+        `rm -f [file]`: Force remove (menghapus tanpa konfirmasi).
+        `rm -rf [direktori]`: Force recursive remove (sangat berbahaya, gunakan dengan hati-hati).
+    `cp [sumber] [tujuan]`: Copy (menyalin file atau direktori).
+        `cp -r [sumber_direktori] [tujuan_direktori]`: Menyalin direktori secara rekursif.
+    `mv [sumber] [tujuan]`: Move (memindahkan atau mengganti nama file/direktori).
+    `touch [file]`: Membuat file kosong atau memperbarui timestamp file yang ada.
+
+Melihat Isi File =
+    `cat [file]`: Concatenate (menampilkan seluruh isi file).
+    `less [file]`: Menampilkan isi file satu layar penuh, dapat digulir.
+    `more [file]`: Mirip `less`, tetapi fungsi gulirnya terbatas.
+    `head [file]`: Menampilkan beberapa baris pertama file (default 10).
+    `tail [file]`: Menampilkan beberapa baris terakhir file (default 10).
+        `tail -f [file]`: Mengikuti perubahan file secara real-time (berguna untuk log).
+
+Pencarian =
+    `find [path] -name "pola"`: Mencari file/direktori berdasarkan nama.
+        Contoh: `find . -name "*.txt"`
+    `grep [pola] [file]`: Mencari teks dalam file.
+        `grep -i`: Case-insensitive.
+        `grep -r`: Recursive.
+        `grep -l`: Hanya menampilkan nama file yang cocok.
+
+# ====================================================================
+# IV. PENGGUNA DAN IZIN (USERS AND PERMISSIONS)
+# ====================================================================
+
+Pengguna dan Grup =
+    Setiap file/direktori memiliki pemilik (user) dan grup.
+    Pengguna dapat menjadi anggota dari beberapa grup.
+
+Izin File (Permissions) =
+    Tiga jenis izin:
+        `r` (read): Membaca isi file, melihat isi direktori.
+        `w` (write): Mengubah isi file, membuat/menghapus file di direktori.
+        `x` (execute): Menjalankan file (jika executable), masuk ke direktori.
+    Tiga kategori pemilik:
+        `u` (user): Pemilik file.
+        `g` (group): Grup pemilik file.
+        `o` (others): Semua orang lain.
+
+Mengubah Izin =
+    `chmod [mode] [file/direktori]`: Change Mode (mengubah izin).
+        Mode Numerik (Octal):
+            `r=4`, `w=2`, `x=1`
+            Contoh: `chmod 755 script.sh` (user=rwx, group=rx, others=rx)
+        Mode Simbolik:
+            `u+x`: Tambah izin eksekusi untuk user.
+            `g-w`: Hapus izin tulis untuk grup.
+            `o=r`: Setel izin baca saja untuk others.
+            Contoh: `chmod u+x script.sh`
+    `chown [owner]:[group] [file/direktori]`: Change Owner (mengubah pemilik dan/atau grup).
+        Contoh: `chown user1:group1 file.txt`
+
+Manajemen Pengguna dan Grup =
+    `adduser [username]`: Menambah pengguna baru.
+    `deluser [username]`: Menghapus pengguna.
+    `usermod`: Memodifikasi akun pengguna.
+    `passwd [username]`: Mengubah password pengguna.
+    `groupadd [groupname]`: Menambah grup baru.
+    `groupdel [groupname]`: Menghapus grup.
+
+# ====================================================================
+# V. MANAJEMEN PROSES
+# ====================================================================
+
+Proses = Sebuah program yang sedang berjalan.
+
+PID (Process ID) = Nomor identifikasi unik untuk setiap proses.
+
+Perintah Proses =
+    `ps`: Process Status (menampilkan proses yang sedang berjalan).
+        `ps aux`: Menampilkan semua proses di sistem (user-oriented).
+        `ps -ef`: Menampilkan semua proses di sistem (full format).
+    `top`: Menampilkan proses secara real-time, diurutkan berdasarkan penggunaan CPU.
+    `htop`: Alternatif `top` yang lebih interaktif dan user-friendly.
+    `kill [PID]`: Mengirim sinyal ke proses (default: SIGTERM untuk menghentikan).
+        `kill -9 [PID]`: Mengirim sinyal SIGKILL (menghentikan paksa, tidak bisa diabaikan).
+    `pkill [nama_proses]`: Mengirim sinyal ke proses berdasarkan nama.
+    `bg`: Menjalankan proses di latar belakang.
+    `fg`: Membawa proses dari latar belakang ke latar depan.
+    `jobs`: Menampilkan proses yang sedang berjalan di latar belakang (dari shell saat ini).
+    `&`: Menjalankan perintah di latar belakang. Contoh: `sleep 100 &`
+
+# ====================================================================
+# VI. MANAJEMEN PAKET
+# ====================================================================
+
+Package Manager = Alat untuk menginstal, memperbarui, dan menghapus perangkat lunak.
+    Debian/Ubuntu: `apt` (Advanced Package Tool) atau `apt-get`, `dpkg`.
+        `sudo apt update`: Memperbarui daftar paket.
+        `sudo apt upgrade`: Memperbarui paket yang terinstal.
+        `sudo apt install [nama_paket]`: Menginstal paket.
+        `sudo apt remove [nama_paket]`: Menghapus paket.
+        `sudo apt purge [nama_paket]`: Menghapus paket dan file konfigurasinya.
+    Fedora/CentOS/RHEL: `dnf` (atau `yum` versi lama).
+        `sudo dnf update`
+        `sudo dnf install [nama_paket]`
+    Arch Linux: `pacman`.
+        `sudo pacman -Syu`: Sinkronisasi dan update.
+        `sudo pacman -S [nama_paket]`: Instal.
+        `sudo pacman -R [nama_paket]`: Hapus.
+
+# ====================================================================
+# VII. JARINGAN (NETWORKING)
+# ====================================================================
+
+Perintah Jaringan =
+    `ip a` (atau `ifconfig` versi lama): Menampilkan konfigurasi antarmuka jaringan.
+    `ping [host]`: Menguji konektivitas ke host.
+    `ssh [user]@[host]`: Secure Shell (akses remote ke server).
+    `scp [sumber] [tujuan]`: Secure Copy (menyalin file antar host).
+    `wget [URL]`: Mengunduh file dari web.
+    `curl [URL]`: Alat untuk mentransfer data dengan URL.
+    `netstat`: Menampilkan koneksi jaringan, tabel routing, dll.
+    `ss`: Socket Statistics (pengganti `netstat` yang lebih modern).
+    `traceroute` / `tracepath`: Melacak rute paket ke tujuan.
+
+# ====================================================================
+# VIII. SCRIPTING SHELL (BASH)
+# ====================================================================
+
+Shell Script = Urutan perintah shell yang disimpan dalam file dan dapat dieksekusi.
+    Shebang: Baris pertama script yang menunjukkan interpreter yang digunakan.
+        Contoh: `#!/bin/bash`
+    Variabel:
+        `nama_variabel="nilai"` (tanpa spasi di sekitar `=`)
+        Mengakses: `$nama_variabel`
+    Input Pengguna:
+        `read -p "Prompt: " variabel`
+    Kondisional (`if`):
+        Sintaks: `if [ kondisi ]; then ... fi`
+        Contoh:
+        if [ -f "file.txt" ]; then
+            echo "File ada."
+        else
+            echo "File tidak ada."
+        fi
+    Loop (`for`, `while`):
+        Contoh (`for`):
+        for i in 1 2 3; do
+            echo $i
+        done
+        Contoh (`while`):
+        count=0
+        while [ $count -lt 5 ]; do
+            echo $count
+            count=$((count + 1))
+        done
+    Fungsi:
+        Sintaks: `nama_fungsi() { ... }`
+        Contoh:
+        my_function() {
+            echo "Ini dari fungsi."
+        }
+        my_function
+
+# ====================================================================
+# IX. REDIRECTION DAN PIPING
+# ====================================================================
+
+Standard Streams =
+    `stdin` (0): Standard input.
+    `stdout` (1): Standard output.
+    `stderr` (2): Standard error.
+
+Redirection = Mengubah tujuan atau sumber input/output perintah.
+    `>`: Mengarahkan `stdout` ke file (menimpa). Contoh: `ls > output.txt`
+    `>>`: Mengarahkan `stdout` ke file (menambahkan). Contoh: `echo "Baris baru" >> output.txt`
+    `<`: Mengarahkan `stdin` dari file. Contoh: `sort < input.txt`
+    `2>`: Mengarahkan `stderr` ke file. Contoh: `command 2> error.log`
+    `&>`: Mengarahkan `stdout` dan `stderr` ke file. Contoh: `command &> all_output.log`
+
+Piping (`|`) = Mengarahkan `stdout` dari satu perintah sebagai `stdin` untuk perintah lain.
+    Contoh: `ls -l | grep "file.txt"` (mencari "file.txt" dalam output `ls -l`)
+
+# ====================================================================
+# X. KONSEP PENTING LAINNYA
+# ====================================================================
+
+Man Pages = Manual pages (dokumentasi) untuk perintah Linux.
+    Contoh: `man ls`, `man grep`
+
+Text Editors =
+    `nano`: Editor teks sederhana dan mudah digunakan.
+    `vim` / `vi`: Editor teks powerful, tetapi memiliki kurva belajar yang curam.
+    `emacs`: Editor teks yang juga powerful.
+
+Cron Jobs = Penjadwal tugas untuk menjalankan perintah secara otomatis pada waktu yang ditentukan.
+    `crontab -e`: Mengedit cron jobs untuk pengguna saat ini.
+
+SSH Keys = Pasangan kunci kriptografi untuk otentikasi aman tanpa password saat mengakses server SSH.
+
+Firewall (UFW, iptables) = Mengontrol lalu lintas jaringan masuk dan keluar.
+    `ufw`: Uncomplicated Firewall (antarmuka yang lebih mudah untuk `iptables`).
+        `sudo ufw enable`, `sudo ufw allow 80/tcp`
+
+Systemd = Sistem init dan manajer layanan yang banyak digunakan di distribusi Linux modern.
+    `systemctl`: Perintah untuk mengelola layanan.
+        `systemctl start nama_layanan`
+        `systemctl stop nama_layanan`
+        `systemctl restart nama_layanan`
+        `systemctl enable nama_layanan` (mengaktifkan saat boot)
+        `systemctl status nama_layanan`
+
+Log Files = File yang merekam peristiwa sistem, aplikasi, dan keamanan.
+    Lokasi umum: `/var/log/`
+    `journalctl`: Melihat log sistem yang dikelola oleh systemd.
+
+Environment Variables = Variabel yang menyimpan informasi tentang lingkungan shell dan sistem.
+    `printenv`: Menampilkan semua variabel lingkungan.
+    `echo $PATH`: Menampilkan nilai variabel PATH (direktori tempat shell mencari perintah).
+    `export VAR=value`: Mengatur variabel lingkungan.
+
+Aliasing = Membuat alias (nama pendek) untuk perintah panjang.
+    Contoh: `alias ll='ls -lh'` (simpan di `~/.bashrc` atau `~/.zshrc`)
+
+Wildcards = Karakter khusus untuk mencocokkan pola file.
+    `*`: Mencocokkan nol atau lebih karakter.
+    `?`: Mencocokkan satu karakter tunggal.
+    `[]`: Mencocokkan salah satu karakter dalam kurung.
+
+Regular Expressions (Regex) = Pola untuk mencocokkan string teks. Digunakan oleh `grep`, `sed`, `awk`.
+
+Disk Usage =
+    `df -h`: Disk Free (menampilkan penggunaan ruang disk filesystem).
+    `du -sh [direktori]`: Disk Usage (menampilkan ukuran direktori).
+
+Mounting = Proses membuat sistem file dapat diakses di direktori tertentu.
+    `mount`: Mengaitkan filesystem ke mount point.
+    `umount`: Melepaskan filesystem.
+
+Symbolic Links (Symlinks) / Hard Links =
+    Symbolic Link (`ln -s`): Mirip shortcut, menunjuk ke file/direktori lain.
+    Hard Link (`ln`): Nama tambahan untuk file yang sama.

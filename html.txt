@@ -1,0 +1,433 @@
+// Daftar Lengkap dan Mendalam Konsep HTML:
+
+// ====================================================================
+// I. STRUKTUR DASAR DOKUMEN HTML
+// ====================================================================
+
+<!DOCTYPE html> = Deklarasi yang mendefinisikan tipe dokumen sebagai HTML5. Harus menjadi baris pertama di setiap dokumen HTML.
+
+<html> = Elemen root (akar) dari setiap halaman HTML. Semua elemen HTML lainnya berada di dalamnya.
+    Atribut:
+    lang = Mendefinisikan bahasa utama dokumen (misal: "en" untuk Inggris, "id" untuk Indonesia). Penting untuk aksesibilitas dan SEO.
+    Contoh: <html lang="id">
+
+<head> = Berisi metadata (data tentang HTML itu sendiri) yang tidak ditampilkan di halaman web.
+    Contoh:
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Judul Halaman Saya</title>
+      <link rel="stylesheet" href="style.css">
+      <script src="script.js"></script>
+    </head>
+
+<meta> = Digunakan untuk menentukan metadata tentang dokumen HTML.
+    Atribut Umum:
+    charset = Menentukan pengkodean karakter dokumen (UTF-8 adalah standar).
+        Contoh: <meta charset="UTF-8">
+    name="viewport" = Mengatur tampilan halaman web untuk perangkat berbeda (responsif).
+        Contoh: <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    name="description" = Deskripsi singkat halaman untuk mesin pencari.
+        Contoh: <meta name="description" content="Deskripsi singkat halaman saya.">
+    name="keywords" = Kata kunci yang relevan untuk halaman (jarang dipakai SEO modern).
+    name="author" = Nama penulis dokumen.
+    http-equiv = Mengatur perilaku server/browser (misal: refresh otomatis).
+
+<title> = Menentukan judul halaman web yang muncul di bilah judul browser atau tab.
+    Contoh: <title>Selamat Datang di Website Saya</title>
+
+<link> = Menautkan dokumen HTML dengan sumber daya eksternal, paling umum file CSS.
+    Atribut:
+    rel = Menentukan hubungan antara dokumen saat ini dengan sumber daya yang ditautkan (misal: "stylesheet").
+    href = Menentukan URL sumber daya.
+    Contoh: <link rel="stylesheet" href="style.css">
+
+<style> = Digunakan untuk menulis kode CSS langsung di dalam dokumen HTML (CSS internal).
+    Contoh:
+    <style>
+      body { background-color: lightblue; }
+      h1 { color: navy; }
+    </style>
+
+<script> = Digunakan untuk menyisipkan atau menautkan kode JavaScript.
+    Atribut:
+    src = Menentukan URL file JavaScript eksternal.
+    async = Menginstruksikan browser untuk mengunduh skrip secara asinkron dan menjalankannya segera setelah diunduh (tidak blokir rendering HTML).
+    defer = Menginstruksikan browser untuk mengunduh skrip secara asinkron dan menjalankan skrip setelah parsing HTML selesai (lebih disarankan daripada async untuk skrip yang butuh DOM).
+    Contoh:
+    <script src="script.js"></script>
+    <script>
+      // Kode JavaScript langsung di sini
+      console.log("Halo dari JavaScript!");
+    </script>
+
+<body> = Berisi semua konten yang terlihat oleh pengguna di halaman web.
+    Contoh:
+    <body>
+      <h1>Ini Judul Saya</h1>
+      <p>Ini paragraf pertama.</p>
+    </body>
+
+// ====================================================================
+// II. ELEMEN TEKS
+// ====================================================================
+
+<h1> sampai <h6> = Digunakan untuk judul atau heading, dari yang terbesar (terpenting) hingga terkecil.
+    Contoh: <h1>Judul Utama</h1> <h2>Sub Judul</h2>
+
+<p> = Mendefinisikan paragraf teks.
+    Contoh: <p>Ini adalah sebuah paragraf teks.</p>
+
+<a> = Mendefinisikan hyperlink (tautan).
+    Atribut:
+    href = Menentukan URL tujuan tautan.
+        Contoh: <a href="https://www.google.com">Kunjungi Google</a>
+    target = Menentukan di mana tautan akan dibuka (_self, _blank, _parent, _top).
+        Contoh: <a href="https://www.example.com" target="_blank">Buka di Tab Baru</a>
+    title = Memberikan informasi tambahan saat kursor diarahkan ke tautan.
+    download = Mengunduh sumber daya alih-alih menavigasi ke sana.
+
+<strong> = Digunakan untuk menandai teks yang penting atau memiliki penekanan kuat (biasanya ditampilkan tebal).
+    Contoh: <p>Ini adalah teks <strong>penting</strong>.</p>
+
+<em> = Digunakan untuk menandai teks dengan penekanan (biasanya ditampilkan miring).
+    Contoh: <p>Saya <em>sangat</em> setuju.</p>
+
+<span> = Elemen inline generik tanpa makna semantik bawaan. Digunakan untuk menerapkan gaya CSS atau JavaScript pada sebagian kecil teks atau elemen inline.
+    Contoh: <p>Ini adalah <span style="color: blue;">bagian</span> dari teks.</p>
+
+<br> = Menyisipkan baris baru (line break). Elemen kosong (tidak memiliki tag penutup).
+    Contoh: <p>Baris pertama.<br>Baris kedua.</p>
+
+<hr> = Menyisipkan garis horizontal (thematic break), sering digunakan untuk memisahkan konten. Elemen kosong.
+    Contoh: <p>Konten atas</p> <hr> <p>Konten bawah</p>
+
+= Digunakan untuk menambahkan komentar dalam kode HTML. Komentar tidak ditampilkan di browser.
+    Contoh: // ====================================================================
+// III. ELEMEN GAMBAR DAN MEDIA
+// ====================================================================
+
+<img> = Menyisipkan gambar ke dalam dokumen. Elemen kosong.
+    Atribut:
+    src = Menentukan URL (sumber) gambar.
+    alt = Menentukan teks alternatif untuk gambar jika gambar tidak dapat ditampilkan (penting untuk aksesibilitas dan SEO).
+    width / height = Menentukan lebar dan tinggi gambar dalam piksel.
+    Contoh: <img src="gambar.jpg" alt="Deskripsi Gambar" width="300" height="200">
+
+<picture> = Memberikan fleksibilitas dalam menentukan sumber gambar berdasarkan resolusi layar atau jenis file, memungkinkan browser memilih gambar terbaik.
+    Contoh:
+    <picture>
+      <source srcset="gambar-besar.jpg" media="(min-width: 800px)">
+      <source srcset="gambar-kecil.jpg" media="(max-width: 400px)">
+      <img src="gambar-default.jpg" alt="Contoh gambar responsif">
+    </picture>
+
+<figure> = Digunakan untuk mengelompokkan konten mandiri (seperti gambar, diagram, kode) bersama dengan caption-nya.
+    <figcaption> = Memberikan caption (keterangan) untuk elemen <figure>.
+    Contoh:
+    <figure>
+      <img src="diagram.png" alt="Diagram Alur Kerja">
+      <figcaption>Gambar 1: Diagram Alur Kerja Proses A.</figcaption>
+    </figure>
+
+<audio> = Menyisipkan konten audio.
+    Atribut:
+    controls = Menampilkan kontrol pemutar audio (play, pause, volume).
+    autoplay = Audio diputar otomatis saat halaman dimuat (sering diblokir browser).
+    loop = Audio akan mengulang terus-menerus.
+    muted = Audio dalam keadaan mute (tidak ada suara).
+    src = Menentukan URL file audio.
+    <source> = Menentukan beberapa sumber file audio/video untuk kompatibilitas browser.
+    Contoh:
+    <audio controls>
+      <source src="musik.mp3" type="audio/mpeg">
+      <source src="musik.ogg" type="audio/ogg">
+      Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+<video> = Menyisipkan konten video.
+    Atribut:
+    controls = Menampilkan kontrol pemutar video.
+    autoplay = Video diputar otomatis.
+    loop = Video mengulang terus-menerus.
+    muted = Video dalam keadaan mute.
+    poster = Menentukan gambar yang akan ditampilkan sebelum video dimainkan.
+    src = Menentukan URL file video.
+    width / height = Menentukan lebar dan tinggi video.
+    Contoh:
+    <video width="320" height="240" controls poster="poster.jpg">
+      <source src="video.mp4" type="video/mp4">
+      Browser Anda tidak mendukung elemen video.
+    </video>
+
+<iframe> = Menyisipkan dokumen lain (misal: halaman web lain, peta Google, video YouTube) ke dalam halaman HTML.
+    Atribut:
+    src = URL halaman yang akan disisipkan.
+    width / height = Lebar dan tinggi iframe.
+    frameborder = Mengatur apakah akan menampilkan border (0 untuk tidak menampilkan).
+    Contoh: <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+
+// ====================================================================
+// IV. ELEMEN DAFTAR (LISTS)
+// ====================================================================
+
+<ul> = Mendefinisikan daftar tidak berurutan (unordered list), item ditandai dengan bullet.
+    <li> = Mendefinisikan item daftar.
+    Contoh:
+    <ul>
+      <li>Kopi</li>
+      <li>Teh</li>
+      <li>Susu</li>
+    </ul>
+
+<ol> = Mendefinisikan daftar berurutan (ordered list), item ditandai dengan angka atau huruf.
+    Atribut:
+    type = Menentukan jenis penanda (1, A, a, I, i).
+    start = Menentukan nilai awal daftar berurutan.
+    <li> = Mendefinisikan item daftar.
+    Contoh:
+    <ol type="A" start="3">
+      <li>Item C</li>
+      <li>Item D</li>
+    </ol>
+
+<dl> = Mendefinisikan daftar deskripsi (description list).
+    <dt> = Mendefinisikan istilah/nama dalam daftar deskripsi.
+    <dd> = Mendefinisikan deskripsi dari istilah.
+    Contoh:
+    <dl>
+      <dt>HTML</dt>
+      <dd>Bahasa markup untuk struktur halaman web.</dd>
+      <dt>CSS</dt>
+      <dd>Untuk menata gaya tampilan halaman web.</dd>
+    </dl>
+
+// ====================================================================
+// V. ELEMEN TABEL
+// ====================================================================
+
+<table> = Mendefinisikan tabel.
+    Contoh:
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Umur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Budi</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Ani</td>
+          <td>30</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Total: 2 orang</td>
+        </tr>
+      </tfoot>
+    </table>
+
+<thead> = Mengelompokkan konten header dalam tabel.
+<tbody> = Mengelompokkan konten body dalam tabel.
+<tfoot> = Mengelompokkan konten footer dalam tabel.
+
+<tr> = Mendefinisikan baris dalam tabel (table row).
+<th> = Mendefinisikan sel header dalam tabel (table header). Biasanya ditampilkan tebal dan di tengah.
+<td> = Mendefinisikan sel data dalam tabel (table data).
+
+    Atribut umum untuk <th> dan <td>:
+    colspan = Menggabungkan sel secara horizontal (berapa kolom yang dicakup).
+        Contoh: <th colspan="2">Informasi</th>
+    rowspan = Menggabungkan sel secara vertikal (berapa baris yang dicakup).
+        Contoh: <td rowspan="2">Detail</td>
+
+<caption> = Memberikan judul atau deskripsi untuk tabel.
+    Contoh: <caption>Data Pengguna</caption>
+
+// ====================================================================
+// VI. ELEMEN FORMULIR
+// ====================================================================
+
+<form> = Mendefinisikan formulir HTML untuk mengumpulkan input pengguna.
+    Atribut:
+    action = URL ke mana data formulir akan dikirim saat disubmit.
+    method = Metode HTTP untuk mengirim data (GET atau POST).
+        GET: Data terlihat di URL, cocok untuk permintaan yang tidak mengubah data (pencarian).
+        POST: Data tidak terlihat di URL, cocok untuk data sensitif atau yang mengubah data (login, pendaftaran).
+    Contoh: <form action="/submit-data" method="post"></form>
+
+<input> = Elemen formulir paling serbaguna, digunakan untuk berbagai jenis input. Elemen kosong.
+    Atribut `type` (sangat banyak):
+    text = Bidang teks satu baris.
+    password = Bidang password (karakter disembunyikan).
+    submit = Tombol untuk mengirim formulir.
+    reset = Tombol untuk mengatur ulang formulir.
+    checkbox = Kotak centang (bisa pilih banyak).
+    radio = Tombol radio (hanya bisa pilih satu dari grup).
+    button = Tombol biasa.
+    file = Memilih file untuk diunggah.
+    email = Input email (validasi format email dasar).
+    number = Input angka.
+    date = Pemilih tanggal.
+    url = Input URL.
+    search = Input pencarian.
+    hidden = Input tersembunyi (data dikirim tapi tidak terlihat pengguna).
+    Atribut umum lainnya:
+    name = Nama input (digunakan untuk mengirim data ke server).
+    value = Nilai awal atau nilai yang dikirim.
+    placeholder = Teks petunjuk di dalam input.
+    required = Input harus diisi.
+    readonly = Input tidak bisa diubah tapi bisa dipilih.
+    disabled = Input dinonaktifkan.
+    maxlength = Jumlah karakter maksimum.
+    min / max = Nilai minimum/maksimum untuk input number/date.
+    checked = Untuk checkbox/radio, menandai bahwa sudah terpilih.
+    Contoh:
+    <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+    <input type="password" name="password">
+    <input type="checkbox" name="hobi" value="baca"> Membaca
+    <input type="radio" name="gender" value="pria"> Pria
+    <input type="submit" value="Kirim">
+
+<label> = Mendefinisikan label untuk elemen <input>. Penting untuk aksesibilitas.
+    Atribut:
+    for = Harus cocok dengan `id` dari elemen <input> yang terkait.
+    Contoh: <label for="nama">Nama:</label> <input type="text" id="nama">
+
+<textarea> = Mendefinisikan area input teks multi-baris.
+    Atribut:
+    rows = Jumlah baris yang terlihat.
+    cols = Jumlah kolom (karakter) yang terlihat.
+    Contoh: <textarea name="komentar" rows="5" cols="40"></textarea>
+
+<select> = Membuat daftar drop-down (pilihan).
+    <option> = Mendefinisikan pilihan dalam daftar drop-down.
+    Atribut <option>:
+    value = Nilai yang dikirim saat pilihan ini dipilih.
+    selected = Pilihan ini akan menjadi pilihan default.
+    Contoh:
+    <select name="kota">
+      <option value="jkt">Jakarta</option>
+      <option value="bdg" selected>Bandung</option>
+    </select>
+
+<button> = Mendefinisikan tombol yang dapat diklik. Lebih fleksibel dari <input type="button"> karena bisa berisi konten HTML lain.
+    Atribut:
+    type = "submit", "reset", atau "button".
+    Contoh: <button type="submit">Kirim Formulir</button>
+
+<fieldset> = Mengelompokkan elemen-elemen terkait dalam formulir.
+    <legend> = Memberikan judul untuk grup <fieldset>.
+    Contoh:
+    <fieldset>
+      <legend>Informasi Kontak:</legend>
+      <label for="email">Email:</label><input type="email" id="email">
+    </fieldset>
+
+<datalist> = Memberikan daftar opsi yang disarankan untuk input teks, tetapi pengguna masih bisa mengetik input lain.
+    Atribut <input>:
+    list = Harus cocok dengan `id` dari <datalist>.
+    Contoh:
+    <input list="browsers" name="browser">
+    <datalist id="browsers">
+      <option value="Edge">
+      <option value="Firefox">
+      <option value="Chrome">
+    </datalist>
+
+// ====================================================================
+// VII. ELEMEN SEMANTIK HTML5
+// ====================================================================
+
+Elemen Semantik = Elemen yang memiliki makna atau tujuan yang jelas, tidak hanya untuk presentasi. Membantu SEO, aksesibilitas, dan keterbacaan kode.
+
+<header> = Mewakili konten pengantar atau navigasi, biasanya di bagian atas dokumen atau bagian tertentu.
+    Contoh: <header><h1>Nama Website</h1><nav>...</nav></header>
+
+<nav> = Mewakili bagian navigasi dari sebuah halaman (tautan navigasi).
+    Contoh: <nav><ul><li><a href="#">Beranda</a></li></ul></nav>
+
+<main> = Mewakili konten dominan atau utama dari <body>. Hanya boleh ada satu <main> per dokumen.
+    Contoh: <main><article>...</article></main>
+
+<article> = Mewakili konten yang mandiri dan dapat didistribusikan secara independen (misal: posting blog, berita).
+    Contoh: <article><h2>Judul Artikel</h2><p>Isi artikel...</p></article>
+
+<section> = Mewakili bagian generik yang berdiri sendiri dalam dokumen, biasanya dengan heading-nya sendiri.
+    Contoh: <section><h3>Tentang Kami</h3><p>...</p></section>
+
+<aside> = Mewakili konten yang berhubungan secara tidak langsung dengan konten utama di sekitarnya (misal: sidebar, kutipan, iklan).
+    Contoh: <aside><p>Iklan di sini</p></aside>
+
+<footer> = Mewakili bagian footer dari dokumen atau bagian tertentu (informasi penulis, hak cipta, tautan terkait).
+    Contoh: <footer><p>&copy; 2023 Nama Saya</p></footer>
+
+<address> = Menyediakan informasi kontak untuk penulis/pemilik dokumen atau artikel terdekat.
+    Contoh: <address>Ditulis oleh: John Doe<br>Email: <a href="mailto:john@example.com">john@example.com</a></address>
+
+<details> = Membuat widget pengungkap (disclosure widget) di mana pengguna dapat membuka dan menutup konten tambahan.
+    <summary> = Menyediakan ringkasan atau judul yang terlihat untuk <details>.
+    Contoh:
+    <details>
+      <summary>Klik untuk detail</summary>
+      <p>Ini adalah informasi tambahan yang tersembunyi.</p>
+    </details>
+
+<mark> = Menandai teks yang relevan atau disorot.
+    Contoh: Cari <mark>kata kunci</mark> ini.
+
+<time> = Mewakili waktu atau tanggal.
+    Atribut:
+    datetime = Menentukan format tanggal/waktu yang dapat dibaca mesin.
+    Contoh: Dipublikasikan pada <time datetime="2023-10-26">26 Oktober 2023</time>.
+
+// ====================================================================
+// VIII. ATRIBUT GLOBAL UMUM
+// ====================================================================
+
+id = Menentukan pengenal unik untuk elemen. Harus unik di seluruh dokumen. Digunakan oleh CSS (dengan #) dan JavaScript.
+    Contoh: <div id="main-content">
+
+class = Menentukan satu atau lebih nama kelas untuk elemen. Digunakan oleh CSS (dengan .) dan JavaScript untuk mengelompokkan elemen.
+    Contoh: <p class="highlight warning">
+
+style = Menentukan gaya CSS inline untuk elemen (jarang disarankan).
+    Contoh: <p style="color: red; font-size: 14px;">
+
+title = Menentukan informasi ekstra tentang elemen (muncul sebagai tooltip saat kursor diarahkan).
+    Contoh: <img src="logo.png" title="Logo Perusahaan">
+
+data-* = Atribut kustom untuk menyimpan data pribadi pada elemen, bisa diakses oleh JavaScript.
+    Contoh: <div data-product-id="123" data-category="elektronik">
+
+hidden = Menentukan bahwa elemen tidak (belum atau tidak lagi) relevan. Browser tidak akan menampilkannya.
+    Contoh: <p hidden>Teks ini tersembunyi.</p>
+
+tabindex = Mengatur urutan navigasi keyboard (tab) untuk elemen.
+    Contoh: <button tabindex="1">Tombol Pertama</button>
+
+contenteditable = Mengizinkan pengguna untuk mengedit konten elemen langsung di browser.
+    Contoh: <div contenteditable="true">Anda bisa mengedit teks ini.</div>
+
+draggable = Menentukan apakah elemen dapat diseret.
+    Contoh: <img src="drag.png" draggable="true">
+
+// ====================================================================
+// IX. KARAKTER ENTITAS KHUSUS
+// ====================================================================
+
+Karakter Entitas = Digunakan untuk menampilkan karakter khusus yang memiliki makna di HTML atau yang tidak mudah diketik.
+    Contoh:
+    &lt; atau &#60; = < (kurang dari)
+    &gt; atau &#62; = > (lebih dari)
+    &amp; atau &#38; = & (ampersand)
+    &quot; atau &#34; = " (kutip ganda)
+    &apos; atau &#39; = ' (kutip tunggal)
+    &nbsp; = Non-breaking space (spasi yang tidak akan putus baris)
+    &copy; = © (simbol hak cipta)
+    &reg; = ® (simbol terdaftar)s

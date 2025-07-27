@@ -1,0 +1,397 @@
+// Daftar Lengkap dan Mendalam Konsep C++:
+
+// ====================================================================
+// I. DASAR-DASAR C++
+// ====================================================================
+
+Struktur Program C++ = Sebuah program C++ minimal terdiri dari fungsi main().
+    Contoh:
+    #include <iostream> // Mengimpor library untuk input/output
+    int main() {        // Fungsi utama, program dimulai dari sini
+        std::cout << "Halo, C++!" << std::endl; // Mencetak teks ke konsol
+        return 0;       // Mengembalikan nilai 0 menandakan program sukses
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber C++ menjadi program yang dapat dijalankan.
+    1. Kode Sumber (.cpp) --Kompilasi--> Kode Objek (.o / .obj) --Link--> Program yang Dapat Dijalankan (.exe / a.out)
+    2. Menggunakan compiler (misal: g++): g++ nama_file.cpp -o nama_program_eksekusi
+    3. Eksekusi: ./nama_program_eksekusi (Linux/macOS) atau nama_program_eksekusi (Windows)
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+
+Input/Output Dasar = Menggunakan objek `std::cout` untuk output dan `std::cin` untuk input. Memerlukan `<iostream>`.
+    Contoh:
+    #include <iostream>
+    int main() {
+        int umur;
+        std::cout << "Masukkan umur Anda: ";
+        std::cin >> umur;
+        std::cout << "Umur Anda adalah: " << umur << std::endl;
+        return 0;
+    }
+    std::endl = Menambahkan baris baru dan membersihkan buffer output.
+    \n = Menambahkan baris baru (lebih efisien dari std::endl jika tidak perlu membersihkan buffer).
+
+Namespace `std` = Kumpulan nama standar (seperti `cout`, `cin`, `endl`). Menggunakan `std::` atau `using namespace std;`.
+    Contoh:
+    using namespace std; // Menghindari penulisan std:: berulang kali (hati-hati di proyek besar)
+    cout << "Halo!";
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan tipe data.
+    Contoh: int angka = 10;
+
+Deklarasi vs Inisialisasi =
+    Deklarasi: Memberi tahu compiler tentang nama dan tipe variabel (misal: int angka;).
+    Inisialisasi: Memberi nilai awal pada variabel (misal: int angka = 10;).
+
+Tipe Data Primitif = Tipe data dasar bawaan C++.
+    int = Bilangan bulat (misal: -1, 0, 100). Ukuran bervariasi (biasanya 4 byte).
+    float = Bilangan pecahan presisi tunggal (misal: 3.14f). Ukuran 4 byte.
+    double = Bilangan pecahan presisi ganda (misal: 3.14159). Ukuran 8 byte (lebih akurat dari float).
+    char = Karakter tunggal (misal: 'A', '7'). Ukuran 1 byte.
+    bool = Nilai Boolean (true atau false). Ukuran 1 byte.
+    void = Tipe tanpa nilai (digunakan untuk fungsi yang tidak mengembalikan nilai).
+    long, short, signed, unsigned = Modifier untuk tipe data numerik (misal: unsigned int, long long).
+
+Ukuran Tipe Data = Dapat bervariasi tergantung sistem/compiler.
+    `sizeof()` = Operator untuk mendapatkan ukuran variabel atau tipe data dalam byte.
+        Contoh: std::cout << sizeof(int) << " bytes";
+
+Konstanta = Variabel yang nilainya tidak dapat diubah setelah diinisialisasi.
+    Contoh:
+    const int MAX_VALUE = 100; // Konstanta yang tidak bisa diubah
+    #define PI 3.14159 // Makro preprocessor (cara lama, hindari)
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus - sisa bagi)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=`
+
+Operator Perbandingan (Relational) = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND), || (OR), ! (NOT)`
+
+Operator Bitwise = Bekerja pada level bit.
+    Contoh: `& (AND), | (OR), ^ (XOR), ~ (NOT), << (geser kiri), >> (geser kanan)`
+
+Operator Increment/Decrement = Menambah/mengurangi nilai variabel sebesar 1.
+    Contoh: `++ (increment), -- (decrement)`
+    Pre-increment/decrement (++x, --x) = Perubahan nilai sebelum digunakan.
+    Post-increment/decrement (x++, x--) = Perubahan nilai setelah digunakan.
+
+Operator Kondisional (Ternary) = Operator ringkas untuk if-else.
+    Sintaks: `kondisi ? ekspresi_jika_true : ekspresi_jika_false;`
+    Contoh: `int maks = (a > b) ? a : b;`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    if (nilai > 90) {
+        std::cout << "Sangat Baik";
+    } else if (nilai > 70) {
+        std::cout << "Baik";
+    } else {
+        std::cout << "Cukup";
+    }
+
+switch = Alternatif untuk if/else if berantai ketika membandingkan satu nilai dengan banyak kemungkinan.
+    Contoh:
+    switch (hari) {
+        case 1: std::cout << "Senin"; break;
+        case 2: std::cout << "Selasa"; break;
+        default: std::cout << "Hari lain";
+    }
+
+for loop = Mengulang blok kode sejumlah kali yang ditentukan.
+    Contoh: for (int i = 0; i < 5; i++) { std::cout << i << " "; }
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh: int i = 0; while (i < 3) { std::cout << i << " "; i++; }
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh: int count = 0; do { std::cout << count << " "; count++; } while (count < 2);
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: for (int i = 0; i < 10; i++) { if (i == 5) break; std::cout << i << " "; }
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: for (int i = 0; i < 5; i++) { if (i == 2) continue; std::cout << i << " "; }
+
+// ====================================================================
+// V. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Membantu modularitas.
+    Sintaks: `tipe_kembalian nama_fungsi(parameter1, parameter2, ...) { // kode }`
+    Contoh:
+    int tambah(int a, int b) {
+        return a + b;
+    }
+    int main() {
+        int hasil = tambah(5, 3); // Memanggil fungsi
+        return 0;
+    }
+
+Deklarasi Fungsi (Prototype) = Memberi tahu compiler tentang keberadaan fungsi sebelum definisi lengkapnya.
+    Contoh: `int tambah(int a, int b); // Deklarasi di atas main()`
+
+Parameter Fungsi = Variabel yang menerima nilai saat fungsi dipanggil.
+    Pass by Value = Nilai argumen disalin ke parameter fungsi. Perubahan di dalam fungsi tidak memengaruhi variabel asli.
+    Pass by Reference = Alamat memori argumen diteruskan. Perubahan di dalam fungsi memengaruhi variabel asli.
+        Contoh:
+        void ubahNilai(int& x) { // Perhatikan &
+            x = 100;
+        }
+        int main() {
+            int angka = 10;
+            ubahNilai(angka); // angka sekarang 100
+            return 0;
+        }
+
+Overloading Fungsi = Mendefinisikan beberapa fungsi dengan nama yang sama tetapi dengan parameter yang berbeda (jumlah atau tipe).
+    Contoh:
+    int tambah(int a, int b) { return a + b; }
+    double tambah(double a, double b) { return a + b; }
+
+Recursion (Rekursi) = Fungsi yang memanggil dirinya sendiri. Membutuhkan kasus dasar untuk berhenti.
+    Contoh:
+    int faktorial(int n) {
+        if (n == 0) return 1; // Kasus dasar
+        return n * faktorial(n - 1); // Panggilan rekursif
+    }
+
+// ====================================================================
+// VI. ARRAY DAN STRING
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama, disimpan di lokasi memori yang berdekatan.
+    Akses elemen berdasarkan indeks (dimulai dari 0).
+    Contoh Deklarasi & Inisialisasi:
+    int angka[5]; // Array 5 integer
+    int nilai[] = {10, 20, 30}; // Array 3 integer, ukuran otomatis
+    Mengakses: `nilai[0]`
+
+String C-style = Array karakter yang diakhiri dengan null (`\0`). Memerlukan `<cstring>`.
+    Contoh: `char nama[50] = "Budi";`
+
+`std::string` (C++ String) = Objek string yang lebih modern dan mudah digunakan. Memerlukan `<string>`.
+    Contoh:
+    #include <string>
+    std::string pesan = "Halo dunia";
+    pesan += "!"; // Konkatenasi
+    std::cout << pesan.length(); // Panjang string
+
+// ====================================================================
+// VII. POINTER DAN REFERENSI
+// ====================================================================
+
+Pointer = Variabel yang menyimpan alamat memori dari variabel lain.
+    Deklarasi: `tipe_data* nama_pointer;`
+    Operator:
+    `& (address-of operator)` = Mendapatkan alamat memori suatu variabel.
+    `* (dereference operator)` = Mengakses nilai di alamat yang ditunjuk pointer.
+    Contoh:
+    int x = 10;
+    int* ptr = &x; // ptr menyimpan alamat x
+    std::cout << *ptr; // Mencetak nilai x (10)
+
+Pointer Null = Pointer yang tidak menunjuk ke alamat memori yang valid (berisi `nullptr` atau `NULL`).
+    Contoh: `int* ptr = nullptr;`
+
+Aritmatika Pointer = Penambahan atau pengurangan pointer bergerak berdasarkan ukuran tipe data yang ditunjuk.
+
+Array dan Pointer = Nama array secara otomatis bisa diartikan sebagai pointer ke elemen pertamanya.
+    Contoh: `int arr[] = {1, 2, 3}; int* p = arr; // p menunjuk ke arr[0]`
+
+Referensi (&) = Alias (nama lain) untuk variabel yang sudah ada. Harus diinisialisasi saat deklarasi dan tidak bisa diubah untuk menunjuk ke variabel lain.
+    Contoh:
+    int a = 5;
+    int& ref = a; // ref adalah alias untuk a
+    ref = 10; // a sekarang 10
+
+Perbedaan Pointer vs Referensi:
+    - Pointer bisa null, referensi tidak.
+    - Pointer bisa di-reassign, referensi tidak.
+    - Pointer bisa digunakan untuk aritmatika, referensi tidak.
+
+// ====================================================================
+// VIII. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI C++
+// ====================================================================
+
+Class (Kelas) = Blueprint atau cetak biru untuk membuat objek. Mendefinisikan properti (anggota data) dan perilaku (anggota fungsi).
+    Contoh:
+    class Mobil {
+    public: // Akses specifier
+        std::string merk;
+        int tahun;
+        void tampilkanInfo() {
+            std::cout << "Merk: " << merk << ", Tahun: " << tahun << std::endl;
+        }
+    };
+
+Object (Objek) = Instance dari sebuah kelas.
+    Contoh: `Mobil myCar; // Membuat objek myCar dari kelas Mobil`
+    Mengakses Anggota: `myCar.merk = "Toyota"; myCar.tampilkanInfo();`
+
+Access Specifiers (Penentu Akses) = Mengontrol akses ke anggota kelas.
+    public: Anggota bisa diakses dari mana saja.
+    private: Anggota hanya bisa diakses dari dalam kelas itu sendiri.
+    protected: Anggota bisa diakses dari dalam kelas itu sendiri dan kelas turunan.
+
+Constructor (Konstruktor) = Fungsi anggota khusus yang dipanggil secara otomatis saat objek dibuat. Digunakan untuk inisialisasi objek.
+    Nama konstruktor sama dengan nama kelas.
+    Tidak memiliki tipe kembalian.
+    Contoh:
+    class Point {
+    public:
+        int x, y;
+        Point(int _x, int _y) { // Konstruktor
+            x = _x; y = _y;
+        }
+    };
+    Point p1(10, 20); // Memanggil konstruktor
+
+Destructor (Destruktor) = Fungsi anggota khusus yang dipanggil secara otomatis saat objek dihancurkan. Digunakan untuk membersihkan sumber daya (misal: memori yang dialokasikan secara dinamis).
+    Nama destruktor adalah `~` diikuti nama kelas.
+    Tidak memiliki tipe kembalian dan parameter.
+    Contoh: `~Point() { std::cout << "Objek dihancurkan!"; }`
+
+Encapsulation (Enkapsulasi) = Membungkus data dan fungsi yang beroperasi pada data tersebut menjadi satu unit (kelas). Menyembunyikan detail implementasi dari luar. (Dicapai dengan `private`).
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (kelas turunan/child class) dapat mewarisi properti dan metode dari kelas lain (kelas dasar/parent class). Mempromosikan penggunaan kembali kode.
+    Sintaks: `class ChildClass : public ParentClass { ... };`
+    Contoh:
+    class Hewan {
+    public:
+        void makan() { std::cout << "Hewan makan." << std::endl; }
+    };
+    class Kucing : public Hewan { // Kucing mewarisi dari Hewan
+    public:
+        void mengeong() { std::cout << "Kucing mengeong." << std::endl; }
+    };
+    Kucing myCat; myCat.makan(); // Memanggil metode dari parent
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk. Di C++ dicapai melalui:
+    Function Overloading (sudah dijelaskan)
+    Operator Overloading = Mengubah perilaku operator untuk tipe data yang ditentukan pengguna.
+    Virtual Functions = Fungsi dalam kelas dasar yang dideklarasikan dengan `virtual`. Memungkinkan penentuan perilaku fungsi saat runtime (Run-time Polymorphism).
+        Contoh:
+        class Bentuk { public: virtual void gambar() { std::cout << "Gambar bentuk umum." << std::endl; } };
+        class Lingkaran : public Bentuk { public: void gambar() override { std::cout << "Gambar lingkaran." << std::endl; } };
+        Bentuk* b = new Lingkaran(); b->gambar(); // Output: Gambar lingkaran.
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi yang rumit dan hanya menampilkan fungsionalitas esensial kepada pengguna. (Dicapai dengan kelas abstrak dan antarmuka).
+
+// ====================================================================
+// IX. POINTER LANJUT DAN ALOKASI MEMORI DINAMIS
+// ====================================================================
+
+`new` Operator = Mengalokasikan memori secara dinamis di heap (di luar stack). Mengembalikan pointer ke memori yang dialokasikan.
+    Contoh: `int* ptr = new int; *ptr = 10;`
+    Untuk array: `int* arr = new int[5];`
+
+`delete` Operator = Membebaskan memori yang dialokasikan oleh `new`. Sangat penting untuk mencegah memory leak.
+    Contoh: `delete ptr;`
+    Untuk array: `delete[] arr;`
+
+Memory Leak = Terjadi ketika program mengalokasikan memori secara dinamis tetapi gagal membebaskannya kembali, sehingga memori tersebut tidak dapat digunakan lagi.
+
+Smart Pointers (C++11 dan yang lebih baru) = Objek yang bertindak seperti pointer tetapi secara otomatis mengelola memori yang dialokasikan secara dinamis, mencegah memory leak. Memerlukan `<memory>`.
+    `std::unique_ptr` = Kepemilikan eksklusif (tidak bisa disalin, hanya bisa dipindahkan).
+    `std::shared_ptr` = Kepemilikan bersama (bisa disalin, menghitung berapa banyak pointer yang menunjuknya).
+    `std::weak_ptr` = Digunakan dengan `shared_ptr` untuk mencegah siklus referensi.
+    Contoh:
+    #include <memory>
+    std::unique_ptr<int> uPtr(new int(5));
+    std::shared_ptr<int> sPtr1(new int(10));
+    std::shared_ptr<int> sPtr2 = sPtr1; // sPtr1 dan sPtr2 berbagi kepemilikan
+
+// ====================================================================
+// X. STANDARD TEMPLATE LIBRARY (STL)
+// ====================================================================
+
+STL = Kumpulan kelas dan algoritma C++ yang menyediakan struktur data dan fungsionalitas umum.
+
+Containers (Kontainer) = Struktur data untuk menyimpan koleksi objek.
+    `std::vector` = Array dinamis yang ukurannya bisa berubah. Memerlukan `<vector>`.
+        Contoh: `std::vector<int> numbers; numbers.push_back(10);`
+    `std::list` = Daftar bertautan ganda. Memerlukan `<list>`.
+    `std::deque` = Antrean ganda (bisa menambah/menghapus dari kedua ujung). Memerlukan `<deque>`.
+    `std::set` = Koleksi elemen unik yang terurut (berbasis tree). Memerlukan `<set>`.
+    `std::map` = Koleksi pasangan kunci-nilai yang terurut (kunci unik). Memerlukan `<map>`.
+    `std::unordered_set` = Koleksi elemen unik yang tidak terurut (berbasis hash table). Memerlukan `<unordered_set>`.
+    `std::unordered_map` = Koleksi pasangan kunci-nilai yang tidak terurut. Memerlukan `<unordered_map>`.
+    `std::stack` = Adaptor kontainer LIFO (Last-In, First-Out). Memerlukan `<stack>`.
+    `std::queue` = Adaptor kontainer FIFO (First-In, First-Out). Memerlukan `<queue>`.
+
+Iterators (Iterator) = Objek seperti pointer yang digunakan untuk menunjuk ke elemen dalam kontainer STL dan menelusurinya.
+    Contoh: `for (auto it = numbers.begin(); it != numbers.end(); ++it) { std::cout << *it; }`
+
+Algorithms (Algoritma) = Fungsi yang melakukan operasi pada rentang elemen, sering menggunakan iterator. Memerlukan `<algorithm>`.
+    Contoh: `std::sort(), std::find(), std::min(), std::max()`
+
+// ====================================================================
+// XI. PENANGANAN ERROR DAN EXCEPTION
+// ====================================================================
+
+Error Handling (Penanganan Kesalahan) = Cara program menangani kondisi yang tidak diharapkan.
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime dengan menghentikan alur normal eksekusi dan melompat ke blok kode penanganan error. Memerlukan `<exception>`.
+    `try` = Blok kode yang mungkin menimbulkan pengecualian.
+    `catch` = Blok kode yang menangkap dan menangani pengecualian.
+    `throw` = Melemparkan (menciptakan) pengecualian.
+    Contoh:
+    try {
+        int pembagi = 0;
+        if (pembagi == 0) {
+            throw "Tidak bisa membagi dengan nol!"; // Melemparkan string
+        }
+        // ... kode lain
+    } catch (const char* msg) { // Menangkap pengecualian string
+        std::cerr << "Error: " << msg << std::endl;
+    } catch (std::exception& e) { // Menangkap pengecualian standar
+        std::cerr << "Pengecualian: " << e.what() << std::endl;
+    }
+
+// ====================================================================
+// XII. TEMPLATE
+// ====================================================================
+
+Template (Template) = Fitur C++ yang memungkinkan penulisan fungsi atau kelas generik yang dapat beroperasi dengan berbagai tipe data tanpa perlu menulis ulang kode untuk setiap tipe.
+    Function Templates = Template untuk fungsi.
+        Contoh:
+        template <typename T> // T adalah parameter tipe
+        T maks(T a, T b) {
+            return (a > b) ? a : b;
+        }
+        int hasil_int = maks(5, 10);
+        double hasil_double = maks(3.14, 2.71);
+
+    Class Templates = Template untuk kelas.
+        Contoh:
+        template <typename T>
+        class MyPair {
+        public:
+            T first, second;
+            MyPair(T f, T s) : first(f), second(s) {}
+        };
+        MyPair<int> p1(1, 2);
+        MyPair<double> p2(1.5, 2.5);

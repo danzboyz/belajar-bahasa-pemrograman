@@ -1,0 +1,404 @@
+// Daftar Lengkap dan Mendalam Konsep CSS:
+
+// ====================================================================
+// I. DASAR-DASAR CSS
+// ====================================================================
+
+Selektor = Pola yang digunakan untuk memilih elemen HTML yang ingin Anda beri gaya.
+
+  Selektor Elemen = Memilih semua elemen dengan nama tag tertentu.
+      Contoh: `p { color: black; }` (Memilih semua paragraf)
+
+  Selektor ID = Memilih satu elemen dengan `id` tertentu (unik). Diawali dengan `#`.
+      Contoh: `#header { background-color: lightblue; }`
+
+  Selektor Kelas = Memilih elemen dengan `class` tertentu. Diawali dengan `.`.
+      Contoh: `.button { padding: 10px; }`
+
+  Selektor Universal = Memilih semua elemen HTML.
+      Contoh: `* { margin: 0; padding: 0; }`
+
+  Selektor Atribut = Memilih elemen berdasarkan keberadaan atau nilai atribut.
+      Contoh: `a[target="_blank"] { color: blue; }` (Memilih link yang membuka di tab baru)
+
+  Selektor Keturunan (Descendant) = Memilih elemen yang merupakan keturunan dari elemen lain. (spasi)
+      Contoh: `div p { color: gray; }` (Memilih paragraf di dalam div)
+
+  Selektor Anak Langsung (Child) = Memilih elemen yang merupakan anak langsung dari elemen lain. (>)
+      Contoh: `ul > li { list-style-type: none; }` (Memilih li yang langsung anak dari ul)
+
+  Selektor Saudara Berdampingan (Adjacent Sibling) = Memilih elemen yang langsung mengikuti elemen lain. (+)
+      Contoh: `h1 + p { margin-top: 20px; }` (Memilih paragraf yang langsung setelah h1)
+
+  Selektor Saudara Umum (General Sibling) = Memilih semua elemen yang mengikuti elemen lain di tingkat yang sama. (~)
+      Contoh: `p ~ span { background-color: yellow; }` (Memilih semua span setelah paragraf)
+
+Properti CSS = Aturan gaya yang diterapkan pada elemen yang dipilih. Setiap properti diikuti oleh nilai.
+    Contoh: `color: blue;` (Properti: `color`, Nilai: `blue`)
+
+Sintaks Aturan CSS = Selektor diikuti oleh blok deklarasi yang berisi satu atau lebih properti dan nilai, dipisahkan oleh titik koma.
+    Contoh:
+    `h1 {`
+    `  color: navy;`
+    `  font-size: 24px;`
+    `}`
+
+Komentar CSS = Teks yang diabaikan oleh browser, digunakan untuk catatan.
+    Contoh: `/* Ini adalah komentar CSS */`
+
+Cara Menulis CSS = Tiga cara utama untuk menyertakan CSS dalam dokumen HTML.
+
+  CSS Inline = Ditulis langsung di atribut `style` elemen HTML.
+      Contoh: `<p style="color: red; font-size: 18px;">Teks merah</p>`
+      Catatan: Tidak disarankan untuk proyek besar karena sulit diatur.
+
+  CSS Internal = Ditulis di dalam tag `<style>` di bagian `<head>` dokumen HTML.
+      Contoh:
+      `<head>`
+      `  <style>`
+      `    h1 { color: purple; }`
+      `  </style>`
+      `</head>`
+
+  CSS Eksternal = Ditulis dalam file `.css` terpisah dan ditautkan ke dokumen HTML menggunakan tag `<link>`.
+      Contoh: `<link rel="stylesheet" href="style.css">`
+      Catatan: Ini adalah metode yang paling disarankan dan umum.
+
+Cascading = Aturan tentang bagaimana browser memutuskan gaya mana yang akan diterapkan ketika ada konflik (misal: elemen yang sama memiliki beberapa aturan gaya). Prioritas: Inline > Internal/Eksternal > Browser Default. Spesifisitas selektor juga berperan.
+
+Inheritance (Pewarisan) = Beberapa properti CSS (misal: `color`, `font-family`) akan diwarisi secara otomatis oleh elemen anak dari elemen induknya, kecuali jika ditimpa.
+    Contoh: Jika `body { color: blue; }`, semua teks di dalam body akan biru kecuali ditimpa.
+
+// ====================================================================
+// II. PROPERTI TEKS DAN FONT
+// ====================================================================
+
+color = Warna teks.
+    Contoh: `color: red;`, `color: #FF0000;`, `color: rgb(255, 0, 0);`
+
+font-family = Jenis font.
+    Contoh: `font-family: "Arial", sans-serif;`
+
+font-size = Ukuran font.
+    Contoh: `font-size: 16px;`, `font-size: 1.2em;`, `font-size: 2vw;`
+
+font-weight = Ketebalan font (normal, bold, atau nilai numerik 100-900).
+    Contoh: `font-weight: bold;`, `font-weight: 700;`
+
+font-style = Gaya font (normal, italic, oblique).
+    Contoh: `font-style: italic;`
+
+text-align = Penjajaran horizontal teks (left, right, center, justify).
+    Contoh: `text-align: center;`
+
+text-decoration = Dekorasi teks (underline, overline, line-through, none).
+    Contoh: `text-decoration: underline;`
+
+text-transform = Mengubah huruf teks (uppercase, lowercase, capitalize).
+    Contoh: `text-transform: uppercase;`
+
+line-height = Tinggi baris teks.
+    Contoh: `line-height: 1.5;`, `line-height: 24px;`
+
+letter-spacing = Spasi antar huruf.
+    Contoh: `letter-spacing: 2px;`
+
+word-spacing = Spasi antar kata.
+    Contoh: `word-spacing: 5px;`
+
+white-space = Mengontrol bagaimana spasi dan baris baru dalam teks ditangani.
+    Contoh: `white-space: nowrap;` (Mencegah teks melilit)
+
+text-shadow = Menambahkan bayangan pada teks.
+    Contoh: `text-shadow: 2px 2px 4px #aaa;`
+
+// ====================================================================
+// III. MODEL KOTAK (BOX MODEL)
+// ====================================================================
+
+Box Model = Setiap elemen HTML dianggap sebagai kotak persegi panjang. Terdiri dari:
+    * Content (Konten) = Area di mana konten sebenarnya (teks, gambar) berada.
+    * Padding = Ruang di antara konten dan border (batas) elemen.
+    * Border (Batas) = Garis di sekitar padding dan konten.
+    * Margin = Ruang di luar border, memisahkan elemen dari elemen lain.
+
+width / height = Lebar dan tinggi area konten elemen.
+    Contoh: `width: 300px;`, `height: 200px;`
+
+padding = Ruang di antara konten dan border.
+    Contoh:
+    `padding: 10px;` (Semua sisi)
+    `padding: 10px 20px;` (Atas/bawah, kiri/kanan)
+    `padding: 10px 20px 30px 40px;` (Atas, Kanan, Bawah, Kiri)
+    `padding-top / -right / -bottom / -left` (Sisi spesifik)
+
+border = Garis di sekitar padding.
+    Contoh:
+    `border: 1px solid black;` (Lebar, Gaya, Warna)
+    `border-width: 2px;`
+    `border-style: dotted;`
+    `border-color: blue;`
+    `border-radius: 5px;` (Sudut membulat)
+
+margin = Ruang di luar border.
+    Contoh:
+    `margin: 20px;` (Semua sisi)
+    `margin: 10px auto;` (Atas/bawah 10px, kiri/kanan otomatis - untuk menengahkan blok)
+    `margin-top / -right / -bottom / -left` (Sisi spesifik)
+
+box-sizing = Mengontrol bagaimana `width` dan `height` dihitung.
+    `content-box` (default): `width/height` hanya berlaku untuk konten.
+    `border-box`: `width/height` mencakup padding dan border. Sangat direkomendasikan untuk layout.
+    Contoh: `box-sizing: border-box;`
+
+// ====================================================================
+// IV. LAYOUT DAN POSISI
+// ====================================================================
+
+display = Properti fundamental yang mendefinisikan bagaimana elemen ditampilkan dan berinteraksi dengan elemen lain.
+    `block`: Memulai baris baru, mengambil lebar penuh yang tersedia (misal: `div`, `p`, `h1`).
+    `inline`: Tidak memulai baris baru, hanya mengambil lebar yang dibutuhkan (misal: `span`, `a`, `img`).
+    `inline-block`: Mirip `inline` tapi bisa mengatur `width`/`height`/`padding`/`margin` vertikal.
+    `none`: Menyembunyikan elemen sepenuhnya (tidak menempati ruang).
+    `flex`: Mengaktifkan Flexbox layout.
+    `grid`: Mengaktifkan Grid layout.
+    Contoh: `display: block;`
+
+position = Mengontrol posisi elemen dalam dokumen.
+    `static` (default): Posisi normal dalam aliran dokumen.
+    `relative`: Diposisikan relatif terhadap posisi normalnya.
+    `absolute`: Diposisikan relatif terhadap elemen induk yang memiliki posisi `relative`, `absolute`, atau `fixed`. Dikeluarkan dari aliran dokumen normal.
+    `fixed`: Diposisikan relatif terhadap viewport browser (tetap di tempatnya saat di-scroll).
+    `sticky`: Diposisikan relatif sampai titik gulir tertentu tercapai, lalu menjadi fixed.
+    Contoh: `position: relative; top: 10px; left: 20px;`
+
+top / right / bottom / left = Digunakan dengan `position` untuk menentukan offset dari tepi.
+    Contoh: `top: 0; left: 0;`
+
+z-index = Mengontrol tumpukan elemen yang tumpang tindih (semakin tinggi, semakin di atas). Hanya berlaku untuk elemen yang diposisikan (non-static).
+    Contoh: `z-index: 100;`
+
+float = Menempatkan elemen di sisi kiri atau kanan wadahnya, memungkinkan teks atau elemen lain mengalir di sekelilingnya.
+    Contoh: `float: left;`
+    Catatan: Sering digantikan oleh Flexbox/Grid untuk layout modern.
+
+clear = Mengontrol bagaimana elemen berperilaku di sekitar elemen yang di-float.
+    Contoh: `clear: both;` (Mencegah elemen mengalir di samping elemen float)
+
+Overflow = Mengontrol apa yang terjadi jika konten melebihi ukuran wadahnya.
+    `visible` (default): Konten terlihat di luar batas.
+    `hidden`: Konten dipotong dan tidak terlihat di luar batas.
+    `scroll`: Konten dipotong, dan scrollbar ditambahkan.
+    `auto`: Scrollbar ditambahkan jika konten melebihi batas.
+    Contoh: `overflow: auto;`
+
+Visibility = Menyembunyikan elemen tetapi tetap menempati ruang.
+    Contoh: `visibility: hidden;`
+
+// ====================================================================
+// V. WARNA DAN LATAR BELAKANG
+// ====================================================================
+
+background-color = Warna latar belakang elemen.
+    Contoh: `background-color: lightgray;`
+
+background-image = Gambar latar belakang.
+    Contoh: `background-image: url('bg.png');`
+
+background-repeat = Mengontrol pengulangan gambar latar belakang.
+    Contoh: `background-repeat: no-repeat;`
+
+background-position = Posisi gambar latar belakang.
+    Contoh: `background-position: center top;`
+
+background-size = Ukuran gambar latar belakang.
+    Contoh: `background-size: cover;`, `background-size: 100% auto;`
+
+background-attachment = Mengontrol apakah gambar latar belakang di-scroll dengan halaman atau tetap (fixed).
+    Contoh: `background-attachment: fixed;`
+
+background (shorthand) = Properti singkatan untuk semua properti latar belakang.
+    Contoh: `background: #f0f0f0 url('bg.png') no-repeat center fixed;`
+
+opacity = Tingkat transparansi elemen (0 = sepenuhnya transparan, 1 = sepenuhnya buram).
+    Contoh: `opacity: 0.7;`
+
+// ====================================================================
+// VI. UNIT PENGUKURAN
+// ====================================================================
+
+Pixel (px) = Unit panjang absolut.
+    Contoh: `font-size: 16px; width: 200px;`
+
+Em (em) = Unit relatif terhadap `font-size` elemen induk.
+    Contoh: `font-size: 1.2em;` (1.2 kali ukuran font induk)
+
+Rem (rem) = Unit relatif terhadap `font-size` elemen root (`<html>`).
+    Contoh: `font-size: 1.2rem;` (1.2 kali ukuran font html)
+
+Persen (%) = Unit relatif terhadap ukuran induknya.
+    Contoh: `width: 50%;` (50% dari lebar induk)
+
+Viewport Width (vw) = Relatif terhadap 1% lebar viewport.
+    Contoh: `font-size: 2vw;` (2% dari lebar viewport)
+
+Viewport Height (vh) = Relatif terhadap 1% tinggi viewport.
+    Contoh: `height: 100vh;` (Tinggi penuh viewport)
+
+// ====================================================================
+// VII. PSEUDO-CLASS DAN PSEUDO-ELEMENTS
+// ====================================================================
+
+Pseudo-Class = Digunakan untuk mendefinisikan status khusus dari suatu elemen. Diawali dengan `:`.
+    `:hover` = Saat mouse di atas elemen.
+    `:active` = Saat elemen diklik.
+    `:focus` = Saat elemen difokuskan (misal: input form).
+    `:visited` = Untuk tautan yang sudah dikunjungi.
+    `:link` = Untuk tautan yang belum dikunjungi.
+    `:first-child` = Elemen pertama di antara kelompok saudara kandung.
+    `:last-child` = Elemen terakhir di antara kelompok saudara kandung.
+    `:nth-child(n)` = Memilih elemen ke-n di antara kelompok saudara kandung.
+    `:not(selector)` = Memilih elemen yang BUKAN selektor yang ditentukan.
+    Contoh:
+    `a:hover { color: orange; }`
+    `p:first-child { font-weight: bold; }`
+
+Pseudo-Element = Digunakan untuk menata gaya bagian tertentu dari suatu elemen. Diawali dengan `::`.
+    `::before` = Menyisipkan konten sebelum konten elemen.
+    `::after` = Menyisipkan konten setelah konten elemen.
+    `::first-line` = Menata gaya baris pertama teks.
+    `::first-letter` = Menata gaya huruf pertama teks.
+    `::selection` = Menata gaya teks yang dipilih oleh pengguna.
+    Contoh:
+    `h1::before { content: "-> "; color: green; }`
+    `p::first-line { text-transform: uppercase; }`
+
+// ====================================================================
+// VIII. TRANSISI, TRANSFORMASI, DAN ANIMASI
+// ====================================================================
+
+Transition = Memberikan efek perubahan halus dari satu status CSS ke status lain.
+    `transition-property`: Properti yang akan dianimasikan.
+    `transition-duration`: Durasi animasi.
+    `transition-timing-function`: Kecepatan kurva (ease, linear, ease-in, ease-out, ease-in-out).
+    `transition-delay`: Penundaan sebelum transisi dimulai.
+    Contoh:
+    `.box {`
+    `  width: 100px; height: 100px; background-color: blue;`
+    `  transition: background-color 0.5s ease-in-out, width 0.3s;`
+    `}`
+    `.box:hover {`
+    `  background-color: red; width: 150px;`
+    `}`
+
+Transform = Menerapkan transformasi 2D atau 3D pada elemen.
+    `translate()` = Memindahkan elemen.
+    `rotate()` = Memutar elemen.
+    `scale()` = Mengubah ukuran elemen.
+    `skew()` = Memiringkan elemen.
+    `matrix()` = Kombinasi semua transformasi 2D.
+    `rotateX()`, `rotateY()`, `rotateZ()` untuk 3D.
+    Contoh: `transform: rotate(45deg) scale(1.2);`
+
+Animation = Membuat animasi yang lebih kompleks dengan Keyframes.
+    `@keyframes` = Mendefinisikan tahapan-tahapan animasi.
+        Contoh:
+        `@keyframes slidein {`
+        `  from { margin-left: 100%; width: 300%; }`
+        `  to { margin-left: 0%; width: 100%; }`
+        `}`
+    `animation-name`: Nama animasi.
+    `animation-duration`: Durasi animasi.
+    `animation-iteration-count`: Berapa kali animasi diulang.
+    `animation-direction`: Arah animasi (normal, reverse, alternate).
+    `animation-timing-function`: Kecepatan kurva.
+    `animation-delay`: Penundaan.
+    `animation-fill-mode`: Gaya yang diterapkan sebelum/sesudah animasi.
+    Contoh:
+    `.element {`
+    `  animation-name: slidein;`
+    `  animation-duration: 3s;`
+    `  animation-iteration-count: infinite;`
+    `}`
+
+// ====================================================================
+// IX. LAYOUT MODERN (FLEXBOX & GRID)
+// ====================================================================
+
+Flexbox (Flexible Box Layout) = Metode layout satu dimensi untuk mengatur item dalam baris atau kolom.
+    Pada Container (Elemen Induk):
+    `display: flex;` = Mengaktifkan flex container.
+    `flex-direction`: Arah utama (row, column, row-reverse, column-reverse).
+    `justify-content`: Penjajaran item di sepanjang sumbu utama.
+    `align-items`: Penjajaran item di sepanjang sumbu silang.
+    `flex-wrap`: Memungkinkan item untuk melilit ke baris/kolom baru.
+    `gap`: Spasi antar item flex.
+    Pada Items (Elemen Anak):
+    `flex-grow`: Kemampuan item untuk tumbuh.
+    `flex-shrink`: Kemampuan item untuk menyusut.
+    `flex-basis`: Ukuran awal item sebelum distribusi ruang.
+    `flex` (shorthand): Menggabungkan `flex-grow`, `flex-shrink`, `flex-basis`.
+    `align-self`: Menimpa `align-items` untuk item individual.
+    `order`: Mengubah urutan visual item.
+
+Grid (CSS Grid Layout) = Metode layout dua dimensi untuk mengatur item dalam baris dan kolom.
+    Pada Container (Elemen Induk):
+    `display: grid;` = Mengaktifkan grid container.
+    `grid-template-columns`: Mendefinisikan jumlah dan ukuran kolom.
+    `grid-template-rows`: Mendefinisikan jumlah dan ukuran baris.
+    `grid-gap` / `gap`: Spasi antar sel grid (row-gap, column-gap).
+    `justify-items` / `align-items`: Penjajaran item di dalam sel grid.
+    Pada Items (Elemen Anak):
+    `grid-column`: Menentukan di mana item dimulai dan berakhir di kolom.
+    `grid-row`: Menentukan di mana item dimulai dan berakhir di baris.
+    `grid-area`: Memberi nama area grid atau menempatkan item di area tertentu.
+
+// ====================================================================
+// X. PROPERTI LAINNYA
+// ====================================================================
+
+outline = Garis yang digambar di sekitar elemen, di luar border.
+    Contoh: `outline: 2px solid blue;`
+
+cursor = Mengubah kursor mouse saat di atas elemen.
+    Contoh: `cursor: pointer;` (Pointer tangan)
+
+box-shadow = Menambahkan bayangan pada kotak elemen.
+    Contoh: `box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);`
+
+text-overflow = Bagaimana teks yang overflow harus ditampilkan (misal: dengan elipsis `...`).
+    Contoh: `text-overflow: ellipsis; white-space: nowrap; overflow: hidden;`
+
+resize = Memungkinkan pengguna mengubah ukuran elemen.
+    Contoh: `resize: vertical; overflow: auto;`
+
+user-select = Mengontrol apakah teks dapat dipilih oleh pengguna.
+    Contoh: `user-select: none;` (Mencegah pemilihan teks)
+
+filter = Menerapkan efek visual seperti blur, brightness, contrast, grayscale, dll.
+    Contoh: `filter: blur(5px);`
+
+Clip-path = Membuat bentuk potong (clipping path) untuk memotong elemen.
+
+Custom Properties (CSS Variables) = Variabel yang ditentukan oleh pengguna dalam CSS.
+    Contoh Deklarasi: `:root { --main-color: blue; }`
+    Contoh Penggunaan: `color: var(--main-color);`
+
+Media Queries (`@media`) = Aturan untuk menerapkan gaya CSS yang berbeda berdasarkan karakteristik perangkat (misal: lebar layar, orientasi). Penting untuk desain responsif.
+    Contoh:
+    `@media (max-width: 768px) {`
+    `  .container { flex-direction: column; }`
+    `}`
+
+!important = Meningkatkan prioritas deklarasi CSS. Hanya gunakan sebagai jalan terakhir, karena dapat menyulitkan debugging.
+    Contoh: `color: red !important;`
+
+Initial & Inherit Keywords =
+    `initial`: Mengatur properti ke nilai defaultnya.
+    `inherit`: Mengatur properti ke nilai yang diwarisi dari induknya.
+
+Unit Fungsi (`calc()`, `min()`, `max()`, `clamp()`) =
+    `calc()`: Melakukan perhitungan matematika. `width: calc(100% - 20px);`
+    `min()`: Menggunakan nilai terkecil dari daftar argumen.
+    `max()`: Menggunakan nilai terbesar dari daftar argumen.
+    `clamp()`: Mengunci nilai di antara rentang minimum dan maksimum.

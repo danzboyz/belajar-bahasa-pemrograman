@@ -1,0 +1,555 @@
+// Daftar Lengkap dan Mendalam Konsep Swift:
+
+// ====================================================================
+// I. DASAR-DASAR SWIFT
+// ====================================================================
+
+Struktur Program Swift =
+    Sebuah program Swift bisa sesederhana satu baris kode.
+    Tidak ada fungsi `main()` eksplisit di file tunggal; kode tingkat atas dieksekusi secara berurutan.
+    Dalam proyek Xcode, titik masuk biasanya adalah `@main` pada `App` atau `AppDelegate`.
+    Contoh:
+    import Foundation // Mengimpor framework dasar
+
+    // Kode tingkat atas dieksekusi dari atas ke bawah
+    print("Halo, Swift!") // Mencetak teks ke konsol
+
+Kompilasi dan Eksekusi =
+    1. Kode Sumber (.swift) --Kompilasi (Swift Compiler/Xcode)--> Executable
+    2. Menggunakan Xcode (IDE): Build & Run.
+    3. Menggunakan Swift Package Manager: `swift build` lalu `swift run`.
+    4. Menggunakan Swift CLI (di Terminal):
+        Kompilasi: `swiftc nama_file.swift -o nama_executable`
+        Eksekusi: `./nama_executable`
+    5. Swift REPL (Read-Eval-Print Loop): `swift` di Terminal.
+
+Komentar =
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+
+Output Dasar =
+    `print()`: Mencetak nilai ke konsol.
+        Contoh: `print("Ini akan menambahkan baris baru.")`
+        `print("Nilai:", myVar)` // Dapat mencetak beberapa argumen
+    `dump()`: Mencetak representasi objek yang lebih detail, berguna untuk debugging.
+
+Input Dasar =
+    `readLine()`: Membaca baris teks dari input standar (mengembalikan `String?` - opsional).
+    Contoh:
+    print("Siapa nama Anda?")
+    if let nama = readLine() { // Menggunakan optional binding
+        print("Halo, \(nama)!") // String Interpolation
+    } else {
+        print("Nama tidak dimasukkan.")
+    }
+
+Case Sensitivity = Swift bersifat case-sensitive. `myVar` berbeda dengan `myvar`.
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data.
+    `var`: Untuk variabel yang nilainya bisa diubah (mutable).
+        Contoh: `var angka = 10`
+    `let`: Untuk konstanta yang nilainya tidak bisa diubah (immutable/read-only).
+        Contoh: `let nama = "Ani"`
+
+Type Inference = Swift seringkali dapat menyimpulkan tipe data secara otomatis.
+    Contoh: `var jumlah = 10 // jumlah disimpulkan sebagai Int`
+    Deklarasi Eksplisit: `var pesan: String = "Halo Dunia"`
+
+Tipe Data Primitif (Built-in Types) =
+    `Int`: Bilangan bulat (ukuran tergantung platform, 32-bit atau 64-bit).
+        `Int8`, `Int16`, `Int32`, `Int64` (signed)
+        `UInt8`, `UInt16`, `UInt32`, `UInt64` (unsigned)
+    `Float`: Single-precision floating-point.
+    `Double`: Double-precision floating-point (tipe floating-point default).
+    `Bool`: Nilai Boolean (`true` atau `false`).
+    `Character`: Karakter Unicode tunggal.
+    `String`: Urutan karakter Unicode.
+        Mendukung String Interpolation: `let s = "Hello \(name)!"`
+
+Type Safety = Swift sangat *type-safe*. Perlu konversi eksplisit antar tipe.
+    Contoh: `let i: Int = 10; let f: Float = Float(i)`
+
+// ====================================================================
+// III. KOLEKSI
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama, yang diurutkan.
+    Sintaks: `[TipeData]`
+    Contoh:
+    var numbers: [Int] = [1, 2, 3]
+    var names = ["Alice", "Bob"] // Type inference: [String]
+    -- Akses elemen: `numbers[0]`
+    -- Tambah elemen: `numbers.append(4)`
+    -- Hapus elemen: `numbers.remove(at: 0)`
+
+Dictionary = Koleksi pasangan kunci-nilai (key-value pair). Kuncinya harus unik.
+    Sintaks: `[KeyType: ValueType]`
+    Contoh:
+    var scores: [String: Int] = ["Alice": 90, "Bob": 85]
+    var ages = ["John": 30, "Doe": 25] // Type inference: [String: Int]
+    -- Akses nilai: `scores["Alice"]` (mengembalikan Optional)
+    -- Tambah/ubah: `scores["Charlie"] = 95`
+    -- Hapus: `scores["Bob"] = nil`
+
+Set = Koleksi elemen unik yang tidak berurutan.
+    Sintaks: `Set<TipeData>`
+    Contoh:
+    var uniqueNumbers: Set<Int> = [1, 2, 3, 2, 1] // Akan jadi {1, 2, 3}
+    -- Tambah: `uniqueNumbers.insert(4)`
+    -- Hapus: `uniqueNumbers.remove(1)`
+
+// ====================================================================
+// IV. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = `+`, `-`, `*`, `/`, `%` (modulo).
+Operator Penugasan = `=`, `+=`, `-=`, `*=`, `/=`, `%=`.
+Operator Perbandingan = `==`, `!=`, `>`, `<`, `>=`, `<=`.
+Operator Logika = `&&` (AND), `||` (OR), `!` (NOT).
+Range Operators =
+    `a...b` (Closed Range): Inklusif, dari a sampai b.
+    `a..<b` (Half-Open Range): Inklusif a, eksklusif b.
+Nil-Coalescing Operator (`??`) = Memberikan nilai default jika opsional adalah `nil`.
+    Contoh: `let username = optionalUsername ?? "Guest"`
+
+// ====================================================================
+// V. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Mengeksekusi kode berdasarkan kondisi.
+    Contoh:
+    let score = 85
+    if score > 90 {
+        print("Sangat Baik")
+    } else if score > 70 {
+        print("Baik")
+    } else {
+        print("Cukup")
+    }
+
+switch = Untuk mencocokkan nilai dengan berbagai pola. Tidak memerlukan `break` secara default. Harus *exhaustive*.
+    Mendukung `fallthrough` (jika diinginkan).
+    Contoh:
+    let day = "Senin"
+    switch day {
+    case "Senin":
+        print("Awal pekan")
+    case "Jumat":
+        print("Akhir pekan segera tiba")
+    default: // Wajib jika tidak semua kasus tercakup
+        print("Hari biasa")
+    }
+    -- Switch dengan Range:
+    // switch score { case 90...100: ... }
+    -- Switch dengan Tuples:
+    // switch (x, y) { case (0, 0): ... }
+
+for-in loop = Untuk iterasi melalui koleksi atau rentang.
+    Contoh:
+    for i in 1...5 {
+        print(i)
+    }
+    let names = ["Anna", "Alex", "Brian"]
+    for name in names {
+        print("Halo, \(name)!")
+    }
+    for (key, value) in ages { // Iterasi Dictionary
+        print("\(key) is \(value) years old")
+    }
+
+while loop = Mengeksekusi blok kode selama kondisi terpenuhi.
+    Contoh:
+    var i = 0
+    while i < 3 {
+        print(i)
+        i += 1
+    }
+
+repeat-while loop = Mengeksekusi blok kode setidaknya sekali, kemudian mengulang selama kondisi terpenuhi.
+    Contoh:
+    var j = 0
+    repeat {
+        print(j)
+        j += 1
+    } while j < 3
+
+break = Menghentikan eksekusi loop atau `switch` secara paksa.
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+
+// ====================================================================
+// VI. OPTIONALS
+// ====================================================================
+
+Optionals = Cara Swift menangani nilai yang mungkin ada atau tidak ada. Ditandai dengan `?`.
+    Contoh: `var namaDepan: String? = "John"`
+    `var umur: Int? = nil`
+
+Unwrapping Optionals = Mengakses nilai dari Optional.
+    Force Unwrapping (`!`) = Mengasumsikan Optional memiliki nilai. **Berbahaya** jika `nil` (akan crash).
+        Contoh: `let value = myOptionalValue!`
+    Optional Binding (`if let`, `guard let`) = Cara aman untuk membuka Optional.
+        Contoh (`if let`):
+        if let actualName = namaDepan {
+            print("Nama sebenarnya: \(actualName)")
+        } else {
+            print("Nama tidak ditemukan.")
+        }
+        Contoh (`guard let`):
+        func processName(name: String?) {
+            guard let actualName = name else {
+                print("Nama tidak valid.")
+                return
+            }
+            print("Memproses nama: \(actualName)")
+        }
+    Optional Chaining (`?.`) = Mengakses properti atau metode dari Optional. Jika ada `nil` di tengah rantai, seluruh ekspresi mengembalikan `nil`.
+        Contoh: `let length = namaDepan?.count`
+
+Implicitly Unwrapped Optionals (`!`) = Optional yang secara otomatis di-unwrap setiap kali diakses. Digunakan ketika Anda yakin Optional akan selalu memiliki nilai setelah diinisialisasi. (Misalnya, IBOutlet). **Masih bisa crash** jika `nil`.
+    Contoh: `var myLabel: UILabel! // dijamin ada setelah viewDidLoad`
+
+// ====================================================================
+// VII. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu.
+    Sintaks: `func namaFungsi(parameter1: Tipe, parameter2: Tipe) -> ReturnTipe { // kode }`
+    Contoh:
+    func tambah(a: Int, b: Int) -> Int {
+        return a + b
+    }
+    func cetakPesan() { // Tanpa parameter, tanpa return (void)
+        print("Ini pesan dari fungsi.")
+    }
+
+    // Memanggil fungsi:
+    // let hasil = tambah(a: 5, b: 3)
+    // cetakPesan()
+
+Parameter Labels (Nama Parameter Eksternal) = Swift secara default menggunakan nama parameter untuk argumen pada saat pemanggilan.
+    Contoh: `func greet(person name: String) { print("Hello \(name)") }`
+        Panggilan: `greet(person: "Alice")`
+    Mengabaikan label: `func multiply(_ a: Int, _ b: Int) { ... }`
+        Panggilan: `multiply(5, 3)`
+
+Default Parameter Values = Menentukan nilai default untuk parameter.
+    Contoh: `func pow(base: Int, exponent: Int = 2) -> Int { ... }`
+
+Variadic Parameters = Menerima nol atau lebih nilai dari tipe tertentu sebagai array.
+    Contoh: `func sum(_ numbers: Int...) -> Int { ... }`
+
+In-Out Parameters (`inout`) = Memungkinkan fungsi memodifikasi nilai argumen yang diteruskan, bukan hanya salinannya.
+    Contoh:
+    func swapValues(_ a: inout Int, _ b: inout Int) {
+        let temp = a
+        a = b
+        b = temp
+    }
+    // var x = 10, y = 20; swapValues(&x, &y);
+
+Nested Functions = Fungsi yang didefinisikan di dalam fungsi lain.
+    Contoh:
+    func outerFunction() {
+        func innerFunction() {
+            print("Ini fungsi dalam.")
+        }
+        innerFunction()
+    }
+
+First-Class Functions = Fungsi dapat disimpan dalam variabel, diteruskan sebagai argumen, dan dikembalikan dari fungsi lain.
+    Contoh (Closure/Lambda):
+    let greetFunction = { (name: String) -> String in
+        return "Hello, \(name)!"
+    }
+    print(greetFunction("World"))
+
+// ====================================================================
+// VIII. CLOSURES
+// ====================================================================
+
+Closures = Blok kode yang berdiri sendiri yang dapat diteruskan dan digunakan dalam kode Anda. Mirip lambda atau anonymous functions.
+    Sintaks Dasar: `{ (parameters) -> returnType in statements }`
+    Contoh:
+    let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+    let sortedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
+        return s1 > s2
+    })
+    -- Bentuk singkat (Trailing Closures, Shorthand Argument Names $0, $1, dll.)
+    let sortedNamesShort = names.sorted { $0 > $1 }
+
+Capturing Values = Closures dapat menangkap dan menyimpan referensi ke konstanta dan variabel dari konteks di mana mereka didefinisikan.
+
+Escaping Closures = Closure yang 'melarikan diri' dari fungsi tempat mereka dideklarasikan. Ditandai dengan `@escaping`.
+    Digunakan untuk operasi asinkron, seperti completion handlers.
+
+Autoclosures = Closure yang secara otomatis dibuat di sekitar ekspresi yang diteruskan sebagai argumen ke sebuah fungsi. Ditandai dengan `@autoclosure`.
+
+// ====================================================================
+// IX. STRUKTUR DAN KELAS
+// ====================================================================
+
+Struct (Struktur) = Tipe nilai. Ketika instance struct disalin, nilai aslinya disalin.
+    Cocok untuk merepresentasikan data kecil, sederhana, dan independen.
+    Contoh:
+    struct Point {
+        var x: Int
+        var y: Int
+    }
+    var p1 = Point(x: 10, y: 20)
+    var p2 = p1 // p2 adalah salinan p1
+    p2.x = 30 // p1.x tetap 10
+
+Class (Kelas) = Tipe referensi. Ketika instance kelas disalin, referensi ke instance asli disalin.
+    Cocok untuk merepresentasikan entitas kompleks, objek dengan identitas, atau yang perlu diwariskan.
+    Contoh:
+    class Person {
+        var name: String
+        var age: Int
+        init(name: String, age: Int) {
+            self.name = name
+            self.age = age
+        }
+    }
+    var person1 = Person(name: "Alice", age: 30)
+    var person2 = person1 // person2 mereferensi objek yang sama dengan person1
+    person2.age = 31 // person1.age juga menjadi 31
+
+Perbedaan Utama Struct vs Class:
+    - Struct adalah Value Types, Class adalah Reference Types.
+    - Class mendukung Inheritance, Struct tidak.
+    - Class mendukung Deinitializers, Struct tidak.
+    - Class memungkinkan Multiple References, Struct tidak.
+
+Properties (Properti) = Konstanta atau variabel yang terkait dengan sebuah kelas atau struktur.
+    Stored Properties: Menyimpan nilai.
+    Computed Properties: Menghitung nilai. (Tidak menyimpan nilai).
+    Property Observers (`willSet`, `didSet`): Merespons perubahan nilai properti.
+
+Methods (Metode) = Fungsi yang terkait dengan sebuah tipe.
+    Instance Methods: Beroperasi pada instance tertentu dari tipe.
+    Type Methods (`static` atau `class`): Beroperasi pada tipe itu sendiri (mirip static method di bahasa lain).
+
+Initializers (Inisialisasi) = Metode khusus untuk membuat instance baru dari tipe.
+    `init()`: Konstruktor.
+
+Deinitializers = Metode khusus yang dipanggil tepat sebelum instance kelas dihapus dari memori. Hanya untuk kelas.
+    `deinit {}`
+
+// ====================================================================
+// X. ENUMERATIONS (ENUMS)
+// ====================================================================
+
+Enums = Mendefinisikan grup nilai terkait.
+    Dapat memiliki *raw values* (tipe data yang mendasarinya) atau *associated values* (menyimpan data tambahan dengan setiap kasus).
+    Contoh:
+    enum HariDalamSeminggu {
+        case Senin, Selasa, Rabu, Kamis, Jumat, Sabtu, Minggu
+    }
+    var hariIni = HariDalamSeminggu.Senin
+
+    enum KodeBarang: String { // Raw values
+        case Buku = "B-001"
+        case Pensil = "P-002"
+    }
+    print(KodeBarang.Buku.rawValue) // Output: "B-001"
+
+    enum Barcode { // Associated values
+        case upc(Int, Int, Int, Int)
+        case qrCode(String)
+    }
+    var produkBarcode = Barcode.upc(8, 85909, 51226, 3)
+    var kodeQR = Barcode.qrCode("IniQRcode")
+
+    -- Pattern matching dengan associated values:
+    // switch produkBarcode {
+    // case .upc(let numberSystem, let manufacturer, let product, let check):
+    //     print("UPC: \(numberSystem), \(manufacturer), \(product), \(check)")
+    // case .qrCode(let codeString):
+    //     print("QR Code: \(codeString)")
+    // }
+
+// ====================================================================
+// XI. PROTOCOLS
+// ====================================================================
+
+Protocols = Mendefinisikan blueprint dari metode, properti, atau persyaratan lainnya yang sesuai untuk tugas atau fungsionalitas tertentu.
+    Mirip dengan interface di Java atau Go, atau abstract class di C++.
+    `class`, `struct`, `enum` dapat mengadopsi satu atau lebih protokol.
+    Contoh:
+    protocol BisaBernyanyi {
+        func bernyanyi()
+        var namaPenyanyi: String { get } // Properti read-only
+    }
+
+    class Burung: BisaBernyanyi {
+        var namaPenyanyi: String = "Burung Pipit"
+        func bernyanyi() {
+            print("\(namaPenyanyi) sedang berkicau indah.")
+        }
+    }
+
+    struct Manusia: BisaBernyanyi {
+        var namaPenyanyi: String
+        func bernyanyi() {
+            print("\(namaPenyanyi) sedang menyanyikan lagu.")
+        }
+    }
+
+    // let pipit = Burung()
+    // let diva = Manusia(namaPenyanyi: "Adele")
+    // pipit.bernyanyi()
+    // diva.bernyanyi()
+
+Protocol Conformance = Mengadopsi protokol.
+
+Protocol Extensions = Menambah fungsionalitas ke tipe yang sudah ada yang sesuai dengan protokol.
+
+// ====================================================================
+// XII. ERROR HANDLING
+// ====================================================================
+
+Error Handling = Cara Swift menangani kondisi error yang tidak dapat diprediksi selama eksekusi program.
+    `Error` Protocol: Tipe error di Swift harus sesuai dengan protokol `Error`.
+    `enum` untuk Error: Sering digunakan untuk mendefinisikan tipe error spesifik.
+        Contoh:
+        enum DataFetchError: Error {
+            case invalidURL
+            case networkError(String)
+            case dataParsingFailed
+        }
+    `throws`: Menandakan fungsi dapat melempar error.
+    `throw`: Melempar instance error.
+    `do-catch`: Menangani error yang dilempar.
+        Contoh:
+        func fetchData(from urlString: String) throws -> String {
+            guard let url = URL(string: urlString) else {
+                throw DataFetchError.invalidURL
+            }
+            // ... kode untuk fetching data, bisa throw networkError
+            // ... kode untuk parsing data, bisa throw dataParsingFailed
+            return "Data berhasil diambil dari \(url)"
+        }
+
+        do {
+            let data = try fetchData(from: "https://example.com/data")
+            print(data)
+        } catch DataFetchError.invalidURL {
+            print("Error: URL tidak valid.")
+        } catch DataFetchError.networkError(let message) {
+            print("Error jaringan: \(message)")
+        } catch { // Menangkap error lainnya
+            print("Terjadi error tak terduga: \(error)")
+        }
+
+    `try?`: Mengembalikan Optional jika fungsi melempar error (nilai `nil` jika error).
+        Contoh: `let result = try? fetchData(from: "invalid-url")`
+    `try!`: Memaksa pemanggilan fungsi yang bisa melempar error. **Berbahaya** jika melempar (akan crash).
+
+// ====================================================================
+// XIII. GENERICS
+// ====================================================================
+
+Generics = Memungkinkan Anda menulis kode yang dapat bekerja dengan berbagai tipe data tanpa kehilangan keamanan tipe saat kompilasi.
+    Contoh:
+    func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
+        let temp = a
+        a = b
+        b = temp
+    }
+    // var intA = 10, intB = 20; swapTwoValues(&intA, &intB)
+    // var strA = "hello", strB = "world"; swapTwoValues(&strA, &strB)
+
+    Generic Types (Struct, Class, Enum):
+    struct Stack<Element> {
+        var items = [Element]()
+        mutating func push(_ item: Element) {
+            items.append(item)
+        }
+        mutating func pop() -> Element? {
+            return items.popLast()
+        }
+    }
+    // var stringStack = Stack<String>()
+    // var intStack = Stack<Int>()
+
+Type Constraints = Membatasi tipe yang dapat digunakan dengan generic agar sesuai dengan protokol tertentu.
+    Contoh: `func findIndex<T: Equatable>(of valueToFind: T, in array: [T]) -> Int? { ... }`
+
+// ====================================================================
+// XIV. MEMORY MANAGEMENT (ARC)
+// ====================================================================
+
+ARC (Automatic Reference Counting) = Mekanisme Swift untuk mengelola memori otomatis.
+    ARC melacak dan menghitung berapa banyak properti, konstanta, dan variabel yang saat ini mereferensikan setiap instance kelas. Ketika jumlah referensi menjadi nol, instance tersebut didealokasikan.
+    **Hanya berlaku untuk instansi kelas.** Struct dan enum (tipe nilai) ditangani oleh stack atau ARC secara berbeda.
+
+Strong Reference Cycles = Situasi di mana dua atau lebih instance kelas saling mereferensi satu sama lain dengan *strong reference*, mencegah mereka untuk didealokasikan oleh ARC.
+    Pencegahan: `weak` dan `unowned` references.
+
+Weak References = Referensi yang tidak mempertahankan instance yang diacu. Otomatis menjadi `nil` jika instance yang diacu didealokasikan.
+    Digunakan untuk hubungan "parent-child" di mana child tidak seharusnya mencegah parent untuk didealokasikan (e.g., delegate patterns).
+    Contoh: `weak var delegate: SomeDelegate?`
+
+Unowned References = Referensi yang tidak mempertahankan instance yang diacu, dan diasumsikan akan selalu memiliki nilai selama masa pakainya. Tidak menjadi `nil`.
+    Digunakan ketika lifetime instance yang diacu selalu sama atau lebih lama dari instance yang mereferensikannya.
+    Contoh: `unowned let owner: OwnerClass`
+
+// ====================================================================
+// XV. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Extensions = Menambah fungsionalitas baru ke tipe yang sudah ada (kelas, struct, enum, protokol).
+    Tidak bisa menambahkan *stored properties*.
+    Contoh:
+    extension String {
+        func reversed() -> String {
+            return String(self.reversed())
+        }
+    }
+    // "hello".reversed()
+
+Concurrency (Konkurensi) = Cara Swift menangani operasi yang berjalan secara bersamaan.
+    GCD (Grand Central Dispatch): API berbasis C untuk mengelola antrean tugas (queues) dan thread.
+    Operations (OperationQueue): Abstraksi di atas GCD, lebih berorientasi objek.
+    Async/Await (Swift Concurrency): Fitur modern untuk menulis kode asinkron yang lebih mudah dibaca dan dikelola.
+        `async`: Menandai fungsi yang dapat melakukan pekerjaan asinkron.
+        `await`: Menunggu hasil dari fungsi `async`.
+        `Task`: Unit kerja konkruen.
+        `actor`: Tipe referensi yang memastikan data dapat diakses dengan aman secara konkruen.
+
+Result Type = Enum yang digunakan untuk merepresentasikan keberhasilan atau kegagalan operasi. Sering digunakan dengan `completion handler` untuk asynchronous tasks.
+    `Result<Success, Failure: Error>`
+    Contoh:
+    func fetchData(completion: @escaping (Result<String, DataFetchError>) -> Void) {
+        // ... kode async ...
+        if success {
+            completion(.success("Data berhasil!"))
+        } else {
+            completion(.failure(.networkError("Tidak ada koneksi")))
+        }
+    }
+
+Property Wrappers = Fitur untuk menambahkan logika pembungkus di sekitar properti menggunakan atribut.
+    Contoh: `@State`, `@Binding`, `@Published` (dari SwiftUI/Combine).
+
+Type Aliases = Memberi nama alternatif untuk tipe yang sudah ada.
+    Contoh: `typealias UserID = Int`
+
+Associated Types = Digunakan dalam protokol untuk mendefinisikan placeholder nama untuk tipe yang akan ditentukan saat protokol diadopsi.
+
+Opaque Types (`some Protocol`) = Menyembunyikan informasi tipe konkret dari nilai yang dikembalikan. Sering digunakan di SwiftUI.
+
+Protocol-Oriented Programming (POP) = Paradigma desain di Swift yang berfokus pada penggunaan protokol dan ekstensinya untuk membangun fungsionalitas.
+
+Value Semantics vs Reference Semantics =
+    Value Semantics: Setiap salinan data adalah independen (Struct, Enum, dasar).
+    Reference Semantics: Salinan data merujuk ke instance yang sama (Class).
+
+Access Control = Mengontrol akses ke bagian-bagian kode Anda dari kode sumber lain.
+    `open`, `public`, `internal` (default), `fileprivate`, `private`.
