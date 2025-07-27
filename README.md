@@ -86,8 +86,7 @@ Masukan & Saran Kami sangat menghargai setiap masukan dan saran dari pengguna. J
 
 Kontak Untuk pertanyaan lebih lanjut, kerjasama, atau hal lainnya, Anda bisa menghubungi saya melalui:
 
-Email: muhammad.wildan.shubhan@example.com (Harap ganti dengan email Anda yang sebenarnya)
-
+Email: muhammad.wildan.shubhan@gmail.com 
 WhatsApp: 085881334119
 
 Kontributor Proyek ini sepenuhnya dibuat dan dikelola oleh:
