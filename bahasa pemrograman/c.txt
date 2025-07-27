@@ -1,0 +1,401 @@
+// Daftar Lengkap dan Mendalam Konsep C:
+
+// ====================================================================
+// I. DASAR-DASAR C
+// ====================================================================
+
+Struktur Program C = Sebuah program C minimal terdiri dari fungsi `main()`.
+    Contoh:
+    #include <stdio.h> // Mengimpor standar input/output library
+
+    int main() { // Fungsi utama, program dimulai dari sini
+        printf("Halo, C!\n"); // Mencetak teks ke konsol, \n untuk baris baru
+        return 0; // Mengembalikan 0 menandakan eksekusi sukses
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber C menjadi program yang dapat dijalankan secara langsung (executable).
+    1. Kode Sumber (.c) --Kompilasi (GCC, Clang, MinGW, dsb.)--> Executable (.exe di Windows, tanpa ekstensi di Linux/macOS)
+    2. Kompilasi (menggunakan GCC sebagai contoh): `gcc nama_file.c -o nama_executable`
+    3. Eksekusi: `./nama_executable` (di Linux/macOS) atau `nama_executable.exe` (di Windows)
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris (C99 dan seterusnya)
+    /* Ini komentar
+       multi-baris */
+
+Output Dasar = Menggunakan fungsi dari library `stdio.h`.
+    `printf()`: Mencetak output terformat ke konsol.
+        Format Specifiers: `%d` (integer), `%f` (float), `%lf` (double), `%c` (char), `%s` (string), `%p` (pointer), `%.2f` (float dengan 2 desimal).
+        Escape Sequences: `\n` (newline), `\t` (tab), `\\` (backslash), `\"` (double quote).
+        Contoh:
+        printf("Angka: %d, Pecahan: %.2f\n", 10, 3.14159);
+        printf("Nama: %s\n", "Budi");
+
+Input Pengguna = Menggunakan fungsi dari library `stdio.h`.
+    `scanf()`: Membaca input yang terformat dari keyboard.
+        **Penting:** Selalu gunakan operator alamat (`&`) di depan nama variabel untuk `scanf`.
+        Contoh:
+        #include <stdio.h>
+        int main() {
+            int umur;
+            char nama[50]; // Array karakter untuk string
+
+            printf("Masukkan nama Anda: ");
+            scanf("%s", nama); // Tidak perlu '&' untuk array karakter sebagai string
+            printf("Masukkan umur Anda: ");
+            scanf("%d", &umur); // Perlu '&' untuk variabel non-array
+
+            printf("Halo, %s! Umur Anda %d tahun.\n", nama, umur);
+            return 0;
+        }
+    `gets()`: (Sangat tidak disarankan karena rentan buffer overflow).
+    `fgets()`: Lebih aman untuk membaca string dengan batas ukuran.
+        Contoh: `fgets(nama, sizeof(nama), stdin);`
+
+Case Sensitivity = C bersifat case-sensitive. `myVar` berbeda dengan `myvar`.
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan tipe data.
+    Sintaks: `tipeData namaVariabel;` atau `tipeData namaVariabel = nilaiAwal;`
+    Contoh:
+    int angka;
+    float suhu = 25.5;
+    char karakter = 'A';
+
+Konstanta = Nilai yang tidak dapat diubah setelah didefinisikan.
+    Menggunakan `const` keyword:
+        Contoh: `const float PI = 3.14159;`
+    Menggunakan `#define` preprocessor directive: (Tidak memiliki tipe data, substitusi teks)
+        Contoh: `#define MAX_SIZE 100`
+
+Tipe Data Primitif (Built-in Types) =
+    Integers:
+        `char`: Digunakan untuk karakter, tetapi secara teknis adalah integer kecil (1 byte).
+        `short`: Short integer (biasanya 2 bytes).
+        `int`: Integer standar (biasanya 4 bytes).
+        `long`: Long integer (biasanya 4 atau 8 bytes).
+        `long long`: Long long integer (biasanya 8 bytes).
+        Modifikasi (Signed/Unsigned): `signed` (default) atau `unsigned`.
+            Contoh: `unsigned int jumlah = 1000;`
+    Floating-point:
+        `float`: Single-precision floating-point (biasanya 4 bytes).
+        `double`: Double-precision floating-point (biasanya 8 bytes).
+        `long double`: Extended-precision floating-point.
+    Boolean: C tidak memiliki tipe boolean bawaan sebelum C99.
+        Di C99, gunakan `#include <stdbool.h>` untuk tipe `bool` (dengan nilai `true` dan `false`).
+        Sebelum C99, `0` dianggap `false`, dan non-nol (`1` paling umum) dianggap `true`.
+        Contoh (pra-C99): `int is_aktif = 1;`
+
+Tipe Data Komposit (Derived Types) =
+    Array: Koleksi elemen dengan tipe data yang sama, disimpan secara berurutan di memori. Ukurannya tetap setelah dideklarasikan.
+        Contoh:
+        `int angka[5]; // Array 5 integer yang belum diinisialisasi`
+        `float nilai[] = {10.5, 20.0, 30.2}; // Ukuran disimpulkan`
+        `char nama[50]; // Untuk string, termasuk null terminator`
+        Mengakses elemen: `angka[0]` (indeks dimulai dari 0).
+    String: Di C, string adalah array karakter yang diakhiri dengan karakter null (`\0`).
+        Contoh: `char greeting[] = "Halo Dunia";`
+        `char city[10] = {'J', 'A', 'K', 'A', 'R', 'T', 'A', '\0'};`
+    Struct (Structure): Tipe data koleksi yang dapat menyimpan anggota (member/field) dengan tipe data berbeda.
+        Contoh:
+        struct Person {
+            char nama[50];
+            int umur;
+            float tinggi;
+        };
+        struct Person p1;
+        strcpy(p1.nama, "Alice"); // Menggunakan strcpy untuk string
+        p1.umur = 30;
+        p1.tinggi = 170.5;
+    Union: Mirip struct, tetapi semua anggota berbagi lokasi memori yang sama. Hanya satu anggota yang aktif pada satu waktu.
+    Enum (Enumeration): Untuk mendefinisikan sekumpulan konstanta integer bernama.
+        Contoh:
+        enum Hari {
+            SENIN,    // Default 0
+            SELASA,   // Default 1
+            RABU = 5, // Bisa diset secara eksplisit
+            KAMIS     // Akan menjadi 6
+        };
+        enum Hari hariIni = SENIN;
+
+Type Casting (Konversi Tipe) = Harus dilakukan secara eksplisit.
+    Contoh:
+    int total = 10;
+    int count = 3;
+    float rata_rata = (float)total / count; // Konversi int ke float
+    char ch = (char)65; // Konversi int (ASCII) ke char
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean (0 atau 1).
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND), || (OR), ! (NOT)`
+
+Operator Bitwise = Melakukan operasi pada level bit.
+    Contoh: `& (AND), | (OR), ^ (XOR), ~ (NOT), << (Left Shift), >> (Right Shift)`
+
+Operator Increment/Decrement = Menambah/mengurangi nilai variabel sebesar 1.
+    Pre-increment/decrement (`++i`, `--i`) = Perubahan nilai sebelum digunakan.
+    Post-increment/decrement (`i++`, `i--`) = Perubahan nilai setelah digunakan.
+
+Operator Ternary (Kondisional) = Operator ringkas untuk if-else.
+    Sintaks: `(kondisi) ? ekspresi_jika_true : ekspresi_jika_false;`
+    Contoh: `int maks = (a > b) ? a : b;`
+
+Operator Ukuran (`sizeof`) = Mengembalikan ukuran variabel atau tipe dalam byte.
+    Contoh: `printf("Ukuran int: %lu bytes\n", sizeof(int));`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi. Kurung kurawal wajib untuk blok kode multi-baris.
+    Contoh:
+    int nilai = 85;
+    if (nilai > 90) {
+        printf("Sangat Baik\n");
+    } else if (nilai > 70) {
+        printf("Baik\n");
+    } else {
+        printf("Cukup\n");
+    }
+
+switch = Alternatif untuk if/else if berantai ketika membandingkan satu nilai dengan banyak kemungkinan. Membutuhkan `break` untuk mencegah "fall-through".
+    Contoh:
+    char grade = 'B';
+    switch (grade) {
+        case 'A':
+            printf("Sempurna!\n");
+            break;
+        case 'B':
+        case 'C': // Fall-through jika tidak ada break
+            printf("Bagus!\n");
+            break;
+        case 'D':
+            printf("Lulus.\n");
+            break;
+        default:
+            printf("Gagal.\n");
+    }
+
+for loop = Mengulang blok kode sejumlah kali yang ditentukan.
+    Contoh: `for (int i = 0; i < 5; i++) { printf("%d ", i); }`
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh: `int i = 0; while (i < 3) { printf("%d ", i); i++; }`
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh: `int count = 0; do { printf("%d ", count); count++; } while (count < 2);`
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: `for (int i = 0; i < 10; i++) { if (i == 5) break; printf("%d ", i); }`
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: `for (int i = 0; i < 5; i++) { if (i == 2) continue; printf("%d ", i); }`
+
+goto = Pernyataan yang memungkinkan lompatan tak bersyarat ke label tertentu. (Penggunaan jarang disarankan, kecuali untuk skenario error handling tertentu).
+
+// ====================================================================
+// V. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu.
+    Sintaks: `return_type function_name(parameter_list) { // code }`
+    Contoh:
+    int tambah(int a, int b) { // Fungsi dengan parameter dan return
+        return a + b;
+    }
+    void cetakPesan() { // Fungsi tanpa parameter dan tanpa return (void)
+        printf("Ini pesan dari fungsi.\n");
+    }
+
+    // Memanggil fungsi:
+    // int hasil = tambah(5, 3);
+    // printf("Hasil tambah: %d\n", hasil);
+    // cetakPesan();
+
+Function Prototypes (Deklarasi Fungsi) = Memberi tahu compiler tentang tanda tangan fungsi sebelum implementasinya. Diperlukan jika fungsi dipanggil sebelum didefinisikan.
+    Contoh: `int tambah(int a, int b); // Prototype`
+
+Pass by Value vs Pass by Reference =
+    Pass by Value: Salinan nilai argumen diteruskan ke fungsi. Perubahan di dalam fungsi tidak memengaruhi nilai asli. (Default di C).
+    Pass by Reference (menggunakan pointer): Alamat memori argumen diteruskan. Perubahan melalui pointer di dalam fungsi akan memengaruhi nilai asli.
+        Contoh:
+        void ubahNilai(int *angka) {
+            *angka = 100; // Mengubah nilai yang ditunjuk pointer
+        }
+        // int x = 10;
+        // ubahNilai(&x); // Meneruskan alamat x
+        // printf("Nilai x setelah diubah: %d\n", x); // Output: 100
+
+// ====================================================================
+// VI. POINTER
+// ====================================================================
+
+Pointer = Variabel yang menyimpan alamat memori dari variabel lain. Sangat fundamental di C.
+    Deklarasi: `tipeData *namaPointer;`
+    Operator `&`: Mengambil alamat memori (address-of operator).
+    Operator `*`: Mengambil nilai yang disimpan di alamat memori (dereference operator).
+    Contoh:
+    int x = 10;
+    int *p;    // Deklarasi pointer ke int
+    p = &x;    // p sekarang menyimpan alamat memori x
+
+    printf("Nilai x: %d\n", x);       // Output: 10
+    printf("Alamat x: %p\n", &x);     // Output: Alamat memori x
+    printf("Nilai p (alamat): %p\n", p);   // Output: Alamat memori x
+    printf("Nilai yang ditunjuk p: %d\n", *p); // Output: 10
+
+    *p = 20;   // Mengubah nilai yang ditunjuk oleh p
+    printf("Nilai x setelah diubah melalui pointer: %d\n", x); // Output: 20
+
+Pointer dan Array = Nama array seringkali bertindak sebagai pointer ke elemen pertama.
+    Contoh: `int arr[] = {1, 2, 3}; int *ptr = arr;`
+    `printf("%d\n", *(ptr + 1)); // Output: 2`
+
+Pointer ke Pointer = Pointer yang menunjuk ke pointer lain.
+    Contoh: `int **pp;`
+
+Dynamic Memory Allocation (Alokasi Memori Dinamis) = Mengalokasikan memori saat runtime menggunakan fungsi dari `stdlib.h`.
+    `malloc()`: Mengalokasikan blok memori. Mengembalikan `void*`.
+    `calloc()`: Mengalokasikan blok memori dan menginisialisasinya dengan nol.
+    `realloc()`: Mengubah ukuran blok memori yang sudah dialokasikan.
+    `free()`: Membebaskan memori yang dialokasikan secara dinamis. **Penting untuk mencegah memory leak.**
+    Contoh:
+    int *arr_dinamis;
+    int ukuran = 5;
+    arr_dinamis = (int *)malloc(ukuran * sizeof(int)); // Alokasi 5 integer
+    if (arr_dinamis == NULL) { /* handle error */ }
+    // ... gunakan arr_dinamis ...
+    free(arr_dinamis); // Bebaskan memori
+
+// ====================================================================
+// VII. STRUKTUR DATA LANJUTAN
+// ====================================================================
+
+Struct dan Pointer = Sering digunakan bersama untuk linked list, tree, dll.
+    Operator `->` (arrow operator): Digunakan untuk mengakses anggota struct melalui pointer.
+    Contoh:
+    struct Point {
+        int x;
+        int y;
+    };
+    struct Point p_data = {10, 20};
+    struct Point *ptr_p = &p_data;
+    printf("x: %d, y: %d\n", ptr_p->x, ptr_p->y); // Sama dengan (*ptr_p).x
+
+Typedef = Memberikan nama alias (nama baru) untuk tipe data yang sudah ada.
+    Contoh:
+    typedef unsigned long ULONGLONG;
+    typedef struct Person Human; // Memberi alias untuk struct
+
+    ULONGLONG id = 123456789UL;
+    Human karyawan;
+
+// ====================================================================
+// VIII. FILE I/O
+// ====================================================================
+
+File I/O = Membaca dan menulis data ke file menggunakan fungsi dari `stdio.h`.
+    `FILE*`: Tipe pointer ke objek file.
+    `fopen()`: Membuka file. Mengembalikan `FILE*`.
+        Mode: `"r"` (read), `"w"` (write, menimpa), `"a"` (append), `"rb"`, `"wb"`, `"ab"` (binary).
+    `fclose()`: Menutup file.
+    `fprintf()`: Menulis data terformat ke file.
+    `fscanf()`: Membaca data terformat dari file.
+    `fputc()`, `fgetc()`: Menulis/membaca karakter tunggal.
+    `fputs()`, `fgets()`: Menulis/membaca string.
+    `fread()`, `fwrite()`: Membaca/menulis blok data (untuk binary files).
+    Contoh:
+    // Menulis ke file
+    FILE *file_ptr_write = fopen("output.txt", "w");
+    if (file_ptr_write != NULL) {
+        fprintf(file_ptr_write, "Halo dari C!\n");
+        fclose(file_ptr_write);
+        printf("Berhasil menulis ke file.\n");
+    } else {
+        printf("Gagal membuka file untuk menulis.\n");
+    }
+
+    // Membaca dari file
+    FILE *file_ptr_read = fopen("output.txt", "r");
+    if (file_ptr_read != NULL) {
+        char buffer[100];
+        while (fgets(buffer, sizeof(buffer), file_ptr_read) != NULL) {
+            printf("%s", buffer);
+        }
+        fclose(file_ptr_read);
+    } else {
+        printf("Gagal membuka file untuk membaca.\n");
+    }
+
+// ====================================================================
+// IX. PREPROCESSOR DIRECTIVES
+// ====================================================================
+
+Preprocessor Directives = Instruksi untuk preprocessor C, yang diproses sebelum kompilasi.
+    `#include`: Menyertakan isi file header lain.
+        Contoh: `#include <stdio.h>`, `#include "myheader.h"`
+    `#define`: Mendefinisikan makro (substitusi teks).
+        Contoh: `#define PI 3.14159`, `#define MAKS(a, b) ((a > b) ? a : b)`
+    `#undef`: Menghapus definisi makro.
+    Conditional Compilation (`#ifdef`, `#ifndef`, `#if`, `#elif`, `#else`, `#endif`): Mengkompilasi bagian kode tertentu berdasarkan kondisi.
+        Contoh:
+        #define DEBUG
+        #ifdef DEBUG
+            printf("Mode Debug aktif.\n");
+        #else
+            printf("Mode Produksi.\n");
+        #endif
+
+// ====================================================================
+// X. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Standard Libraries = C memiliki banyak library standar.
+    `stdio.h`: Standard Input/Output (printf, scanf, fopen, fclose, dll.)
+    `stdlib.h`: Standard Library (malloc, free, exit, atoi, rand, srand, dll.)
+    `string.h`: String Manipulation (strlen, strcpy, strcat, strcmp, dll.)
+    `math.h`: Mathematical Functions (sqrt, sin, cos, log, pow, dll.)
+    `time.h`: Time and Date Functions (time, clock, difftime, dll.)
+
+Error Handling = C tidak memiliki mekanisme `try-catch`. Penanganan error biasanya melibatkan pengecekan nilai kembalian fungsi dan penggunaan variabel `errno`.
+    `errno`: Variabel global yang diset oleh fungsi library saat terjadi error.
+    `perror()`: Mencetak pesan error berdasarkan `errno`.
+
+Void Pointer (`void*`) = Pointer umum yang dapat menunjuk ke tipe data apa pun. Harus di-cast ke tipe pointer lain sebelum didereferensi.
+    Contoh: `void *generic_ptr;`
+
+Function Pointers = Pointer yang menunjuk ke sebuah fungsi. Memungkinkan fungsi diteruskan sebagai argumen atau disimpan dalam variabel.
+    Contoh: `int (*ptr_func)(int, int);`
+
+Recursion (Rekursi) = Sebuah fungsi yang memanggil dirinya sendiri.
+    Contoh:
+    int faktorial(int n) {
+        if (n == 0) return 1;
+        return n * faktorial(n - 1);
+    }
+
+Register Storage Class = Menyimpan variabel di register CPU untuk akses cepat (hanya saran untuk compiler).
+    Contoh: `register int counter;`
+
+Static Storage Class =
+    Untuk variabel lokal: Membuat variabel mempertahankan nilainya di antara panggilan fungsi.
+    Untuk variabel global/fungsi: Membuat variabel/fungsi hanya terlihat dalam file saat ini.
+
+Inline Functions (C99) = Saran kepada compiler untuk menyisipkan kode fungsi secara langsung ke tempat pemanggilan, mengurangi overhead panggilan fungsi.
+    Contoh: `inline int add(int a, int b) { return a + b; }`

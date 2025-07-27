@@ -1,0 +1,509 @@
+// Daftar Lengkap dan Mendalam Konsep Java:
+
+// ====================================================================
+// I. DASAR-DASAR JAVA
+// ====================================================================
+
+Struktur Program Java = Sebuah program Java minimal terdiri dari kelas dan metode `main()`.
+    Contoh:
+    public class HaloDunia { // Deklarasi kelas
+        public static void main(String[] args) { // Metode utama
+            System.out.println("Halo, Java!"); // Mencetak teks ke konsol
+        }
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber Java menjadi program yang dapat dijalankan.
+    1. Kode Sumber (.java) --Kompilasi (javac)--> Bytecode (.class) --Eksekusi (java)--> JVM (Java Virtual Machine)
+    2. Kompilasi: `javac NamaFile.java` (menghasilkan `NamaFile.class`)
+    3. Eksekusi: `java NamaFile`
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+    /**
+     * Ini komentar Javadoc
+     * untuk dokumentasi.
+     */
+
+Output Dasar = Menggunakan `System.out.println()` atau `System.out.print()`.
+    Contoh:
+    System.out.println("Ini akan menambahkan baris baru.");
+    System.out.print("Ini tidak menambahkan baris baru.");
+    System.out.printf("Nilai: %d", 123); // Untuk output terformat (mirip C)
+
+Input Pengguna = Menggunakan kelas `Scanner` dari paket `java.util`.
+    Contoh:
+    import java.util.Scanner; // Impor kelas Scanner
+    public class InputContoh {
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in); // Membuat objek Scanner
+            System.out.print("Masukkan nama Anda: ");
+            String nama = scanner.nextLine(); // Membaca input string
+            System.out.print("Masukkan umur Anda: ");
+            int umur = scanner.nextInt(); // Membaca input integer
+            System.out.println("Halo, " + nama + "! Umur Anda " + umur + " tahun.");
+            scanner.close(); // Menutup objek Scanner
+        }
+    }
+
+Case Sensitivity = Java bersifat case-sensitive (huruf besar/kecil dibedakan). `myVar` berbeda dengan `myvar`.
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan tipe data sebelum digunakan.
+    Sintaks: `tipeData namaVariabel = nilaiAwal;`
+    Contoh: `int angka = 10;`
+
+Tipe Data Primitif = Tipe data dasar bawaan Java.
+    byte = Bilangan bulat (8-bit, -128 sampai 127)
+    short = Bilangan bulat (16-bit)
+    int = Bilangan bulat (32-bit, paling umum)
+    long = Bilangan bulat (64-bit)
+    float = Bilangan pecahan presisi tunggal (32-bit, diakhiri 'f' atau 'F')
+        Contoh: `float pi = 3.14f;`
+    double = Bilangan pecahan presisi ganda (64-bit, paling umum untuk pecahan)
+        Contoh: `double suhu = 25.5;`
+    char = Karakter tunggal (16-bit Unicode)
+        Contoh: `char huruf = 'A';`
+    boolean = Nilai Boolean (`true` atau `false`)
+        Contoh: `boolean isAktif = true;`
+
+Non-Primitif (Reference Types) =
+    String = Urutan karakter. Bukan tipe primitif, tetapi kelas.
+        Contoh: `String pesan = "Halo Dunia";`
+    Array = Koleksi elemen dengan tipe data yang sama.
+    Classes, Interfaces, Enums = Tipe data yang ditentukan pengguna.
+
+Konstanta = Variabel yang nilainya tidak dapat diubah setelah diinisialisasi. Menggunakan kata kunci `final`.
+    Contoh: `final int MAX_VALUE = 100;`
+
+Type Casting (Konversi Tipe) = Mengubah satu tipe data ke tipe data lain.
+    Widening Casting (Implicit): Otomatis dilakukan (misal: `int` ke `double`).
+    Narrowing Casting (Explicit): Harus dilakukan secara manual (misal: `double` ke `int`).
+        Contoh: `int myInt = (int) 9.78; // myInt = 9`
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=`
+
+Operator Perbandingan (Relational) = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND logis), || (OR logis), ! (NOT logis)`
+
+Operator Increment/Decrement = Menambah/mengurangi nilai variabel sebesar 1.
+    Contoh: `++ (increment), -- (decrement)`
+    Pre-increment/decrement (`++x`, `--x`) = Perubahan nilai sebelum digunakan.
+    Post-increment/decrement (`x++`, `x--`) = Perubahan nilai setelah digunakan.
+
+Operator Kondisional (Ternary) = Operator ringkas untuk if-else.
+    Sintaks: `kondisi ? ekspresi_jika_true : ekspresi_jika_false;`
+    Contoh: `String status = (umur >= 18) ? "Dewasa" : "Anak-anak";`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    int nilai = 85;
+    if (nilai > 90) {
+        System.out.println("Sangat Baik");
+    } else if (nilai > 70) {
+        System.out.println("Baik");
+    } else {
+        System.out.println("Cukup");
+    }
+
+switch = Alternatif untuk if/else if berantai ketika membandingkan satu nilai dengan banyak kemungkinan.
+    Contoh:
+    int hari = 3;
+    switch (hari) {
+        case 1:
+            System.out.println("Senin");
+            break;
+        case 2:
+            System.out.println("Selasa");
+            break;
+        default:
+            System.out.println("Hari lain");
+    }
+
+for loop = Mengulang blok kode sejumlah kali yang ditentukan.
+    Contoh: for (int i = 0; i < 5; i++) { System.out.print(i + " "); }
+
+for-each loop (Enhanced for loop) = Untuk iterasi melalui elemen array atau koleksi.
+    Contoh:
+    int[] numbers = {1, 2, 3};
+    for (int num : numbers) {
+        System.out.print(num + " ");
+    }
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh: int i = 0; while (i < 3) { System.out.print(i + " "); i++; }
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh: int count = 0; do { System.out.print(count + " "); count++; } while (count < 2);
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: for (int i = 0; i < 10; i++) { if (i == 5) break; System.out.print(i + " "); }
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: for (int i = 0; i < 5; i++) { if (i == 2) continue; System.out.print(i + " "); }
+
+// ====================================================================
+// V. ARRAY
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama, disimpan di lokasi memori yang berdekatan. Ukurannya tetap setelah dibuat.
+    Deklarasi & Inisialisasi:
+    int[] angka; // Deklarasi array
+    angka = new int[5]; // Inisialisasi array dengan ukuran 5
+    int[] nilai = {10, 20, 30}; // Deklarasi dan inisialisasi langsung
+    Mengakses elemen: `nilai[0]` (indeks dimulai dari 0)
+
+Panjang Array: `arrayName.length`
+    Contoh: `System.out.println(nilai.length);`
+
+Array Multi-dimensi (Multidimensional Arrays) = Array dari array (misal: matriks).
+    Contoh:
+    int[][] matriks = {{1, 2, 3}, {4, 5, 6}};
+    System.out.println(matriks[0][1]); // Output: 2
+
+// ====================================================================
+// VI. METODE (FUNGSI)
+// ====================================================================
+
+Metode = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dalam sebuah kelas.
+    Sintaks: `modifier tipe_kembalian namaMetode(parameter1, parameter2, ...) { // kode }`
+    Contoh:
+    public class Kalkulator {
+        public int tambah(int a, int b) { // Metode dengan parameter dan return
+            return a + b;
+        }
+        public void cetakPesan() { // Metode tanpa parameter dan tanpa return (void)
+            System.out.println("Ini pesan dari metode.");
+        }
+    }
+    // Memanggil dari main:
+    // Kalkulator obj = new Kalkulator();
+    // int hasil = obj.tambah(5, 3);
+    // obj.cetakPesan();
+
+Modifier Metode = `public`, `private`, `protected`, `static`, `final`, `abstract`.
+    `static`: Metode yang dapat dipanggil langsung dari kelas, tanpa membuat objek.
+        Contoh: `public static int kali(int a, int b) { return a * b; }`
+        // Panggil: `int hasil = Kalkulator.kali(2, 4);`
+
+Overloading Metode = Mendefinisikan beberapa metode dengan nama yang sama tetapi dengan parameter yang berbeda (jumlah, tipe, atau urutan).
+    Contoh:
+    public int tambah(int a, int b) { return a + b; }
+    public double tambah(double a, double b) { return a + b; }
+
+// ====================================================================
+// VII. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI JAVA
+// ====================================================================
+
+Konsep OOP = Encapsulation, Inheritance, Polymorphism, Abstraction.
+
+Class (Kelas) = Blueprint atau cetak biru untuk membuat objek. Mendefinisikan properti (anggota data/field) dan perilaku (metode).
+    Contoh:
+    public class Hewan {
+        // Atribut (field)
+        String nama;
+        int umur;
+
+        // Metode
+        public void bersuara() {
+            System.out.println("Hewan ini bersuara.");
+        }
+    }
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh: `Hewan kucing = new Hewan();` // Membuat objek kucing
+    Mengakses Anggota: `kucing.nama = "Kitty"; kucing.bersuara();`
+
+Constructor (Konstruktor) = Metode khusus yang dipanggil secara otomatis saat objek dibuat. Digunakan untuk inisialisasi objek.
+    Nama konstruktor sama dengan nama kelas.
+    Tidak memiliki tipe kembalian.
+    Contoh:
+    public class Kucing {
+        String nama;
+        public Kucing(String namaKucing) { // Konstruktor
+            this.nama = namaKucing; // 'this' merujuk ke atribut kelas
+        }
+    }
+    // Membuat objek dengan konstruktor: `Kucing myCat = new Kucing("Milo");`
+
+`this` Keyword = Merujuk pada objek saat ini (instance kelas saat ini). Digunakan untuk membedakan antara atribut kelas dan parameter metode/konstruktor yang memiliki nama yang sama, atau untuk memanggil konstruktor lain dari konstruktor.
+
+Encapsulation (Enkapsulasi) = Membungkus data (atribut) dan fungsi (metode) yang beroperasi pada data tersebut menjadi satu unit (kelas). Menyembunyikan detail implementasi.
+    Dicapai dengan:
+    1. Mendeklarasikan atribut sebagai `private`.
+    2. Menyediakan metode `public` (getter dan setter) untuk mengakses dan memodifikasi atribut tersebut.
+    Contoh:
+    public class Pelajar {
+        private String nama; // Atribut private
+        public String getNama() { // Getter
+            return nama;
+        }
+        public void setNama(String namaBaru) { // Setter
+            this.nama = namaBaru;
+        }
+    }
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (subclass/child class) dapat mewarisi properti dan metode dari kelas lain (superclass/parent class). Menggunakan kata kunci `extends`.
+    Contoh:
+    class Kendaraan {
+        public void bergerak() { System.out.println("Kendaraan bergerak."); }
+    }
+    class Mobil extends Kendaraan { // Mobil mewarisi dari Kendaraan
+        public void klakson() { System.out.println("Beep!"); }
+    }
+    // Penggunaan: `Mobil myCar = new Mobil(); myCar.bergerak(); myCar.klakson();`
+
+`super` Keyword = Digunakan untuk merujuk pada anggota (metode atau konstruktor) dari superclass.
+    Contoh:
+    class Anak extends OrangTua {
+        public Anak() {
+            super(); // Memanggil konstruktor superclass
+        }
+        public void sapa() {
+            super.sapa(); // Memanggil metode sapa() dari superclass
+        }
+    }
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk.
+    Compile-time Polymorphism (Overloading): Metode dengan nama yang sama tetapi parameter berbeda.
+    Run-time Polymorphism (Overriding): Metode dalam subclass memiliki tanda tangan yang sama dengan metode di superclass, dan dipanggil berdasarkan tipe objek sebenarnya saat runtime.
+    Contoh Overriding:
+    class Bentuk {
+        public void gambar() { System.out.println("Menggambar bentuk umum."); }
+    }
+    class Lingkaran extends Bentuk {
+        @Override // Anotasi opsional tapi disarankan
+        public void gambar() { System.out.println("Menggambar lingkaran."); }
+    }
+    // Penggunaan:
+    // Bentuk b1 = new Bentuk(); b1.gambar(); // Output: Menggambar bentuk umum.
+    // Bentuk b2 = new Lingkaran(); b2.gambar(); // Output: Menggambar lingkaran. (Polimorfisme)
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi yang rumit dan hanya menampilkan fungsionalitas esensial.
+    Dicapai dengan:
+    1. Abstract Classes (Kelas Abstrak): Kelas yang tidak bisa di-instantiate secara langsung, dan bisa berisi metode abstrak (tanpa implementasi). Ditandai dengan `abstract`.
+        Contoh:
+        public abstract class HewanAbstrak {
+            public abstract void bersuara(); // Metode abstrak
+            public void makan() { System.out.println("Hewan makan."); }
+        }
+        class Anjing extends HewanAbstrak {
+            @Override
+            public void bersuara() { System.out.println("Guk guk!"); }
+        }
+    2. Interfaces (Antarmuka): Blueprint dari sebuah kelas. Hanya berisi deklarasi metode (secara implisit `public abstract`) dan konstanta. Kelas yang mengimplementasikan antarmuka harus menyediakan implementasi untuk semua metodenya. Ditandai dengan `interface`.
+        Contoh:
+        public interface BisaTerbang {
+            void terbang();
+            int KECEPATAN_MAKS = 100; // Konstanta
+        }
+        class Burung implements BisaTerbang {
+            @Override
+            public void terbang() { System.out.println("Burung terbang."); }
+        }
+
+// ====================================================================
+// VIII. PAKET (PACKAGES) DAN IMPORT
+// ====================================================================
+
+Packages (Paket) = Digunakan untuk mengorganisir kelas-kelas terkait dan menghindari konflik penamaan.
+    Deklarasi: `package nama.paket.saya;` (harus baris pertama)
+    Contoh: `package com.contoh.aplikasi;`
+
+Import = Digunakan untuk mengimpor kelas dari paket lain agar bisa digunakan tanpa menulis nama paket lengkap.
+    Contoh:
+    import java.util.ArrayList; // Impor kelas ArrayList
+    import java.io.*; // Impor semua kelas dari paket java.io (hati-hati)
+
+// ====================================================================
+// IX. PENANGANAN EXCEPTION (ERROR)
+// ====================================================================
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `try` = Blok kode yang mungkin menimbulkan pengecualian.
+    `catch` = Blok kode yang menangkap dan menangani tipe pengecualian tertentu.
+    `finally` = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya pengecualian.
+    `throw` = Melemparkan (menciptakan) pengecualian kustom.
+    `throws` = Digunakan pada deklarasi metode untuk menunjukkan bahwa metode tersebut mungkin melempar pengecualian.
+    Contoh:
+    public class ExceptionContoh {
+        public static void main(String[] args) {
+            try {
+                int[] numbers = {1, 2, 3};
+                System.out.println(numbers[10]); // Ini akan melempar ArrayIndexOutOfBoundsException
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Terjadi error: Indeks di luar batas array.");
+            } catch (Exception e) { // Catch all other exceptions
+                System.out.println("Terjadi error umum: " + e.getMessage());
+            } finally {
+                System.out.println("Blok finally selalu dijalankan.");
+            }
+        }
+    }
+
+Tipe Exception = Checked Exceptions (harus ditangani atau dideklarasikan) dan Unchecked Exceptions (runtime exceptions, tidak wajib ditangani).
+
+// ====================================================================
+// X. KOLEKSI (COLLECTIONS FRAMEWORK)
+// ====================================================================
+
+Collections Framework = Set antarmuka dan kelas untuk merepresentasikan dan memanipulasi koleksi objek.
+    Antarmuka Utama: `List`, `Set`, `Map`.
+
+`List` = Koleksi terurut yang memungkinkan duplikat (mirip array dinamis).
+    `ArrayList` = Implementasi `List` yang paling umum (berbasis array dinamis).
+        Contoh:
+        import java.util.ArrayList;
+        ArrayList<String> nama = new ArrayList<>();
+        nama.add("Budi");
+        nama.add("Ani");
+        nama.get(0); // "Budi"
+        nama.size(); // 2
+
+    `LinkedList` = Implementasi `List` berbasis daftar tertaut ganda. Lebih efisien untuk penambahan/penghapusan di tengah.
+
+`Set` = Koleksi yang tidak terurut dan tidak memungkinkan duplikat.
+    `HashSet` = Implementasi `Set` yang paling umum (cepat, tidak terurut).
+        Contoh:
+        import java.util.HashSet;
+        HashSet<Integer> angkaUnik = new HashSet<>();
+        angkaUnik.add(10);
+        angkaUnik.add(20);
+        angkaUnik.add(10); // Tidak akan menambah duplikat
+        System.out.println(angkaUnik); // Mungkin {20, 10} atau {10, 20} (tidak terurut)
+
+`Map` = Koleksi pasangan kunci-nilai (kunci unik).
+    `HashMap` = Implementasi `Map` yang paling umum (cepat, tidak terurut).
+        Contoh:
+        import java.util.HashMap;
+        HashMap<String, Integer> populasiKota = new HashMap<>();
+        populasiKota.put("Jakarta", 10000000);
+        populasiKota.put("Bandung", 2500000);
+        System.out.println(populasiKota.get("Jakarta")); // 10000000
+
+    `TreeMap` = Implementasi `Map` yang menyimpan kunci dalam urutan terurut.
+
+// ====================================================================
+// XI. KONSEP LANJUT
+// ====================================================================
+
+Generic (Generik) = Memungkinkan penulisan kode yang dapat bekerja dengan berbagai tipe data tanpa kehilangan keamanan tipe saat kompilasi.
+    Contoh: `ArrayList<String>` memastikan list hanya berisi String.
+
+`final` Keyword =
+    Untuk variabel: Nilai tidak bisa diubah (konstanta).
+    Untuk metode: Metode tidak bisa di-override oleh subclass.
+    Untuk kelas: Kelas tidak bisa di-subclass (tidak bisa diwarisi).
+
+`static` Keyword =
+    Untuk variabel: Variabel milik kelas, bukan objek. Satu salinan untuk semua objek.
+    Untuk metode: Metode milik kelas, bisa dipanggil tanpa membuat objek.
+    Untuk blok: Blok kode yang dieksekusi saat kelas dimuat.
+
+`abstract` Keyword = Untuk kelas abstrak atau metode abstrak (sudah dijelaskan di Abstraksi).
+
+`interface` Keyword = Untuk mendefinisikan antarmuka (sudah dijelaskan di Abstraksi).
+
+`enum` (Enumerations) = Tipe data khusus yang terdiri dari sekumpulan konstanta bernama.
+    Contoh:
+    public enum Hari {
+        SENIN, SELASA, RABU, KAMIS, JUMAT, SABTU, MINGGU
+    }
+    // Penggunaan: `Hari hariIni = Hari.SENIN;`
+
+File I/O (Input/Output File) = Membaca dan menulis data ke file. Memerlukan penanganan exception.
+    Contoh:
+    import java.io.FileWriter;
+    import java.io.IOException;
+    import java.io.File;
+    import java.util.Scanner;
+
+    public class FileIOContoh {
+        public static void main(String[] args) {
+            // Menulis ke file
+            try {
+                FileWriter writer = new FileWriter("output.txt");
+                writer.write("Halo, ini dari file Java!\n");
+                writer.close();
+                System.out.println("Berhasil menulis ke file.");
+            } catch (IOException e) {
+                System.out.println("Terjadi error saat menulis file.");
+            }
+
+            // Membaca dari file
+            try {
+                File file = new File("output.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String data = reader.nextLine();
+                    System.out.println(data);
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.out.println("Terjadi error saat membaca file.");
+            }
+        }
+    }
+
+Multithreading = Memungkinkan program menjalankan beberapa bagian kode secara bersamaan (konkuren). Menggunakan kelas `Thread` atau antarmuka `Runnable`.
+    Contoh:
+    class MyRunnable implements Runnable {
+        public void run() {
+            System.out.println("Thread berjalan...");
+        }
+    }
+    // Di main: `Thread t = new Thread(new MyRunnable()); t.start();`
+
+Lambda Expressions (Java 8+) = Sintaks singkat untuk mengimplementasikan antarmuka fungsional (antarmuka dengan satu metode abstrak).
+    Contoh:
+    // Antarmuka fungsional
+    interface Greeting {
+        void sayHello(String name);
+    }
+    // Penggunaan Lambda
+    Greeting greet = (name) -> System.out.println("Halo, " + name + "!");
+    greet.sayHello("Dunia");
+
+Stream API (Java 8+) = Memungkinkan pemrosesan koleksi data secara fungsional.
+    Contoh:
+    // import java.util.Arrays;
+    // import java.util.List;
+    // List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+    // numbers.stream()
+    //        .filter(n -> n % 2 == 0)
+    //        .map(n -> n * 2)
+    //        .forEach(System.out::println); // Output: 4, 8
+
+// ====================================================================
+// XII. KONSEP PENTING LAINNYA
+// ====================================================================
+
+JVM (Java Virtual Machine) = Komponen penting dari Java Development Kit (JDK) yang memungkinkan program Java berjalan di berbagai platform. JVM membaca dan mengeksekusi bytecode.
+
+JRE (Java Runtime Environment) = Komponen yang dibutuhkan untuk menjalankan aplikasi Java (JVM + library standar).
+
+JDK (Java Development Kit) = Set lengkap alat untuk mengembangkan, mengkompilasi, dan menjalankan aplikasi Java (JRE + compiler + debugger + dll).
+
+Garbage Collection = Proses otomatis di Java yang mengelola memori, membebaskan memori yang tidak lagi digunakan oleh program. Programmer tidak perlu membebaskan memori secara manual seperti di C++.
+
+Platform Independence (Write Once, Run Anywhere - WORA) = Kode Java dikompilasi ke bytecode, yang kemudian dapat dijalankan di JVM pada sistem operasi apa pun.

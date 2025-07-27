@@ -1,0 +1,563 @@
+// Daftar Lengkap dan Mendalam Konsep C#:
+
+// ====================================================================
+// I. DASAR-DASAR C#
+// ====================================================================
+
+Struktur Program C# = Sebuah program C# minimal terdiri dari namespace, kelas, dan metode `Main()`.
+    Contoh:
+    using System; // Mengimpor namespace dasar
+
+    namespace HaloDuniaApp // Mendefinisikan namespace untuk mengorganisir kode
+    {
+        class Program // Deklarasi kelas
+        {
+            static void Main(string[] args) // Metode utama, program dimulai dari sini
+            {
+                Console.WriteLine("Halo, C#!"); // Mencetak teks ke konsol
+                Console.ReadKey(); // Menunggu tombol ditekan sebelum keluar (opsional untuk aplikasi konsol)
+            }
+        }
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber C# menjadi program yang dapat dijalankan.
+    1. Kode Sumber (.cs) --Kompilasi (csc)--> Kode Perantara (IL/MSIL) (.exe/.dll) --Eksekusi (CLR)--> Mesin Asli
+    2. Kompilasi (menggunakan .NET SDK atau Visual Studio): `dotnet build` atau `csc NamaFile.cs`
+    3. Eksekusi: `dotnet run` atau `NamaFile.exe`
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+    /// <summary>
+    /// Ini komentar XML documentation
+    /// untuk dokumentasi kode.
+    /// </summary>
+
+Output Dasar = Menggunakan `Console.WriteLine()` atau `Console.Write()`.
+    Contoh:
+    Console.WriteLine("Ini akan menambahkan baris baru.");
+    Console.Write("Ini tidak menambahkan baris baru.");
+    // Interpolated strings (C# 6+):
+    string nama = "Budi";
+    int umur = 30;
+    Console.WriteLine($"Nama: {nama}, Umur: {umur}");
+
+Input Pengguna = Menggunakan `Console.ReadLine()` atau `Console.ReadKey()`.
+    Contoh:
+    Console.Write("Masukkan nama Anda: ");
+    string namaPengguna = Console.ReadLine(); // Membaca input string
+    Console.Write("Masukkan umur Anda: ");
+    string umurString = Console.ReadLine();
+    int umurPengguna = Convert.ToInt32(umurString); // Konversi ke integer
+    Console.WriteLine($"Halo, {namaPengguna}! Umur Anda {umurPengguna} tahun.");
+
+Case Sensitivity = C# bersifat case-sensitive (huruf besar/kecil dibedakan). `myVar` berbeda dengan `myvar`.
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan tipe data.
+    Sintaks: `TipeData namaVariabel = nilaiAwal;`
+    Contoh: `int angka = 10;`
+
+Tipe Data Primitif (Built-in Types) =
+    byte = Bilangan bulat (8-bit, 0 sampai 255, unsigned)
+    sbyte = Bilangan bulat (8-bit, -128 sampai 127, signed)
+    short = Bilangan bulat (16-bit)
+    ushort = Bilangan bulat (16-bit, unsigned)
+    int = Bilangan bulat (32-bit, paling umum)
+    uint = Bilangan bulat (32-bit, unsigned)
+    long = Bilangan bulat (64-bit)
+    ulong = Bilangan bulat (64-bit, unsigned)
+    float = Bilangan pecahan presisi tunggal (32-bit, diakhiri 'f' atau 'F')
+        Contoh: `float pi = 3.14f;`
+    double = Bilangan pecahan presisi ganda (64-bit, paling umum untuk pecahan)
+        Contoh: `double suhu = 25.5;`
+    decimal = Bilangan pecahan presisi tinggi (128-bit, untuk perhitungan finansial, diakhiri 'm' atau 'M')
+        Contoh: `decimal harga = 19.99m;`
+    char = Karakter tunggal (16-bit Unicode)
+        Contoh: `char huruf = 'A';`
+    bool = Nilai Boolean (`true` atau `false`)
+        Contoh: `bool isAktif = true;`
+
+Non-Primitif (Reference Types) =
+    string = Urutan karakter.
+        Contoh: `string pesan = "Halo C#";`
+    object = Tipe dasar untuk semua tipe data di C# (bisa menampung nilai dari tipe apa pun).
+    dynamic = Tipe yang memungkinkan operasi pada objek dilewatkan hingga runtime.
+    Array, Class, Interface, Delegate, Enum, Record, Struct.
+
+`var` Keyword (Implicitly Typed Local Variables) = Membiarkan compiler menyimpulkan tipe data variabel dari nilai inisialisasinya. Variabel tetap memiliki tipe statis.
+    Contoh: `var nama = "Alice"; // Compiler menyimpulkan 'nama' adalah string`
+
+Konstanta = Variabel yang nilainya tidak dapat diubah setelah diinisialisasi.
+    `const` = Untuk konstanta compile-time.
+        Contoh: `const int MAX_USERS = 100;`
+    `readonly` = Untuk konstanta runtime (bisa diatur di konstruktor).
+        Contoh: `readonly DateTime start_date = DateTime.Now;`
+
+Type Casting (Konversi Tipe) = Mengubah satu tipe data ke tipe data lain.
+    Implicit Casting (Pelebaran): Otomatis dilakukan jika tidak ada potensi kehilangan data (misal: `int` ke `double`).
+    Explicit Casting (Penyempitan): Harus dilakukan secara manual (misal: `double` ke `int`).
+        Contoh: `int myInt = (int)9.78; // myInt = 9`
+    Metode `Convert` (dari `System.Convert`): Untuk konversi antar tipe yang lebih kompleks.
+        Contoh: `int num = Convert.ToInt32("123");`
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=, &=, |=, ^=, <<=, >>=`
+
+Operator Perbandingan (Relational) = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND logis), || (OR logis), ! (NOT logis)`
+
+Operator Increment/Decrement = Menambah/mengurangi nilai variabel sebesar 1.
+    Contoh: `++ (increment), -- (decrement)`
+    Pre-increment/decrement (`++x`, `--x`) = Perubahan nilai sebelum digunakan.
+    Post-increment/decrement (`x++`, `x--`) = Perubahan nilai setelah digunakan.
+
+Operator Kondisional (Ternary) = Operator ringkas untuk if-else.
+    Sintaks: `kondisi ? ekspresi_jika_true : ekspresi_jika_false;`
+    Contoh: `string status = (umur >= 18) ? "Dewasa" : "Anak-anak";`
+
+Null-Coalescing Operator (`??`) = Mengembalikan operan kiri jika tidak null, jika null mengembalikan operan kanan.
+    Contoh: `string namaTampilan = namaPengguna ?? "Tamu";`
+
+Null-Conditional Operator (`?.`) = Mengakses anggota atau elemen jika tidak null, jika null mengembalikan null.
+    Contoh: `int? panjangNama = namaPengguna?.Length;`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    int nilai = 85;
+    if (nilai > 90)
+    {
+        Console.WriteLine("Sangat Baik");
+    }
+    else if (nilai > 70)
+    {
+        Console.WriteLine("Baik");
+    }
+    else
+    {
+        Console.WriteLine("Cukup");
+    }
+
+switch = Alternatif untuk if/else if berantai ketika membandingkan satu nilai dengan banyak kemungkinan. Mendukung pattern matching di C# modern.
+    Contoh:
+    int hari = 3;
+    switch (hari)
+    {
+        case 1:
+            Console.WriteLine("Senin");
+            break;
+        case 2:
+            Console.WriteLine("Selasa");
+            break;
+        default:
+            Console.WriteLine("Hari lain");
+            break;
+    }
+
+for loop = Mengulang blok kode sejumlah kali yang ditentukan.
+    Contoh: for (int i = 0; i < 5; i++) { Console.Write(i + " "); }
+
+foreach loop = Untuk iterasi melalui elemen koleksi (array, List, dll.).
+    Contoh:
+    int[] numbers = {1, 2, 3};
+    foreach (int num in numbers)
+    {
+        Console.Write(num + " ");
+    }
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh: int i = 0; while (i < 3) { Console.Write(i + " "); i++; }
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh: int count = 0; do { Console.Write(count + " "); count++; } while (count < 2);
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: for (int i = 0; i < 10; i++) { if (i == 5) break; Console.Write(i + " "); }
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: for (int i = 0; i < 5; i++) { if (i == 2) continue; Console.Write(i + " "); }
+
+// ====================================================================
+// V. ARRAY
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama, disimpan di lokasi memori yang berdekatan. Ukurannya tetap setelah dibuat.
+    Deklarasi & Inisialisasi:
+    int[] angka; // Deklarasi array
+    angka = new int[5]; // Inisialisasi array dengan ukuran 5
+    int[] nilai = {10, 20, 30}; // Deklarasi dan inisialisasi langsung
+    Mengakses elemen: `nilai[0]` (indeks dimulai dari 0)
+
+Panjang Array: `arrayName.Length`
+    Contoh: `Console.WriteLine(nilai.Length);`
+
+Array Multi-dimensi (Multidimensional Arrays) = Array dari array (misal: matriks).
+    Contoh:
+    int[,] matriks = {{1, 2, 3}, {4, 5, 6}};
+    Console.WriteLine(matriks[0, 1]); // Output: 2
+
+Jagged Arrays (Array Berlekuk) = Array dari array, di mana setiap array bagian dapat memiliki ukuran yang berbeda.
+    Contoh:
+    int[][] jaggedArray = new int[3][];
+    jaggedArray[0] = new int[] {1, 2};
+    jaggedArray[1] = new int[] {3, 4, 5};
+
+// ====================================================================
+// VI. METODE (FUNGSI)
+// ====================================================================
+
+Metode = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dalam sebuah kelas.
+    Sintaks: `[AksesModifier] [static] [tipeKembalian] NamaMetode(parameter1, ...) { // kode }`
+    Contoh:
+    public class Kalkulator
+    {
+        public int Tambah(int a, int b) // Metode dengan parameter dan return
+        {
+            return a + b;
+        }
+        public void CetakPesan() // Metode tanpa parameter dan tanpa return (void)
+        {
+            Console.WriteLine("Ini pesan dari metode.");
+        }
+    }
+    // Memanggil dari Main():
+    // Kalkulator obj = new Kalkulator();
+    // int hasil = obj.Tambah(5, 3);
+    // obj.CetakPesan();
+
+Modifier Metode = `public`, `private`, `protected`, `internal`, `static`, `abstract`, `virtual`, `override`, `sealed`.
+    `static`: Metode yang dapat dipanggil langsung dari kelas, tanpa membuat objek.
+        Contoh: `public static int Kali(int a, int b) { return a * b; }`
+        // Panggil: `int hasil = Kalkulator.Kali(2, 4);`
+
+Parameter Metode =
+    Value Parameters (Default): Nilai argumen disalin ke parameter.
+    `ref` Parameters: Argumen dilewatkan berdasarkan referensi; perubahan di metode memengaruhi variabel asli (harus diinisialisasi sebelum diteruskan).
+    `out` Parameters: Mirip `ref`, tetapi argumen tidak perlu diinisialisasi sebelum diteruskan, dan harus diinisialisasi di dalam metode.
+    `params` Keyword: Memungkinkan metode menerima sejumlah argumen yang bervariasi dari tipe yang sama (sebagai array).
+        Contoh:
+        public void CetakAngka(params int[] numbers) { /* ... */ }
+        // Panggil: `CetakAngka(1, 2, 3);`
+
+Overloading Metode = Mendefinisikan beberapa metode dengan nama yang sama tetapi dengan parameter yang berbeda (jumlah, tipe, atau urutan).
+    Contoh:
+    public int Tambah(int a, int b) { return a + b; }
+    public double Tambah(double a, double b) { return a + b; }
+
+// ====================================================================
+// VII. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI C#
+// ====================================================================
+
+Konsep OOP = Encapsulation, Inheritance, Polymorphism, Abstraction.
+
+Class (Kelas) = Blueprint atau cetak biru untuk membuat objek. Mendefinisikan properti (anggota data/field) dan perilaku (metode).
+    Contoh:
+    public class Hewan
+    {
+        // Atribut (field/property)
+        public string Nama { get; set; } // Auto-implemented property
+        public int Umur; // Field
+
+        // Metode
+        public void Bersuara()
+        {
+            Console.WriteLine("Hewan ini bersuara.");
+        }
+    }
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh: `Hewan kucing = new Hewan();` // Membuat objek kucing
+    Mengakses Anggota: `kucing.Nama = "Kitty"; kucing.Bersuara();`
+
+Constructor (Konstruktor) = Metode khusus yang dipanggil secara otomatis saat objek dibuat. Digunakan untuk inisialisasi objek.
+    Nama konstruktor sama dengan nama kelas.
+    Tidak memiliki tipe kembalian.
+    Bisa di-overload.
+    Contoh:
+    public class Kucing
+    {
+        public string Nama { get; set; }
+        public string Warna { get; set; }
+
+        public Kucing(string namaKucing, string warnaKucing) // Konstruktor
+        {
+            Nama = namaKucing;
+            Warna = warnaKucing;
+        }
+        // Overloading konstruktor
+        public Kucing(string namaKucing) : this(namaKucing, "Tidak Diketahui") { }
+    }
+    // Membuat objek: `Kucing myCat = new Kucing("Milo", "Oranye");`
+
+`this` Keyword = Merujuk pada objek saat ini (instance kelas saat ini). Digunakan untuk membedakan antara atribut kelas dan parameter konstruktor/metode, atau untuk memanggil konstruktor lain dari konstruktor.
+
+Access Modifiers (Penentu Akses) = Mengontrol akses ke kelas dan anggotanya.
+    `public`: Akses tidak terbatas.
+    `private`: Hanya bisa diakses dari dalam kelas yang sama.
+    `protected`: Hanya bisa diakses dari dalam kelas yang sama atau kelas turunan.
+    `internal`: Hanya bisa diakses dari dalam assembly yang sama.
+    `protected internal`: Akses dari assembly yang sama atau kelas turunan di assembly lain.
+    `private protected`: Akses dari dalam kelas yang sama atau kelas turunan di assembly yang sama.
+
+Properties (Properti) = Mirip field, tetapi menyediakan mekanisme yang fleksibel untuk membaca, menulis, atau menghitung nilai. Sering digunakan untuk enkapsulasi.
+    Contoh:
+    public class Produk
+    {
+        private decimal _harga;
+        public decimal Harga // Properti dengan getter/setter
+        {
+            get { return _harga; }
+            set
+            {
+                if (value >= 0) _harga = value;
+                else throw new ArgumentException("Harga tidak boleh negatif.");
+            }
+        }
+        public string NamaProduk { get; set; } // Auto-implemented property (compiler membuat field private di belakang layar)
+    }
+
+Encapsulation (Enkapsulasi) = Membungkus data dan fungsi yang beroperasi pada data tersebut dalam satu unit (kelas). Menyembunyikan detail implementasi.
+    Dicapai dengan: Menggunakan `private` untuk field dan menyediakan `public` properties (getters/setters).
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (subclass/derived class) dapat mewarisi properti dan metode dari kelas lain (superclass/base class). Menggunakan tanda titik dua `:`.
+    C# hanya mendukung single inheritance (satu kelas hanya bisa mewarisi dari satu kelas lain).
+    Contoh:
+    public class Kendaraan
+    {
+        public string Merek { get; set; }
+        public void Bergerak() { Console.WriteLine("Kendaraan bergerak."); }
+    }
+    public class Mobil : Kendaraan // Mobil mewarisi dari Kendaraan
+    {
+        public int JumlahRoda { get; set; }
+        public void Klakson() { Console.WriteLine("Beep!"); }
+    }
+    // Penggunaan: `Mobil myCar = new Mobil(); myCar.Bergerak(); myCar.Klakson();`
+
+`base` Keyword = Digunakan untuk merujuk pada anggota (metode, properti, atau konstruktor) dari kelas dasar.
+    Contoh:
+    public class Anak : OrangTua
+    {
+        public Anak() : base() { } // Memanggil konstruktor base class
+        public override void Sapa() {
+            base.Sapa(); // Memanggil metode Sapa() dari base class
+            Console.WriteLine("Saya anak.");
+        }
+    }
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk.
+    Compile-time Polymorphism (Method Overloading): Metode dengan nama yang sama tetapi parameter berbeda.
+    Run-time Polymorphism (Method Overriding): Metode dalam subclass memiliki tanda tangan yang sama dengan metode di base class, dan dipanggil berdasarkan tipe objek sebenarnya saat runtime.
+        Membutuhkan `virtual` di base class dan `override` di derived class.
+        Contoh:
+        public class Bentuk
+        {
+            public virtual void Gambar() { Console.WriteLine("Menggambar bentuk umum."); } // virtual
+        }
+        public class Lingkaran : Bentuk
+        {
+            public override void Gambar() { Console.WriteLine("Menggambar lingkaran."); } // override
+        }
+        // Penggunaan:
+        // Bentuk b1 = new Bentuk(); b1.Gambar(); // Output: Menggambar bentuk umum.
+        // Bentuk b2 = new Lingkaran(); b2.Gambar(); // Output: Menggambar lingkaran. (Polimorfisme)
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi yang rumit dan hanya menampilkan fungsionalitas esensial.
+    Dicapai dengan:
+    1. Abstract Classes (Kelas Abstrak): Kelas yang tidak bisa di-instantiate secara langsung, dan bisa berisi metode abstrak (tanpa implementasi). Ditandai dengan `abstract`.
+        Contoh:
+        public abstract class HewanAbstrak
+        {
+            public abstract void Bersuara(); // Metode abstrak
+            public void Makan() { Console.WriteLine("Hewan makan."); }
+        }
+        public class Anjing : HewanAbstrak
+        {
+            public override void Bersuara() { Console.WriteLine("Guk guk!"); }
+        }
+    2. Interfaces (Antarmuka): Blueprint dari sebuah kelas. Hanya berisi deklarasi anggota (metode, properti, event, indexer) tanpa implementasi. Kelas yang mengimplementasikan antarmuka harus menyediakan implementasi untuk semua anggotanya. Ditandai dengan `interface`.
+        Contoh:
+        public interface IBisaTerbang
+        {
+            void Terbang();
+            int KecepatanMaks { get; }
+        }
+        public class Burung : IBisaTerbang
+        {
+            public void Terbang() { Console.WriteLine("Burung terbang."); }
+            public int KecepatanMaks => 50; // Implementasi properti
+        }
+
+// ====================================================================
+// VIII. NAMESPACE DAN USING DIRECTIVES
+// ====================================================================
+
+Namespace = Digunakan untuk mengorganisir kode dan menghindari konflik penamaan.
+    Deklarasi: `namespace NamaPerusahaan.NamaProyek.NamaModul { ... }`
+
+`using` Directive = Digunakan untuk mengimpor namespace agar bisa menggunakan kelas-kelas di dalamnya tanpa menulis nama namespace lengkap.
+    Contoh: `using System;`
+    `using static` (C# 6+): Mengimpor anggota statis dari sebuah kelas.
+        Contoh: `using static System.Console; // Kemudian bisa langsung panggil WriteLine()`
+
+// ====================================================================
+// IX. PENANGANAN EXCEPTION (ERROR)
+// ====================================================================
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `try` = Blok kode yang mungkin menimbulkan pengecualian.
+    `catch` = Blok kode yang menangkap dan menangani tipe pengecualian tertentu.
+    `finally` = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya pengecualian.
+    `throw` = Melemparkan (menciptakan) pengecualian kustom.
+    Contoh:
+    public class ExceptionContoh
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                int[] numbers = {1, 2, 3};
+                Console.WriteLine(numbers[10]); // Ini akan melempar IndexOutOfRangeException
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine($"Terjadi error: Indeks di luar batas array. Pesan: {e.Message}");
+            }
+            catch (Exception e) // Catch all other exceptions
+            {
+                Console.WriteLine($"Terjadi error umum: {e.Message}");
+            }
+            finally
+            {
+                Console.WriteLine("Blok finally selalu dijalankan.");
+            }
+        }
+    }
+
+Custom Exceptions = Membuat kelas exception sendiri dengan mewarisi dari `Exception` atau subkelasnya.
+
+// ====================================================================
+// X. KOLEKSI (COLLECTIONS)
+// ====================================================================
+
+Collections (Koleksi) = Kelas-kelas yang menyediakan struktur data untuk menyimpan dan memanipulasi grup objek. Ditemukan di namespace `System.Collections.Generic`.
+
+`List<T>` = Koleksi terurut yang ukurannya bisa berubah, memungkinkan duplikat. (Mirip `ArrayList` di Java).
+    Contoh:
+    using System.Collections.Generic;
+    List<string> nama = new List<string>();
+    nama.Add("Budi");
+    nama.Add("Ani");
+    Console.WriteLine(nama[0]); // "Budi"
+    Console.WriteLine(nama.Count); // 2
+
+`Dictionary<TKey, TValue>` = Koleksi pasangan kunci-nilai (kunci unik). (Mirip `HashMap` di Java/`dict` di Python).
+    Contoh:
+    Dictionary<string, int> populasiKota = new Dictionary<string, int>();
+    populasiKota.Add("Jakarta", 10000000);
+    populasiKota.Add("Bandung", 2500000);
+    Console.WriteLine(populasiKota["Jakarta"]); // 10000000
+    if (populasiKota.ContainsKey("Surabaya")) { /* ... */ }
+
+`HashSet<T>` = Koleksi elemen unik yang tidak terurut.
+    Contoh:
+    HashSet<int> angkaUnik = new HashSet<int>();
+    angkaUnik.Add(10);
+    angkaUnik.Add(20);
+    angkaUnik.Add(10); // Tidak akan menambah duplikat
+    foreach (int num in angkaUnik) { Console.Write(num + " "); } // Output: 10 20 (urutan tidak dijamin)
+
+`Queue<T>` = Koleksi FIFO (First-In, First-Out).
+`Stack<T>` = Koleksi LIFO (Last-In, First-Out).
+
+// ====================================================================
+// XI. KONSEP LANJUT
+// ====================================================================
+
+Generics (Generik) = Memungkinkan penulisan kode yang dapat bekerja dengan berbagai tipe data tanpa kehilangan keamanan tipe saat kompilasi.
+    Contoh: `List<string>`, `Dictionary<string, int>`
+
+Delegates (Delegasi) = Objek yang merujuk ke metode. Dapat digunakan untuk membuat metode callback atau event handler. Mirip pointer fungsi di C++, tapi type-safe dan berorientasi objek.
+    Contoh:
+    public delegate void MyDelegate(string msg);
+    public static void SayHello(string msg) { Console.WriteLine(msg); }
+    // Di Main: `MyDelegate del = SayHello; del("Halo!");`
+
+Events (Acara) = Mekanisme untuk komunikasi antara objek, di mana satu objek (publisher) memberi tahu objek lain (subscriber) tentang suatu kejadian. Dibangun di atas delegates.
+    Contoh:
+    public class Publisher
+    {
+        public event MyDelegate MyEvent; // Deklarasi event
+        public void RaiseEvent(string message) { MyEvent?.Invoke(message); }
+    }
+    // Di Main: `Publisher pub = new Publisher(); pub.MyEvent += SayHello; pub.RaiseEvent("Event dipicu!");`
+
+LINQ (Language Integrated Query) = Fitur yang memungkinkan query data dari berbagai sumber (objek, database, XML) menggunakan sintaks yang mirip SQL langsung dalam kode C#.
+    Contoh:
+    using System.Linq;
+    List<int> numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
+    var evenNumbers = from num in numbers
+                      where num % 2 == 0
+                      select num;
+    foreach (int n in evenNumbers) { Console.Write(n + " "); } // Output: 2 4 6
+
+Extension Methods (Metode Ekstensi) = Memungkinkan Anda "menambahkan" metode ke tipe yang sudah ada tanpa memodifikasi kode sumber tipe tersebut.
+    Ditandai dengan `this` pada parameter pertama.
+    Contoh:
+    public static class StringExtensions
+    {
+        public static bool IsPalindrome(this string str)
+        {
+            string reversed = new string(str.Reverse().ToArray());
+            return str.Equals(reversed, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+    // Penggunaan: `"madam".IsPalindrome();`
+
+Asynchronous Programming (Pemrograman Asinkron) = Menggunakan `async` dan `await` untuk menulis kode asinkron yang lebih mudah dibaca, menghindari pemblokiran thread utama.
+    Contoh:
+    public static async Task DownloadFileAsync(string url)
+    {
+        HttpClient client = new HttpClient();
+        string content = await client.GetStringAsync(url);
+        Console.WriteLine($"Konten diunduh: {content.Substring(0, 50)}...");
+    }
+    // Di Main: `await DownloadFileAsync("https://example.com");`
+
+Multithreading = Memungkinkan program menjalankan beberapa bagian kode secara bersamaan (konkuren). Menggunakan `System.Threading.Tasks` (Task Parallel Library - TPL) atau `System.Threading.Thread`.
+    TPL (Tasks) lebih disarankan daripada langsung menggunakan `Thread`.
+
+Garbage Collection = Proses otomatis di .NET CLR (Common Language Runtime) yang mengelola memori, membebaskan memori yang tidak lagi digunakan oleh program. Programmer tidak perlu membebaskan memori secara manual.
+
+Value Types vs Reference Types =
+    Value Types (misal: `int`, `bool`, `struct`): Menyimpan data secara langsung di lokasi memori yang dialokasikan (biasanya stack).
+    Reference Types (misal: `class`, `string`, `array`): Menyimpan referensi (alamat memori) ke lokasi data di heap.
+
+Nullable Types (`?`) = Memungkinkan tipe data nilai (value types) untuk menyimpan nilai `null`.
+    Contoh: `int? age = null;`
+
+Properties vs Fields = Properties adalah metode `get`/`set` yang diakses seperti field, menyediakan enkapsulasi dan validasi. Fields adalah variabel biasa.
+
+Reflection = Kemampuan program untuk memeriksa metadata tentang dirinya sendiri (tipe, metode, properti, dll.) pada saat runtime.
+
+Attributes (Atribut) = Cara untuk menambahkan metadata deklaratif ke kode (assembly, kelas, metode, properti, dll.). Atribut dapat diakses saat runtime menggunakan Reflection.
+    Contoh: `[Obsolete("Metode ini akan dihapus di versi mendatang.")]`

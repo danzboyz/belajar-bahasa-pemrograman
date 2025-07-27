@@ -1,0 +1,460 @@
+# Daftar Lengkap dan Mendalam Konsep Python:
+
+# ====================================================================
+# I. DASAR-DASAR PYTHON
+# ====================================================================
+
+Cara Menjalankan Kode Python =
+    1. Interaktif (Shell Python): Buka terminal/cmd, ketik 'python' atau 'python3', lalu ketik kode baris per baris.
+    2. File Script: Tulis kode di file .py (misal: 'main.py'), lalu jalankan dengan 'python main.py' atau 'python3 main.py' di terminal.
+
+Komentar = Bagian kode yang diabaikan oleh interpreter, digunakan untuk penjelasan.
+    Contoh:
+    # Ini komentar satu baris
+    """
+    Ini komentar
+    multi-baris (docstring)
+    """
+
+Mencetak Output = Menggunakan fungsi `print()`.
+    Contoh:
+    print("Halo, Python!")
+    print("Nama:", "Budi", "Umur:", 30) # Cetak banyak item
+    print("Baris pertama.\nBaris kedua.") # \n untuk baris baru
+
+Input Pengguna = Menggunakan fungsi `input()` untuk menerima input dari pengguna. Input selalu berupa string.
+    Contoh:
+    nama = input("Masukkan nama Anda: ")
+    print("Halo,", nama)
+    umur_str = input("Masukkan umur Anda: ")
+    umur_int = int(umur_str) # Konversi ke integer
+    print("Umur Anda adalah:", umur_int)
+
+# ====================================================================
+# II. VARIABEL DAN TIPE DATA
+# ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Python adalah bahasa dengan pengetikan dinamis (tidak perlu deklarasi tipe).
+    Contoh:
+    angka = 10         # int
+    nama = "Ani"       # str
+    pi = 3.14          # float
+    is_aktif = True    # bool
+
+Tipe Data Primitif = Tipe data dasar bawaan Python.
+    int = Bilangan bulat (misal: -1, 0, 100). Tidak ada batas ukuran tetap.
+    float = Bilangan pecahan (misal: 3.14, -0.5).
+    bool = Nilai Boolean (True atau False).
+    str = Urutan karakter (teks). Bisa menggunakan kutip tunggal (''), ganda (""), atau tiga (''' """).
+        Contoh:
+        pesan = 'Ini string.'
+        kalimat = "Ini juga string."
+        multiline = """Ini string
+        banyak baris."""
+
+Tipe Data Koleksi (Built-in) =
+    list = Koleksi item yang terurut dan bisa diubah (mutable). Ditulis dengan kurung siku `[]`.
+        Contoh:
+        my_list = [1, "dua", True, 4.0]
+        my_list.append(5)     # Menambah elemen
+        my_list[0] = 10       # Mengubah elemen
+        print(my_list[1])     # Akses elemen
+    tuple = Koleksi item yang terurut dan tidak bisa diubah (immutable). Ditulis dengan kurung biasa `()`.
+        Contoh:
+        my_tuple = (1, "dua", 3)
+        # my_tuple[0] = 10 # Akan error
+        print(my_tuple[0])
+    set = Koleksi item yang tidak terurut dan unik (tidak ada duplikat). Ditulis dengan kurung kurawal `{}` atau `set()`.
+        Contoh:
+        my_set = {1, 2, 3, 2} # my_set akan jadi {1, 2, 3}
+        my_set.add(4)
+        print(2 in my_set)
+    dict (dictionary) = Koleksi pasangan kunci-nilai yang tidak terurut. Kunci harus unik. Ditulis dengan kurung kurawal `{}`.
+        Contoh:
+        my_dict = {"nama": "Budi", "umur": 25, "kota": "Jakarta"}
+        print(my_dict["nama"])
+        my_dict["umur"] = 26 # Mengubah nilai
+        my_dict["pekerjaan"] = "Engineer" # Menambah pasangan baru
+
+Konversi Tipe (Type Casting) = Mengubah tipe data suatu nilai.
+    Contoh:
+    str(123)    # "123"
+    int("45")   # 45
+    float("3.14") # 3.14
+    list("abc") # ['a', 'b', 'c']
+
+# ====================================================================
+# III. OPERATOR
+# ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus), ** (pangkat), // (pembagian bulat)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=, **=, //=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `and (AND), or (OR), not (NOT)`
+
+Operator Identitas = Membandingkan apakah dua variabel merujuk pada objek yang sama di memori.
+    Contoh: `is`, `is not`
+
+Operator Keanggotaan = Memeriksa apakah suatu nilai ada dalam urutan.
+    Contoh: `in`, `not in`
+
+# ====================================================================
+# IV. KONTROL ALIRAN
+# ====================================================================
+
+Indentation (Indentasi) = Sangat penting di Python! Blok kode didefinisikan oleh indentasi (spasi atau tab, konsisten).
+    Contoh:
+    if True:
+        print("Ini di dalam blok if") # Indented
+    print("Ini di luar blok if") # Not indented
+
+if / elif / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    nilai = 85
+    if nilai > 90:
+        print("Sangat Baik")
+    elif nilai > 70:
+        print("Baik")
+    else:
+        print("Cukup")
+
+for loop = Mengulang (iterasi) melalui item dalam urutan (list, tuple, string, range, dll.).
+    Contoh:
+    for i in range(5): # Mengulang 0 sampai 4
+        print(i)
+    for huruf in "Python":
+        print(huruf)
+    for item in [10, 20, 30]:
+        print(item)
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh:
+    i = 0
+    while i < 3:
+        print(i)
+        i += 1
+
+break = Menghentikan eksekusi loop secara paksa.
+    Contoh:
+    for i in range(10):
+        if i == 5:
+            break
+        print(i)
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh:
+    for i in range(5):
+        if i == 2:
+            continue
+        print(i)
+
+pass = Placeholder kosong, tidak melakukan apa-apa. Berguna saat sintaks memerlukan blok kode tetapi Anda belum punya kode untuk ditulis.
+    Contoh:
+    if True:
+        pass # Akan diimplementasikan nanti
+
+# ====================================================================
+# V. FUNGSI
+# ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dengan `def`.
+    Contoh:
+    def sapa(nama): # Fungsi dengan parameter
+        return "Halo, " + nama
+    def cetak_pesan(): # Fungsi tanpa parameter
+        print("Ini pesan dari fungsi.")
+
+    hasil = sapa("Dina") # Memanggil fungsi
+    print(hasil)
+    cetak_pesan()
+
+Parameter dan Argumen =
+    Parameter: Nama variabel yang didefinisikan dalam tanda kurung fungsi.
+    Argumen: Nilai yang diteruskan ke fungsi saat dipanggil.
+
+Nilai Kembalian (return) = Fungsi dapat mengembalikan nilai menggunakan `return`. Jika tidak ada `return`, fungsi mengembalikan `None`.
+    Contoh:
+    def tambah(a, b):
+        return a + b
+    hasil_tambah = tambah(5, 3)
+
+Parameter Default = Memberikan nilai default untuk parameter fungsi jika tidak disediakan saat pemanggilan.
+    Contoh:
+    def greet(nama="Pengunjung"):
+        print("Halo,", nama)
+    greet() # Output: Halo, Pengunjung
+    greet("Ali") # Output: Halo, Ali
+
+Positional dan Keyword Arguments =
+    Positional: Argumen diteruskan berdasarkan urutan parameter.
+    Keyword: Argumen diteruskan dengan menyebutkan nama parameternya.
+    Contoh:
+    def info(nama, umur):
+        print(f"Nama: {nama}, Umur: {umur}")
+    info("Budi", 30) # Positional
+    info(umur=25, nama="Ani") # Keyword
+
+Arbitrary Arguments (*args dan **kwargs) =
+    `*args`: Mengumpulkan argumen posisional sisa menjadi tuple.
+    `**kwargs`: Mengumpulkan argumen kata kunci sisa menjadi dictionary.
+    Contoh:
+    def cetak_semua(*args):
+        for arg in args:
+            print(arg)
+    cetak_semua(1, "dua", True)
+
+    def cetak_info(**kwargs):
+        for key, value in kwargs.items():
+            print(f"{key}: {value}")
+    cetak_info(nama="Dedi", kota="Bandung")
+
+Lambda Functions (Fungsi Anonim) = Fungsi kecil tanpa nama, biasanya untuk operasi satu baris. Didefinisikan dengan `lambda`.
+    Contoh:
+    kali_dua = lambda x: x * 2
+    print(kali_dua(5)) # Output: 10
+
+# ====================================================================
+# VI. STRUKTUR DATA LANJUT DAN METODE UMUM
+# ====================================================================
+
+String Methods = Banyak metode bawaan untuk manipulasi string.
+    Contoh:
+    "hello".upper()    # "HELLO"
+    "PYTHON".lower()   # "python"
+    "  spasi  ".strip() # "spasi"
+    "salam,dunia".split(',') # ['salam', 'dunia']
+    "-".join(["a", "b", "c"]) # "a-b-c"
+    "halo".replace("a", "o") # "holo"
+
+List Methods = Banyak metode bawaan untuk manipulasi list.
+    Contoh:
+    my_list = [1, 2, 3]
+    my_list.append(4)   # [1, 2, 3, 4]
+    my_list.insert(0, 0) # [0, 1, 2, 3, 4]
+    my_list.pop()       # Menghapus & mengembalikan elemen terakhir
+    my_list.remove(2)   # Menghapus elemen dengan nilai 2
+    my_list.sort()      # Mengurutkan list
+
+Dictionary Methods = Banyak metode bawaan untuk manipulasi dictionary.
+    Contoh:
+    my_dict = {"a": 1, "b": 2}
+    my_dict.keys()      # dict_keys(['a', 'b'])
+    my_dict.values()    # dict_values([1, 2])
+    my_dict.items()     # dict_items([('a', 1), ('b', 2)])
+    my_dict.get("c", 0) # Mengambil nilai kunci 'c', jika tidak ada default 0
+
+List Comprehensions = Sintaks ringkas untuk membuat list baru dari list yang sudah ada.
+    Contoh:
+    squares = [x**2 for x in range(5)] # [0, 1, 4, 9, 16]
+    even_numbers = [x for x in range(10) if x % 2 == 0] # [0, 2, 4, 6, 8]
+
+# ====================================================================
+# VII. MODUL DAN PAKET
+# ====================================================================
+
+Modul = File Python (.py) yang berisi kode Python (fungsi, kelas, variabel).
+    `import` = Mengimpor modul.
+    `from ... import ...` = Mengimpor item spesifik dari modul.
+    Contoh:
+    import math
+    print(math.pi)
+    from datetime import date
+    today = date.today()
+
+Paket = Kumpulan modul yang diatur dalam direktori. Direktori harus berisi file `__init__.py`.
+
+Manajemen Paket (pip) = `pip` adalah manajer paket standar untuk Python, digunakan untuk menginstal dan mengelola paket pihak ketiga.
+    Contoh:
+    pip install nama_paket
+    pip uninstall nama_paket
+    pip list
+
+# ====================================================================
+# VIII. PENANGANAN EXCEPTION (ERROR)
+# ====================================================================
+
+Exception Handling = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `try` = Blok kode yang mungkin menimbulkan error.
+    `except` = Blok kode yang menangkap dan menangani tipe error tertentu.
+    `else` = Blok kode yang dieksekusi jika blok try tidak menimbulkan error.
+    `finally` = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya error.
+    Contoh:
+    try:
+        angka = int(input("Masukkan angka: "))
+        hasil = 10 / angka
+        print("Hasil:", hasil)
+    except ValueError:
+        print("Input bukan angka yang valid!")
+    except ZeroDivisionError:
+        print("Tidak bisa membagi dengan nol!")
+    except Exception as e: # Tangkap error lain sebagai 'e'
+        print(f"Terjadi error lain: {e}")
+    else:
+        print("Pembagian berhasil.")
+    finally:
+        print("Proses selesai.")
+
+`raise` = Melemparkan (menciptakan) exception kustom.
+    Contoh:
+    if umur < 0:
+        raise ValueError("Umur tidak boleh negatif.")
+
+# ====================================================================
+# IX. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI PYTHON
+# ====================================================================
+
+Class (Kelas) = Blueprint untuk membuat objek. Didefinisikan dengan `class`.
+    Contoh:
+    class Kucing:
+        # Atribut kelas (shared oleh semua instance)
+        spesies = "Felis catus"
+
+        def __init__(self, nama, warna): # Konstruktor
+            self.nama = nama   # Atribut instance
+            self.warna = warna # Atribut instance
+
+        def mengeong(self): # Metode instance
+            print(f"{self.nama} si {self.warna} mengeong!")
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh:
+    kucing_saya = Kucing("Kitty", "putih") # Membuat objek
+    kucing_teman = Kucing("Tom", "hitam")
+    kucing_saya.mengeong() # Memanggil metode
+
+`__init__` Method (Konstruktor) = Metode khusus yang dipanggil secara otomatis saat objek baru dibuat. Digunakan untuk inisialisasi atribut objek.
+
+`self` = Parameter pertama di setiap metode instance, merujuk pada instance objek itu sendiri.
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (child class) dapat mewarisi properti dan metode dari kelas lain (parent class).
+    Contoh:
+    class Hewan:
+        def __init__(self, nama):
+            self.nama = nama
+        def bersuara(self):
+            raise NotImplementedError("Subkelas harus mengimplementasikan metode ini.")
+
+    class Anjing(Hewan): # Anjing mewarisi dari Hewan
+        def __init__(self, nama, ras):
+            super().__init__(nama) # Memanggil konstruktor parent
+            self.ras = ras
+        def bersuara(self): # Override metode parent
+            print(f"{self.nama} menggonggong!")
+
+    my_dog = Anjing("Buddy", "Golden")
+    my_dog.bersuara()
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk. Di Python, ini alami karena duck typing (jika terlihat seperti bebek dan bersuara seperti bebek, maka itu adalah bebek).
+    Contoh: (menggunakan contoh Anjing dari Inheritance)
+    def suara_hewan(objek_hewan):
+        objek_hewan.bersuara()
+
+    suara_hewan(my_dog) # Output: Buddy menggonggong!
+
+Encapsulation (Enkapsulasi) = Membungkus data dan fungsi yang beroperasi pada data tersebut dalam satu unit (kelas). Di Python, tidak ada 'private' yang sebenarnya, tapi ada konvensi.
+    Konvensi: Gunakan underscore tunggal (`_nama_variabel`) untuk menandakan bahwa atribut/metode dimaksudkan untuk internal kelas (jangan diakses langsung dari luar).
+    Contoh: `self._umur_private = 20`
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi dan hanya menampilkan fungsionalitas esensial. Dicapai dengan kelas abstrak (dari modul `abc`).
+
+# ====================================================================
+# X. PENANGANAN FILE
+# ====================================================================
+
+Membuka File = Menggunakan fungsi `open()`.
+    Mode: `r` (baca), `w` (tulis, timpa jika ada), `a` (tulis, tambahkan), `x` (buat baru, error jika ada), `b` (biner), `t` (teks, default).
+    Contoh:
+    file = open("data.txt", "r") # Membuka untuk membaca
+    file.close() # Sangat penting untuk menutup file!
+
+Membaca File =
+    `read()`: Membaca seluruh isi file sebagai string.
+    `readline()`: Membaca satu baris.
+    `readlines()`: Membaca semua baris ke dalam list.
+    Looping file object: Iterasi per baris.
+    Contoh:
+    with open("data.txt", "r") as f: # Rekomendasi: menggunakan 'with'
+        content = f.read()
+        print(content)
+        # Atau:
+        for line in f:
+            print(line.strip()) # strip() untuk menghilangkan karakter baris baru
+
+Menulis ke File =
+    `write()`: Menulis string ke file.
+    `writelines()`: Menulis list of strings ke file.
+    Contoh:
+    with open("output.txt", "w") as f:
+        f.write("Halo dari Python!\n")
+        f.write("Ini baris kedua.")
+    with open("daftar.txt", "a") as f:
+        f.writelines(["Apel\n", "Pisang\n"])
+
+# ====================================================================
+# XI. KONSEP LANJUT DAN FITUR LAIN
+# ====================================================================
+
+Generators = Fungsi yang mengembalikan iterator, menghasilkan nilai satu per satu saat diminta (menggunakan `yield`). Hemat memori.
+    Contoh:
+    def gen_angka(n):
+        for i in range(n):
+            yield i
+    for num in gen_angka(5):
+        print(num)
+
+Decorators = Fungsi yang mengambil fungsi lain sebagai argumen dan mengembalikan fungsi baru, biasanya untuk menambah fungsionalitas. Ditandai dengan `@` sebelum definisi fungsi.
+    Contoh:
+    def decorator_log(func):
+        def wrapper(*args, **kwargs):
+            print(f"Memanggil fungsi: {func.__name__} dengan args: {args}, kwargs: {kwargs}")
+            return func(*args, **kwargs)
+        return wrapper
+
+    @decorator_log
+    def tambah(a, b):
+        return a + b
+    tambah(1, 2)
+
+Context Managers (with statement) = Digunakan untuk mengelola sumber daya (seperti file, koneksi database) dengan aman, memastikan sumber daya ditutup dengan benar bahkan jika terjadi error.
+    Contoh: `with open("file.txt", "r") as f: # file otomatis ditutup setelah blok 'with'`
+
+Virtual Environments (venv) = Lingkungan terisolasi untuk proyek Python, memungkinkan proyek memiliki dependensi yang berbeda tanpa konflik.
+    Contoh:
+    python3 -m venv myenv
+    source myenv/bin/activate (Linux/macOS)
+    myenv\Scripts\activate (Windows)
+
+PIP (Python Package Installer) = Standar untuk menginstal dan mengelola paket pihak ketiga.
+
+F-Strings (Formatted String Literals, Python 3.6+) = Cara yang mudah dan efisien untuk menyisipkan ekspresi Python ke dalam string.
+    Contoh: `nama = "Alice"; umur = 30; print(f"Nama saya {nama} dan umur saya {umur}.")`
+
+Slicing = Mengambil bagian (sub-urutan) dari list, tuple, atau string.
+    Sintaks: `[start:end:step]`
+    Contoh:
+    my_list = [0, 1, 2, 3, 4, 5]
+    my_list[1:4] # [1, 2, 3]
+    my_list[::2] # [0, 2, 4]
+    my_list[::-1] # [5, 4, 3, 2, 1, 0] (membalik list)
+
+Pengecekan Tipe Data (type() dan isinstance()) =
+    `type()`: Mengembalikan tipe objek.
+    `isinstance()`: Memeriksa apakah objek adalah instance dari kelas atau subkelas tertentu. Lebih disarankan.
+    Contoh:
+    print(type(10)) # <class 'int'>
+    print(isinstance("hello", str)) # True
+
+Docstrings = String literal yang muncul sebagai pernyataan pertama dalam modul, fungsi, kelas, atau metode, digunakan untuk dokumentasi. Dapat diakses dengan `help()` atau `__doc__`.
+    Contoh:
+    def fungsi_saya():
+        """Ini adalah docstring untuk fungsi_saya.
+        Ini menjelaskan apa yang dilakukan fungsi ini."""
+        pass
+    print(fungsi_saya.__doc__)

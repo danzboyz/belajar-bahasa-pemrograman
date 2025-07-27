@@ -1,0 +1,430 @@
+# Daftar Lengkap dan Mendalam Konsep Ruby:
+
+# ====================================================================
+# I. DASAR-DASAR RUBY
+# ====================================================================
+
+Cara Menjalankan Kode Ruby =
+    1. Interaktif (IRB - Interactive Ruby): Buka terminal/cmd, ketik 'irb', lalu ketik kode baris per baris.
+    2. File Script: Tulis kode di file .rb (misal: 'main.rb'), lalu jalankan dengan 'ruby main.rb' di terminal.
+
+Komentar = Bagian kode yang diabaikan oleh interpreter, digunakan untuk penjelasan.
+    Contoh:
+    # Ini komentar satu baris
+    =begin
+    Ini komentar
+    multi-baris
+    =end
+
+Mencetak Output = Menggunakan `puts`, `print`, `p`.
+    `puts`: Mencetak string dan menambahkan baris baru di akhir.
+        Contoh: puts "Halo, Ruby!"
+    `print`: Mencetak string tanpa menambahkan baris baru.
+        Contoh: print "Halo"; print " Dunia!"
+    `p`: Mencetak representasi string dari objek, sangat berguna untuk debugging karena menunjukkan tipe data.
+        Contoh: p "Halo", [1, 2] # Output: "Halo"\n[1, 2]
+
+Input Pengguna = Menggunakan `gets`.
+    `gets`: Membaca input dari keyboard sampai baris baru, mengembalikan string dengan karakter baris baru di akhir.
+    `chomp`: Metode untuk menghapus karakter baris baru (`\n`) dari string.
+    Contoh:
+    print "Masukkan nama Anda: "
+    nama = gets.chomp
+    puts "Halo, #{nama}!"
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Tidak perlu deklarasi tipe.
+    Local Variables: Dimulai dengan huruf kecil atau underscore (e.g., `nama_saya`). Berlaku dalam skop tertentu.
+    Instance Variables: Dimulai dengan `@` (e.g., `@umur`). Milik objek.
+    Class Variables: Dimulai dengan `@@` (e.g., `@@populasi`). Milik kelas.
+    Global Variables: Dimulai dengan `$` (e.g., `$debug_mode`). Berlaku di seluruh program (jarang disarankan).
+    Constants: Dimulai dengan huruf besar (e.g., `MAX_SIZE`). Bisa diubah, tapi akan ada peringatan.
+
+Tipe Data Primitif (Built-in Classes) = Di Ruby, semuanya adalah objek.
+    Numbers:
+        Integer: Bilangan bulat (e.g., `10`, `-5`). Tidak ada batasan ukuran tetap.
+        Float: Bilangan pecahan (e.g., `3.14`, `-0.5`).
+    String: Urutan karakter. Bisa pakai kutip tunggal (`''`) atau ganda (`""`).
+        Kutip ganda (`""`) memungkinkan interpolasi variabel (`#{var}`) dan escape sequence.
+        Contoh: `pesan = "Halo, #{nama}!"`
+    Boolean: `true` atau `false`. Hanya `nil` dan `false` yang dianggap false dalam konteks boolean. Segala sesuatu yang lain (termasuk 0, string kosong) adalah true.
+    Nil: Representasi dari "tidak ada nilai". Mirip dengan `null` di bahasa lain.
+
+Tipe Data Koleksi =
+    Array: Koleksi item yang terurut dan bisa diubah (mutable). Ditulis dengan kurung siku `[]`.
+        Contoh:
+        my_array = [1, "dua", true, 4.0]
+        my_array.push(5)     # Menambah elemen
+        my_array[0] = 10     # Mengubah elemen
+        puts my_array[1]     # Akses elemen
+    Hash: Koleksi pasangan kunci-nilai (key-value pair). Mirip dictionary/map. Ditulis dengan kurung kurawal `{}`.
+        Kunci bisa berupa objek apa pun, tapi string atau simbol paling umum.
+        Contoh:
+        my_hash = {"nama" => "Budi", "umur" => 25} # Sintaks lama
+        my_hash = {nama: "Budi", umur: 25}       # Sintaks modern (simbol sebagai kunci)
+        puts my_hash[:nama]
+        my_hash[:umur] = 26 # Mengubah nilai
+        my_hash[:pekerjaan] = "Engineer" # Menambah pasangan baru
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus), ** (pangkat)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=, **=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=, === (case equality)`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND), || (OR), ! (NOT), and, or, not` (prioritas berbeda dari simbol)
+
+Operator Ternary (Kondisional) = Operator ringkas untuk if-else.
+    Sintaks: `kondisi ? ekspresi_jika_true : ekspresi_jika_false`
+    Contoh: `status = (umur >= 18) ? "Dewasa" : "Anak-anak"`
+
+Range Operator = Membuat objek Range.
+    Contoh: `1..5` (inklusif: 1, 2, 3, 4, 5), `1...5` (eksklusif: 1, 2, 3, 4)
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / elsif / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    nilai = 85
+    if nilai > 90
+      puts "Sangat Baik"
+    elsif nilai > 70
+      puts "Baik"
+    else
+      puts "Cukup"
+    end # 'end' wajib untuk blok kontrol
+
+unless = Kebalikan dari `if`. Dieksekusi jika kondisi `false`.
+    Contoh:
+    umur = 17
+    unless umur >= 18
+      puts "Anda masih di bawah umur."
+    end
+
+case (switch) = Alternatif untuk if/elsif berantai ketika membandingkan satu nilai dengan banyak kemungkinan.
+    Contoh:
+    hari = "Senin"
+    case hari
+    when "Senin"
+      puts "Awal pekan"
+    when "Jumat"
+      puts "Akhir pekan segera tiba"
+    else
+      puts "Hari biasa"
+    end
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh:
+    i = 0
+    while i < 3
+      puts i
+      i += 1
+    end
+
+until loop = Kebalikan dari `while`. Mengulang blok kode sampai kondisi menjadi `true`.
+    Contoh:
+    i = 0
+    until i >= 3
+      puts i
+      i += 1
+    end
+
+for loop = Mengulang (iterasi) melalui item dalam koleksi atau range.
+    Contoh:
+    for i in 0..4
+      puts i
+    end
+    for color in ["red", "green", "blue"]
+      puts color
+    end
+
+Loop Iterators (lebih umum di Ruby) = Menggunakan metode seperti `each`, `map`, `select`, dll.
+    `each`: Untuk iterasi melalui elemen dan melakukan aksi.
+        Contoh: `[1, 2, 3].each { |num| puts num }`
+    `times`: Mengulang blok kode sejumlah kali.
+        Contoh: `5.times { |i| puts i }`
+
+break = Menghentikan eksekusi loop secara paksa.
+    Contoh:
+    for i in 0..10
+      break if i == 5
+      puts i
+    end
+
+next = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh:
+    for i in 0..5
+      next if i == 2
+      puts i
+    end
+
+redo = Mengulang iterasi saat ini dari loop.
+    Contoh: (Jarang digunakan, bisa menyebabkan infinite loop jika tidak hati-hati)
+
+retry = Mengulang eksekusi blok `begin` (dalam konteks error handling).
+
+// ====================================================================
+// V. METODE (FUNGSI)
+// ====================================================================
+
+Metode = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dengan `def`.
+    Contoh:
+    def sapa(nama) # Metode dengan parameter
+      "Halo, #{nama}" # Baris terakhir adalah nilai kembalian implisit
+    end
+
+    def cetak_pesan # Metode tanpa parameter
+      puts "Ini pesan dari metode."
+    end
+
+    hasil = sapa("Dina") # Memanggil metode
+    puts hasil
+    cetak_pesan
+
+Parameter Metode =
+    Default Parameters: Memberikan nilai default untuk parameter jika tidak disediakan.
+        Contoh:
+        def greet(nama = "Pengunjung")
+          puts "Halo, #{nama}"
+        end
+        greet       # Output: Halo, Pengunjung
+        greet("Ali") # Output: Halo, Ali
+
+    Variable-length Argument Lists (`*args`): Mengumpulkan argumen sisa menjadi array.
+        Contoh:
+        def sum(*numbers)
+          numbers.sum
+        end
+        puts sum(1, 2, 3) # Output: 6
+
+    Keyword Arguments (`**kwargs`): Menerima argumen sebagai hash kunci-nilai.
+        Contoh:
+        def print_info(nama:, umur:)
+          puts "Nama: #{nama}, Umur: #{umur}"
+        end
+        print_info(nama: "Ani", umur: 30)
+
+// ====================================================================
+// VI. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI RUBY
+// ====================================================================
+
+Class (Kelas) = Blueprint untuk membuat objek. Didefinisikan dengan `class`.
+    Contoh:
+    class Hewan
+      # Properti (attributes) menggunakan attr_accessor (membuat getter/setter otomatis)
+      attr_accessor :nama, :umur
+
+      # Metode
+      def bersuara
+        puts "Hewan ini bersuara."
+      end
+    end
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh:
+    kucing = Hewan.new # Membuat objek kucing
+    kucing.nama = "Kitty" # Mengakses dan mengubah properti (melalui setter)
+    puts kucing.nama     # Mengakses properti (melalui getter)
+    kucing.bersuara      # Memanggil metode
+
+Constructor (`initialize` method) = Metode khusus yang dipanggil secara otomatis saat objek dibuat. Digunakan untuk inisialisasi objek.
+    Contoh:
+    class Kucing
+      attr_accessor :nama, :warna
+
+      def initialize(nama_kucing, warna_kucing) # Konstruktor
+        @nama = nama_kucing # Menginisialisasi instance variable
+        @warna = warna_kucing
+      end
+    end
+    # Membuat objek dengan konstruktor: my_cat = Kucing.new("Milo", "Oranye")
+
+`self` Keyword = Merujuk pada objek saat ini (instance kelas saat ini). Digunakan untuk memanggil metode atau mengakses properti objek itu sendiri. (Seringkali implisit).
+
+Access Control (Kontrol Akses) = Mengontrol akses ke metode kelas.
+    `public`: Default, bisa diakses dari mana saja.
+    `private`: Hanya bisa dipanggil dari dalam kelas itu sendiri (dari metode lain di kelas yang sama) dan tanpa receiver eksplisit.
+    `protected`: Bisa dipanggil dari dalam kelas itu sendiri atau kelas turunan.
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (subclass/child class) dapat mewarisi properti dan metode dari kelas lain (superclass/parent class). Menggunakan `<`.
+    Ruby hanya mendukung single inheritance (satu kelas hanya bisa mewarisi dari satu kelas lain).
+    Contoh:
+    class Kendaraan
+      def bergerak
+        puts "Kendaraan bergerak."
+      end
+    end
+    class Mobil < Kendaraan # Mobil mewarisi dari Kendaraan
+      def klakson
+        puts "Beep!"
+      end
+    end
+    # Penggunaan: my_car = Mobil.new; my_car.bergerak; my_car.klakson
+
+`super` Keyword = Digunakan untuk memanggil metode dengan nama yang sama dari superclass.
+    Contoh:
+    class Anak < OrangTua
+      def initialize(nama)
+        super(nama) # Memanggil konstruktor superclass
+      end
+      def sapa
+        super # Memanggil metode sapa() dari superclass
+        puts "Saya anak."
+      end
+    end
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk. Di Ruby, ini alami karena duck typing.
+    Method Overriding: Metode di child class memiliki nama yang sama dengan metode di parent class, dan akan dipanggil berdasarkan tipe objek sebenarnya.
+    Contoh:
+    class Bentuk
+      def gambar
+        puts "Menggambar bentuk umum."
+      end
+    end
+    class Lingkaran < Bentuk
+      def gambar # Override
+        puts "Menggambar lingkaran."
+      end
+    end
+    # Penggunaan:
+    # b1 = Bentuk.new; b1.gambar # Output: Menggambar bentuk umum.
+    # b2 = Lingkaran.new; b2.gambar # Output: Menggambar lingkaran. (Polimorfisme)
+
+Modules (Modul) = Kumpulan metode, konstanta, dan kelas yang dapat dicampur ke dalam kelas lain (`mixin`). Digunakan untuk mengorganisir kode dan menyediakan fungsionalitas seperti multiple inheritance (karena Ruby hanya single inheritance).
+    `include`: Mencampurkan metode instance modul ke dalam kelas.
+    `extend`: Mencampurkan metode modul sebagai metode kelas (static) ke dalam kelas.
+    Contoh:
+    module BisaTerbang
+      def terbang
+        puts "Saya bisa terbang!"
+      end
+    end
+    class Burung
+      include BisaTerbang # Memasukkan modul
+      def initialize(nama); @nama = nama; end
+    end
+    # Penggunaan: burung = Burung.new("Pipit"); burung.terbang
+
+// ====================================================================
+// VII. PENANGANAN ERROR DAN EXCEPTION
+// ====================================================================
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `begin` = Blok kode yang mungkin menimbulkan pengecualian.
+    `rescue` = Blok kode yang menangkap dan menangani tipe pengecualian tertentu.
+    `else` = Blok kode yang dieksekusi jika blok `begin` tidak menimbulkan pengecualian.
+    `ensure` = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya pengecualian.
+    `raise` = Melemparkan (menciptakan) pengecualian kustom.
+    Contoh:
+    def bagi(num1, num2)
+      raise ZeroDivisionError, "Tidak bisa membagi dengan nol!" if num2 == 0
+      num1 / num2
+    end
+    begin
+      puts bagi(10, 2)
+      puts bagi(5, 0)
+    rescue ZeroDivisionError => e
+      puts "Terjadi Error: #{e.message}"
+    rescue => e # Menangkap semua exception lainnya
+      puts "Terjadi Error Umum: #{e.message}"
+    else
+      puts "Pembagian berhasil."
+    ensure
+      puts "Proses selesai."
+    end
+
+// ====================================================================
+// VIII. BLOCK, PROCS, DAN LAMBDAS
+// ====================================================================
+
+Blocks = Potongan kode anonim yang dapat diteruskan ke metode. (Ditulis dengan `do..end` atau `{}`).
+    Contoh: `[1, 2, 3].each { |num| puts num * 2 }`
+
+Procs = Objek block. Dapat disimpan dalam variabel dan diteruskan antar metode.
+    Contoh:
+    my_proc = Proc.new { |name| puts "Halo, #{name} dari Proc!" }
+    my_proc.call("John")
+
+Lambdas = Versi Proc yang lebih ketat, mirip dengan fungsi. Memiliki penanganan argumen yang lebih ketat dan pengembalian nilai yang berbeda.
+    Contoh:
+    my_lambda = lambda { |name| puts "Halo, #{name} dari Lambda!" }
+    my_lambda.call("Jane")
+
+Perbedaan Procs vs Lambdas:
+    - Lambdas memeriksa jumlah argumen; Procs tidak.
+    - `return` di lambda hanya keluar dari lambda; `return` di proc keluar dari metode di mana proc didefinisikan.
+
+// ====================================================================
+// IX. METODE I/O FILE
+// ====================================================================
+
+Membaca dan Menulis File = Menggunakan kelas `File`.
+    Contoh:
+    # Menulis ke file
+    File.open("output.txt", "w") do |file| # "w" untuk write, akan menimpa
+      file.puts "Halo dari Ruby!"
+      file.write "Ini baris kedua."
+    end
+    puts "Berhasil menulis ke file."
+
+    # Membaca dari file
+    begin
+      File.open("output.txt", "r") do |file| # "r" untuk read
+        file.each_line do |line|
+          puts line.chomp # .chomp untuk menghapus newline
+        end
+      end
+    rescue Errno::ENOENT # Menangkap error jika file tidak ditemukan
+      puts "File tidak ditemukan!"
+    end
+
+    # Cara cepat membaca/menulis seluruh file
+    content = File.read("output.txt")
+    puts content
+    File.write("new_output.txt", "Teks baru.")
+
+// ====================================================================
+// X. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Mixins = Cara Ruby untuk mencapai fungsionalitas seperti multiple inheritance melalui Modules (sudah dijelaskan di atas).
+
+Gems = Paket software yang berisi library Ruby atau aplikasi yang dapat diinstal. Dikelola oleh `RubyGems`.
+    Contoh:
+    gem install nama_gem
+    gem uninstall nama_gem
+    gem list
+
+Bundler = Alat manajemen dependensi untuk proyek Ruby. Mengelola Gemfile.
+    `bundle install`
+    `bundle update`
+
+Ruby on Rails = Framework pengembangan web yang sangat populer berbasis Ruby.
+
+Enumerable Module = Modul yang menyediakan koleksi metode iterasi dan pencarian (misal: `each`, `map`, `select`, `find`, `sort`) untuk kelas yang mengimplementasikan metode `each`. Array dan Hash secara otomatis sudah meng-include Enumerable.
+
+Symbols = Objek string yang immutable (tidak bisa diubah) dan unik. Digunakan sebagai kunci hash, nama metode, atau nama variabel. Lebih efisien memori daripada string.
+    Contoh: `:nama`, `:umur`
+
+Metaprogramming = Kemampuan program untuk menulis atau memodifikasi kode lain (atau dirinya sendiri) saat runtime. Ruby sangat kuat dalam metaprogramming.
+
+Singleton Methods = Metode yang hanya ada untuk satu objek tertentu.
+    Contoh:
+    obj = Object.new
+    def obj.salam
+      puts "Halo dari obj!"
+    end
+    obj.salam

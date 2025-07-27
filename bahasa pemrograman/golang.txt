@@ -1,0 +1,527 @@
+// Daftar Lengkap dan Mendalam Konsep Go (Golang):
+
+// ====================================================================
+// I. DASAR-DASAR GO
+// ====================================================================
+
+Struktur Program Go = Sebuah program Go minimal terdiri dari package `main` dan fungsi `main()`.
+    Contoh:
+    package main // Deklarasi package utama
+
+    import "fmt" // Mengimpor package "fmt" untuk fungsi I/O
+
+    func main() { // Fungsi utama, program dimulai dari sini
+        fmt.Println("Halo, Go!") // Mencetak teks ke konsol
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber Go menjadi program yang dapat dijalankan secara langsung (executable).
+    1. Kode Sumber (.go) --Kompilasi (go build)--> Executable (.exe di Windows, tanpa ekstensi di Linux/macOS)
+    2. Kompilasi: `go build nama_file.go` (menghasilkan `nama_file` atau `nama_file.exe`)
+    3. Eksekusi: `./nama_file` (di Linux/macOS) atau `nama_file.exe` (di Windows)
+    4. Menjalankan tanpa kompilasi eksplisit: `go run nama_file.go`
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+
+Output Dasar = Menggunakan fungsi dari package `fmt`.
+    `fmt.Println()`: Mencetak string dan menambahkan baris baru.
+        Contoh: fmt.Println("Ini akan menambahkan baris baru.")
+    `fmt.Print()`: Mencetak string tanpa menambahkan baris baru.
+        Contoh: fmt.Print("Ini tidak menambahkan baris baru.")
+    `fmt.Printf()`: Mencetak output terformat (mirip C).
+        Contoh:
+        nama := "Budi"
+        umur := 30
+        fmt.Printf("Nama: %s, Umur: %d\n", nama, umur)
+
+Input Pengguna = Menggunakan `fmt.Scanln()` atau `bufio.NewReader`.
+    Contoh (menggunakan fmt.Scanln):
+    package main
+    import "fmt"
+    func main() {
+        var nama string
+        var umur int
+        fmt.Print("Masukkan nama Anda: ")
+        fmt.Scanln(&nama) // Menggunakan '&' untuk alamat memori variabel
+        fmt.Print("Masukkan umur Anda: ")
+        fmt.Scanln(&umur)
+        fmt.Printf("Halo, %s! Umur Anda %d tahun.\n", nama, umur)
+    }
+
+Case Sensitivity = Go bersifat case-sensitive. `myVar` berbeda dengan `myvar`.
+    Nama yang dimulai dengan huruf besar berarti dapat diekspor (public), huruf kecil berarti tidak dapat diekspor (private).
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan tipe data.
+    Deklarasi eksplisit: `var namaVariabel tipeData = nilaiAwal`
+        Contoh: `var angka int = 10`
+    Deklarasi pendek (Short variable declaration - `:=`): Go secara otomatis menyimpulkan tipe data. Hanya bisa digunakan di dalam fungsi.
+        Contoh: `pesan := "Halo Dunia"`
+    Deklarasi tanpa nilai awal: Variabel akan diinisialisasi dengan nilai nol (zero value) default.
+        Contoh: `var defaultInt int // default 0`
+        `var defaultString string // default ""`
+        `var defaultBool bool // default false`
+
+Konstanta = Nilai yang tidak dapat diubah setelah didefinisikan. Dideklarasikan dengan `const`.
+    Contoh: `const PI = 3.14`
+    Konstanta dapat dideklarasikan tanpa tipe eksplisit, tipenya akan disimpulkan.
+
+Tipe Data Primitif (Built-in Types) =
+    Numbers:
+        Integer: `int`, `int8`, `int16`, `int32`, `int64` (signed)
+                 `uint`, `uint8`, `uint16`, `uint32`, `uint64`, `uintptr` (unsigned)
+            `int` dan `uint` adalah tipe integer default yang ukurannya tergantung arsitektur sistem (32-bit atau 64-bit).
+        Floating-point: `float32`, `float64`
+            `float64` adalah tipe floating-point default.
+        Complex: `complex64`, `complex128` (untuk bilangan kompleks)
+        Byte: `byte` (alias untuk `uint8`)
+        Rune: `rune` (alias untuk `int32`, digunakan untuk karakter Unicode)
+    Boolean: `bool` (`true` atau `false`)
+    String: `string`
+
+Tipe Data Komposit (Composite Types) =
+    Array: Koleksi elemen dengan tipe data yang sama. Ukurannya tetap setelah dideklarasikan.
+        Contoh: `var angka [5]int // array 5 integer`
+        `nilai := [3]int{10, 20, 30}`
+        `nilai[0] = 100`
+    Slice: Koleksi elemen dengan tipe data yang sama, yang ukurannya dinamis. Dibangun di atas array. Lebih umum digunakan daripada array.
+        Contoh:
+        `buah := []string{"Apel", "Pisang", "Ceri"}`
+        `buah = append(buah, "Mangga")` // Menambah elemen
+        `fmt.Println(buah[0])` // Akses elemen
+        Membuat slice dengan `make`: `s := make([]int, 5, 10)` (length 5, capacity 10)
+    Map: Koleksi pasangan kunci-nilai (key-value pair). Mirip hash table atau dictionary.
+        Contoh:
+        `umurOrang := map[string]int{"Budi": 25, "Ani": 30}`
+        `fmt.Println(umurOrang["Budi"])`
+        `umurOrang["Dika"] = 28` // Menambah/mengubah
+        `delete(umurOrang, "Ani")` // Menghapus
+    Struct: Tipe data koleksi yang dapat menyimpan anggota (field) dengan tipe data berbeda. Mirip objek tanpa metode di bahasa lain (secara default).
+        Contoh:
+        type Person struct {
+            Nama  string
+            Umur  int
+            Aktif bool
+        }
+        p := Person{Nama: "Alice", Umur: 30, Aktif: true}
+        fmt.Println(p.Nama)
+
+Type Conversion (Konversi Tipe) = Harus dilakukan secara eksplisit.
+    Contoh:
+    var i int = 10
+    var f float64 = float64(i) // Konversi int ke float64
+    var s string = string(rune(65)) // Konversi int ke rune ke string (untuk karakter)
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND), || (OR), ! (NOT)`
+
+Increment/Decrement = Hanya operator `++` dan `--`, hanya sebagai pernyataan (tidak bisa sebagai ekspresi).
+    Contoh: `i++` (bukan `++i`)
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi. Kurung kurawal wajib.
+    Contoh:
+    nilai := 85
+    if nilai > 90 {
+        fmt.Println("Sangat Baik")
+    } else if nilai > 70 {
+        fmt.Println("Baik")
+    } else {
+        fmt.Println("Cukup")
+    }
+    // if dengan pernyataan pendek (short statement):
+    if x := hitungX(); x < 0 {
+        fmt.Println("X negatif")
+    }
+
+switch = Alternatif untuk if/else if berantai. Tidak perlu `break` secara default (implied break).
+    Contoh:
+    hari := "Senin"
+    switch hari {
+    case "Senin":
+        fmt.Println("Awal pekan")
+    case "Jumat":
+        fmt.Println("Akhir pekan segera tiba")
+    default:
+        fmt.Println("Hari biasa")
+    }
+    // switch tanpa ekspresi:
+    switch {
+    case nilai > 90:
+        fmt.Println("Nilai A")
+    case nilai > 80:
+        fmt.Println("Nilai B")
+    }
+    // fallthrough: untuk melanjutkan eksekusi ke case berikutnya (harus eksplisit)
+    switch hari {
+    case "Senin":
+        fmt.Println("Hari kerja")
+        fallthrough
+    case "Selasa":
+        fmt.Println("Masih hari kerja")
+    }
+
+for loop = Hanya ada satu jenis loop di Go, yaitu `for`. Sangat fleksibel.
+    Standard for loop (mirip C/Java):
+        Contoh: `for i := 0; i < 5; i++ { fmt.Print(i, " ") }`
+    While loop style:
+        Contoh:
+        `i := 0`
+        `for i < 3 { fmt.Print(i, " "); i++ }`
+    Infinite loop:
+        Contoh: `for { fmt.Println("Loop tak terbatas") }`
+    For-each loop (using `range`): Untuk iterasi melalui array, slice, string, map, dan channel.
+        Contoh:
+        `numbers := []int{1, 2, 3}`
+        `for index, value := range numbers { fmt.Printf("Index: %d, Value: %d\n", index, value) }`
+        `for _, value := range numbers { fmt.Println(value) } // Abaikan index`
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: `for i := 0; i < 10; i++ { if i == 5 { break }; fmt.Print(i, " ") }`
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: `for i := 0; i < 5; i++ { if i == 2 { continue }; fmt.Print(i, " ") }`
+
+Goto = Pernyataan yang memungkinkan lompatan tak bersyarat ke label tertentu. (Penggunaan jarang disarankan).
+
+// ====================================================================
+// V. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dengan `func`.
+    Sintaks: `func namaFungsi(parameter1 tipe1, parameter2 tipe2) returnTipe { // kode }`
+    Contoh:
+    func tambah(a int, b int) int { // Fungsi dengan parameter dan return
+        return a + b
+    }
+    func cetakPesan() { // Fungsi tanpa parameter dan tanpa return
+        fmt.Println("Ini pesan dari fungsi.")
+    }
+
+    // Memanggil fungsi:
+    // hasil := tambah(5, 3)
+    // fmt.Println(hasil)
+    // cetakPesan()
+
+Multiple Return Values = Fungsi di Go dapat mengembalikan lebih dari satu nilai. Umum digunakan untuk mengembalikan nilai dan error.
+    Contoh:
+    func bagi(a, b float64) (float64, error) { // Mengembalikan float64 dan error
+        if b == 0 {
+            return 0, fmt.Errorf("pembagi tidak boleh nol")
+        }
+        return a / b, nil // nil menandakan tidak ada error
+    }
+
+    // Penggunaan:
+    // result, err := bagi(10, 2)
+    // if err != nil {
+    //     fmt.Println("Error:", err)
+    // } else {
+    //     fmt.Println("Hasil bagi:", result)
+    // }
+
+Named Return Values = Memberi nama pada nilai kembalian, dapat disederhanakan dengan `naked return`.
+    Contoh:
+    func hitungLuas(panjang, lebar int) (luas int) { // 'luas' adalah named return value
+        luas = panjang * lebar
+        return // Mengembalikan 'luas' secara implisit
+    }
+
+Variadic Functions = Fungsi yang dapat menerima sejumlah argumen yang bervariasi dari tipe yang sama (`...`). Argumen akan diperlakukan sebagai slice.
+    Contoh:
+    func sumAll(numbers ...int) int {
+        total := 0
+        for _, num := range numbers {
+            total += num
+        }
+        return total
+    }
+    // Penggunaan: `fmt.Println(sumAll(1, 2, 3, 4))`
+
+Anonymous Functions (Closure) = Fungsi tanpa nama, dapat disimpan dalam variabel atau diteruskan sebagai argumen.
+    Contoh:
+    kaliDua := func(x int) int {
+        return x * 2
+    }
+    fmt.Println(kaliDua(5))
+
+Defer = Sebuah pernyataan yang menunda eksekusi fungsi hingga fungsi yang mengelilinginya (enclosing function) selesai dieksekusi (baik secara normal maupun melalui panik). Sering digunakan untuk membersihkan sumber daya (file, koneksi database).
+    Contoh:
+    func bacaFile() {
+        f, err := os.Open("file.txt")
+        if err != nil {
+            fmt.Println("Error membuka file:", err)
+            return
+        }
+        defer f.Close() // Pastikan file ditutup setelah fungsi selesai
+
+        // ... kode untuk membaca file ...
+        fmt.Println("File dibaca.")
+    }
+
+Panic dan Recover = Mekanisme untuk penanganan error yang tidak terduga (mirip exception).
+    `panic`: Menyebabkan program berhenti dan mencetak stack trace.
+    `recover`: Hanya bisa digunakan di dalam fungsi `defer`. Menangkap panik dan mengizinkan program untuk melanjutkan eksekusi (atau melakukan cleanup).
+    Contoh:
+    func bagiDenganPanik(a, b int) {
+        defer func() {
+            if r := recover(); r != nil {
+                fmt.Println("Recovered dari panic:", r)
+            }
+        }()
+        if b == 0 {
+            panic("Pembagi nol!")
+        }
+        fmt.Println("Hasil bagi:", a/b)
+    }
+
+// ====================================================================
+// VI. POINTER
+// ====================================================================
+
+Pointer = Variabel yang menyimpan alamat memori dari variabel lain. Digunakan untuk memodifikasi nilai di lokasi memori asli.
+    Operator `&`: Mengambil alamat memori (address-of operator).
+    Operator `*`: Mengambil nilai yang disimpan di alamat memori (dereference operator).
+    Contoh:
+    x := 10
+    p := &x     // p sekarang menyimpan alamat memori x
+    fmt.Println(p)  // Mencetak alamat memori (e.g., 0xc0000140c0)
+    fmt.Println(*p) // Mencetak nilai yang ditunjuk oleh p (Output: 10)
+    *p = 20     // Mengubah nilai yang ditunjuk oleh p
+    fmt.Println(x)  // Output: 20 (nilai x berubah)
+
+// ====================================================================
+// VII. STRUKTUR DAN METODE
+// ====================================================================
+
+Struct (Struktur) = Tipe data koleksi yang dapat menyimpan anggota (field) dengan tipe data berbeda. Digunakan untuk merepresentasikan entitas.
+    Contoh:
+    type Produk struct {
+        ID    string
+        Nama  string
+        Harga float64
+        Stok  int
+    }
+
+Metode = Fungsi yang terkait dengan sebuah tipe data (biasanya struct). Mirip dengan metode di OOP.
+    Sintaks: `func (receiver Tipe) NamaMetode(parameter ...) returnTipe { // kode }`
+        `receiver`: Variabel yang digunakan untuk mereferensikan instance dari tipe tersebut. Bisa value receiver atau pointer receiver.
+            Value Receiver (`(p Person)`): Metode beroperasi pada salinan nilai receiver. Perubahan tidak akan memengaruhi nilai asli.
+            Pointer Receiver (`(p *Person)`): Metode beroperasi pada nilai asli receiver melalui pointer. Perubahan akan memengaruhi nilai asli.
+    Contoh:
+    type Lingkaran struct {
+        Radius float64
+    }
+
+    // Metode dengan value receiver
+    func (l Lingkaran) Luas() float64 {
+        return 3.14 * l.Radius * l.Radius
+    }
+
+    // Metode dengan pointer receiver (untuk memodifikasi struct)
+    func (l *Lingkaran) UbahRadius(newRadius float64) {
+        l.Radius = newRadius
+    }
+
+    // Penggunaan:
+    // c := Lingkaran{Radius: 5}
+    // fmt.Println(c.Luas()) // Output: 78.5
+    // c.UbahRadius(10)
+    // fmt.Println(c.Luas()) // Output: 314.0
+
+// ====================================================================
+// VIII. INTERFACE
+// ====================================================================
+
+Interface = Kumpulan metode yang didefinisikan secara implisit. Tipe apa pun yang memiliki semua metode yang dideklarasikan dalam sebuah interface dikatakan "mengimplementasikan" interface tersebut.
+    Tidak ada kata kunci `implements`. Implementasi terjadi secara otomatis (duck typing).
+    Contoh:
+    type Bentuk interface {
+        Luas() float64
+        Keliling() float64
+    }
+
+    type Persegi struct {
+        Sisi float64
+    }
+    func (p Persegi) Luas() float64 { return p.Sisi * p.Sisi }
+    func (p Persegi) Keliling() float64 { return 4 * p.Sisi }
+
+    type LingkaranInterface struct { // Nama berbeda untuk menghindari konflik
+        Radius float64
+    }
+    func (l LingkaranInterface) Luas() float64 { return 3.14 * l.Radius * l.Radius }
+    func (l LingkaranInterface) Keliling() float64 { return 2 * 3.14 * l.Radius }
+
+    // Penggunaan:
+    // var s Bentuk = Persegi{Sisi: 5}
+    // fmt.Println("Luas Persegi:", s.Luas())
+    // var l Bentuk = LingkaranInterface{Radius: 7}
+    // fmt.Println("Luas Lingkaran:", l.Luas())
+
+Empty Interface (`interface{}`) = Interface yang tidak memiliki metode. Dapat menampung nilai dari tipe apa pun. Mirip `Object` di Java atau `any` di TypeScript.
+    Sering digunakan sebagai placeholder untuk tipe yang tidak diketahui.
+    Contoh: `var data interface{}`
+
+Type Assertion = Digunakan untuk mengekstrak nilai konkret dari sebuah interface.
+    Sintaks: `value, ok := interfaceValue.(TipeKonkret)`
+        `ok` adalah boolean yang menunjukkan apakah assertion berhasil.
+    Contoh:
+    // var i interface{} = "Halo Dunia"
+    // s, ok := i.(string)
+    // if ok { fmt.Println("String:", s) } else { fmt.Println("Bukan string.") }
+
+// ====================================================================
+// IX. KONKURENSI (CONCURRENCY)
+// ====================================================================
+
+Goroutines = Fungsi ringan yang berjalan secara konkuren (bersamaan) dengan fungsi lain. Dijalankan dengan kata kunci `go`.
+    Go mengelola penjadwalan goroutine secara otomatis di atas thread OS.
+    Contoh:
+    func cetak(s string) {
+        for i := 0; i < 3; i++ {
+            time.Sleep(100 * time.Millisecond) // Simulasi kerja
+            fmt.Println(s)
+        }
+    }
+    // func main() {
+    //     go cetak("Dunia") // Jalankan goroutine
+    //     cetak("Halo")    // Jalankan di goroutine utama
+    //     // Output akan campur aduk: Halo, Dunia, Halo, Dunia, ...
+    // }
+
+Channels = Saluran untuk komunikasi yang aman antara goroutine. Digunakan untuk mengirim dan menerima nilai antar goroutine.
+    `make(chan Tipe)`: Membuat channel untuk tipe tertentu.
+    `<-chan Tipe`: Channel hanya untuk menerima.
+    `chan<- Tipe`: Channel hanya untuk mengirim.
+    `ch <- value`: Mengirim nilai ke channel.
+    `value := <-ch`: Menerima nilai dari channel.
+    Contoh:
+    func hitung(s string, c chan string) {
+        for i := 0; i < 3; i++ {
+            time.Sleep(100 * time.Millisecond)
+            c <- s // Kirim string ke channel
+        }
+        close(c) // Menutup channel setelah selesai mengirim
+    }
+    // func main() {
+    //     messages := make(chan string) // Membuat channel string
+    //     go hitung("ping", messages)
+    //     go hitung("pong", messages)
+
+    //     for msg := range messages { // Menerima dari channel sampai ditutup
+    //         fmt.Println(msg)
+    //     }
+    // }
+
+Buffered Channels = Channel yang memiliki kapasitas buffer. Pengiriman ke channel buffer tidak akan memblokir sampai buffer penuh.
+    Contoh: `ch := make(chan int, 2)` // Channel integer dengan buffer 2
+
+Select = Digunakan untuk menunggu operasi di beberapa channel. Mirip `switch` untuk channel.
+    Contoh:
+    // func main() {
+    //     c1 := make(chan string)
+    //     c2 := make(chan string)
+    //     go func() { time.Sleep(1 * time.Second); c1 <- "satu" }()
+    //     go func() { time.Sleep(2 * time.Second); c2 <- "dua" }()
+
+    //     for i := 0; i < 2; i++ {
+    //         select {
+    //         case msg1 := <-c1:
+    //             fmt.Println("Diterima:", msg1)
+    //         case msg2 := <-c2:
+    //             fmt.Println("Diterima:", msg2)
+    //         }
+    //     }
+    // }
+
+Mutex (Mutual Exclusion) = Digunakan untuk melindungi akses ke data bersama dari beberapa goroutine (mengunci). Ditemukan di package `sync`.
+    `sync.Mutex`: Objek mutex.
+    `Lock()`: Mengunci mutex.
+    `Unlock()`: Membuka kunci mutex.
+    Contoh:
+    // var mu sync.Mutex
+    // var counter int
+    // func increment() {
+    //     mu.Lock()
+    //     counter++
+    //     mu.Unlock()
+    // }
+
+WaitGroup = Digunakan untuk menunggu sampai sekelompok goroutine selesai dieksekusi. Ditemukan di package `sync`.
+    `Add(n int)`: Menambah counter group.
+    `Done()`: Mengurangi counter group.
+    `Wait()`: Memblokir sampai counter group menjadi nol.
+    Contoh:
+    // var wg sync.WaitGroup
+    // wg.Add(2) // Menambah 2 goroutine yang akan ditunggu
+    // go func() { defer wg.Done(); fmt.Println("Goroutine 1 selesai") }()
+    // go func() { defer wg.Done(); fmt.Println("Goroutine 2 selesai") }()
+    // wg.Wait() // Tunggu sampai kedua goroutine selesai
+    // fmt.Println("Semua goroutine selesai.")
+
+// ====================================================================
+// X. PACKAGES DAN MODULES
+// ====================================================================
+
+Packages = Cara Go mengorganisir kode. Setiap file Go termasuk dalam sebuah package.
+    `main` package: Titik masuk program executable.
+    `import`: Untuk menggunakan fungsi, tipe, dll. dari package lain.
+    Nama package yang diekspor dimulai dengan huruf besar.
+    Contoh: `import "fmt"`
+
+Modules = Unit manajemen dependensi di Go. Setiap modul memiliki `go.mod` file yang mendefinisikan nama modul dan dependensinya.
+    `go mod init <module-name>`: Menginisialisasi modul baru.
+    `go mod tidy`: Membersihkan dependensi.
+
+// ====================================================================
+// XI. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Error Handling (Explicit) = Go tidak menggunakan `try-catch`. Error dikembalikan sebagai nilai kembalian terakhir dari fungsi.
+    Contoh: (sudah dijelaskan di bagian Fungsi -> Multiple Return Values)
+
+Deferred Calls = (Sudah dijelaskan di bagian Fungsi -> Defer)
+
+Pointer Receivers vs Value Receivers = (Sudah dijelaskan di bagian Struktur dan Metode)
+
+Variadic Functions = (Sudah dijelaskan di bagian Fungsi)
+
+Embedding (Composition) = Go mempromosikan komposisi daripada inheritance untuk menggunakan kembali kode. Ini dilakukan dengan menyematkan struct di dalam struct lain.
+    Contoh:
+    type Kendaraan struct {
+        Roda int
+    }
+    type Mobil struct {
+        Kendaraan // Embedding Kendaraan
+        Merek string
+    }
+    // car := Mobil{Kendaraan: Kendaraan{Roda: 4}, Merek: "Toyota"}
+    // fmt.Println(car.Roda) // Bisa langsung akses field dari Kendaraan
+
+Blank Identifier (`_`) = Digunakan untuk mengabaikan nilai atau variabel yang tidak dibutuhkan.
+    Contoh:
+    `_, err := someFunc()` // Mengabaikan nilai pertama, hanya peduli error
+    `for _, value := range slice { ... }` // Mengabaikan indeks

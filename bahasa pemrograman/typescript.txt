@@ -1,0 +1,373 @@
+// Daftar Lengkap dan Mendalam Konsep TypeScript:
+
+// ====================================================================
+// I. DASAR-DASAR TYPESCRIPT
+// ====================================================================
+
+Cara Menjalankan Kode TypeScript =
+    1. Kompilasi ke JavaScript: `tsc nama_file.ts` (menghasilkan `nama_file.js`)
+    2. Eksekusi JavaScript yang dikompilasi: `node nama_file.js`
+    3. Menggunakan `ts-node`: `ts-node nama_file.ts` (untuk eksekusi langsung tanpa kompilasi eksplisit, cocok untuk pengembangan)
+    4. Menggunakan bundler seperti Webpack/Vite/Rollup (untuk proyek frontend).
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+    /**
+     * Ini komentar JSDoc/TSDoc
+     * untuk dokumentasi kode.
+     */
+
+Output Dasar = Menggunakan `console.log()`.
+    Contoh:
+    console.log("Halo, TypeScript!"); // Mencetak teks ke konsol
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Deklarasi dengan `var`, `let`, atau `const`.
+    `let`: Variabel yang nilainya bisa diubah (mutable), memiliki block scope. Paling umum digunakan.
+        Contoh: `let angka: number = 10;`
+    `const`: Variabel yang nilainya tidak dapat diubah (immutable/read-only), memiliki block scope.
+        Contoh: `const nama: string = "Ani";`
+    `var`: (Hindari jika memungkinkan) Variabel lama dari JavaScript, memiliki function scope dan beberapa perilaku aneh (hoisting).
+
+Tipe Data Primitif (Built-in Types) =
+    `number`: Bilangan bulat atau pecahan (e.g., `10`, `3.14`).
+    `string`: Urutan karakter (e.g., `"Halo"`, `'Dunia'`). Mendukung template literals (backticks `` ` ``).
+        Contoh: `let pesan: string = `Halo, ${nama}!`;`
+    `boolean`: Nilai Boolean (`true` atau `false`).
+    `null`: Nilai yang menunjukkan tidak adanya nilai yang disengaja.
+    `undefined`: Nilai yang menunjukkan bahwa variabel belum diberi nilai.
+    `symbol`: Nilai unik dan immutable (ES6).
+    `bigint`: Untuk bilangan bulat yang sangat besar (ES2020).
+
+Tipe Data Khusus / Kompleks =
+    `any`: Tipe yang bisa menampung nilai dari tipe apa pun. Menghilangkan pemeriksaan tipe pada waktu kompilasi (hindari jika memungkinkan).
+        Contoh: `let data: any = "abc"; data = 123;`
+    `unknown`: Mirip `any`, tetapi lebih aman. Membutuhkan pemeriksaan tipe sebelum dapat digunakan.
+        Contoh:
+        let val: unknown = "Halo";
+        if (typeof val === "string") {
+            console.log(val.length); // OK, karena sudah diperiksa
+        }
+    `void`: Digunakan sebagai tipe kembalian fungsi yang tidak mengembalikan nilai apa pun.
+        Contoh: `function logMessage(): void { console.log("Pesan"); }`
+    `never`: Merepresentasikan tipe nilai yang tidak pernah terjadi. Digunakan untuk fungsi yang selalu melempar error atau tidak pernah mengembalikan nilai.
+        Contoh: `function error(message: string): never { throw new Error(message); }`
+
+Literal Types = Memungkinkan variabel hanya memiliki nilai literal tertentu.
+    Contoh: `let status: "success" | "error" = "success";`
+
+Type Inference = TypeScript seringkali dapat menyimpulkan tipe data secara otomatis tanpa deklarasi eksplisit.
+    Contoh: `let jumlah = 10; // jumlah disimpulkan sebagai number`
+
+Type Assertion = Memberi tahu compiler bahwa Anda tahu lebih baik tentang tipe suatu nilai.
+    Sintaks: `value as Type` atau `<Type>value`
+    Contoh: `let someValue: any = "this is a string"; let strLength: number = (someValue as string).length;`
+
+// ====================================================================
+// III. KOLEKSI (ARRAYS DAN TUPLES)
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama.
+    Sintaks: `TipeData[]` atau `Array<TipeData>`
+    Contoh:
+    let numbers: number[] = [1, 2, 3];
+    let names: Array<string> = ["Alice", "Bob"];
+
+Tuple = Array dengan jumlah elemen dan tipe data yang sudah ditentukan pada setiap posisi.
+    Contoh:
+    let user: [number, string, boolean] = [1, "John Doe", true];
+    // user[0] adalah number, user[1] adalah string, user[2] adalah boolean.
+    // user[0] = "dua"; // Error: Type '"dua"' is not assignable to type 'number'.
+
+// ====================================================================
+// IV. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi. Definisi parameter dan tipe kembalian.
+    Contoh:
+    function add(a: number, b: number): number {
+        return a + b;
+    }
+    const greet = (name: string): void => {
+        console.log(`Halo, ${name}!`);
+    };
+
+Opsional dan Default Parameters =
+    Opsional (`?`): Parameter yang bisa ada atau tidak.
+        Contoh: `function buildName(firstName: string, lastName?: string): string { ... }`
+    Default Value: Parameter dengan nilai default.
+        Contoh: `function multiply(a: number, b: number = 2): number { return a * b; }`
+
+Rest Parameters (`...`) = Memungkinkan fungsi menerima sejumlah argumen yang bervariasi sebagai array.
+    Contoh:
+    function sumAll(...numbers: number[]): number {
+        return numbers.reduce((total, num) => total + num, 0);
+    }
+    // console.log(sumAll(1, 2, 3)); // Output: 6
+
+Function Overloads = Mendefinisikan beberapa tanda tangan fungsi untuk sebuah fungsi, memungkinkan pemanggilan fungsi dengan berbagai tipe argumen. Implementasi hanya satu.
+    Contoh:
+    function combine(a: number, b: number): number;
+    function combine(a: string, b: string): string;
+    function combine(a: any, b: any): any {
+        if (typeof a === 'number' && typeof b === 'number') {
+            return a + b;
+        }
+        if (typeof a === 'string' && typeof b === 'string') {
+            return a + b;
+        }
+        throw new Error('Tipe argumen tidak cocok.');
+    }
+
+// ====================================================================
+// V. INTERFACE DAN TYPE ALIASES
+// ====================================================================
+
+Interface = Cara mendefinisikan "kontrak" untuk struktur objek. Digunakan untuk memeriksa struktur objek.
+    Contoh:
+    interface User {
+        id: number;
+        name: string;
+        email?: string; // Properti opsional
+        readonly createdAt: Date; // Properti read-only
+    }
+
+    let user1: User = {
+        id: 1,
+        name: "Alice",
+        createdAt: new Date()
+    };
+    // user1.id = 2; // OK
+    // user1.createdAt = new Date(); // Error: Cannot assign to 'createdAt' because it is a read-only property.
+
+Type Aliases = Memberikan nama baru untuk tipe apa pun. Sering digunakan untuk tipe union atau literal.
+    Contoh:
+    type ID = number | string; // Type alias untuk tipe union
+    type Status = "active" | "inactive" | "pending";
+
+    let userID: ID = 101;
+    let userStatus: Status = "active";
+
+Perbedaan Interface vs Type Aliases:
+    - Interfaces dapat di-extend dan di-implement oleh kelas.
+    - Type aliases tidak dapat di-extend/implement.
+    - Interfaces dapat digabungkan secara otomatis (declaration merging).
+    - Type aliases bisa mendefinisikan tipe union (`A | B`), intersection (`A & B`), atau tipe primitif. Interfaces hanya untuk objek/fungsi.
+
+// ====================================================================
+// VI. CLASS
+// ====================================================================
+
+Class (Kelas) = Blueprint untuk membuat objek. Mendukung properti, metode, konstruktor, pewarisan.
+    Contoh:
+    class Animal {
+        name: string; // Public by default
+
+        constructor(name: string) {
+            this.name = name;
+        }
+
+        makeSound(): void {
+            console.log("Animal makes a sound.");
+        }
+    }
+
+    let myAnimal = new Animal("Lion");
+    console.log(myAnimal.name);
+    myAnimal.makeSound();
+
+Access Modifiers = Mengontrol akses ke anggota kelas.
+    `public`: Default, bisa diakses dari mana saja.
+    `private`: Hanya bisa diakses dari dalam kelas yang sama.
+    `protected`: Hanya bisa diakses dari dalam kelas yang sama atau kelas turunan.
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (subclass) dapat mewarisi properti dan metode dari kelas lain (superclass). Menggunakan `extends`.
+    Contoh:
+    class Dog extends Animal { // Dog mewarisi dari Animal
+        breed: string;
+
+        constructor(name: string, breed: string) {
+            super(name); // Memanggil konstruktor superclass
+            this.breed = breed;
+        }
+
+        makeSound(): void { // Override metode superclass
+            console.log("Woof! Woof!");
+        }
+
+        bark(): void {
+            console.log(`${this.name} barks!`);
+        }
+    }
+
+    let myDog = new Dog("Buddy", "Golden Retriever");
+    myDog.makeSound(); // Output: Woof! Woof!
+    myDog.bark();
+
+Abstract Classes = Kelas yang tidak bisa di-instantiate secara langsung, dan bisa berisi metode abstrak (tanpa implementasi). Ditandai dengan `abstract`.
+    Contoh:
+    abstract class Shape {
+        abstract getArea(): number; // Metode abstrak
+        printInfo(): void {
+            console.log("Ini adalah bentuk.");
+        }
+    }
+    class Circle extends Shape {
+        radius: number;
+        constructor(radius: number) {
+            super();
+            this.radius = radius;
+        }
+        getArea(): number { // Harus mengimplementasikan metode abstrak
+            return Math.PI * this.radius * this.radius;
+        }
+    }
+
+Implement Interface = Kelas dapat mengimplementasikan satu atau lebih interface.
+    Contoh:
+    interface Logger {
+        log(message: string): void;
+    }
+    class ConsoleLogger implements Logger {
+        log(message: string): void {
+            console.log(`LOG: ${message}`);
+        }
+    }
+
+// ====================================================================
+// VII. ENUMS
+// ====================================================================
+
+Enums (Enumerations) = Memungkinkan Anda mendefinisikan sekumpulan konstanta bernama.
+    Numeric Enums: Nilai default adalah angka yang bertambah.
+        Contoh:
+        enum Direction {
+            Up,     // 0
+            Down,   // 1
+            Left,   // 2
+            Right   // 3
+        }
+        console.log(Direction.Up); // Output: 0
+
+    String Enums: Memberikan nilai string eksplisit. Lebih mudah dibaca saat debugging.
+        Contoh:
+        enum Status {
+            SUCCESS = "SUCCESS",
+            ERROR = "ERROR",
+            PENDING = "PENDING"
+        }
+        console.log(Status.SUCCESS); // Output: "SUCCESS"
+
+// ====================================================================
+// VIII. GENERICS
+// ====================================================================
+
+Generics = Memungkinkan Anda menulis kode yang dapat bekerja dengan berbagai tipe data tanpa kehilangan keamanan tipe saat kompilasi.
+    Contoh:
+    function identity<T>(arg: T): T {
+        return arg;
+    }
+    let output1 = identity<string>("myString"); // eksplisit
+    let output2 = identity(123); // tipe disimpulkan
+
+    // Generic Interface
+    interface GenericBox<T> {
+        value: T;
+    }
+    let stringBox: GenericBox<string> = { value: "hello" };
+
+    // Generic Class
+    class GenericStack<T> {
+        private items: T[] = [];
+        push(item: T) { this.items.push(item); }
+        pop(): T | undefined { return this.items.pop(); }
+    }
+
+// ====================================================================
+// IX. UTILITY TYPES (Built-in Mapped Types)
+// ====================================================================
+
+Utility Types = Tipe yang disediakan oleh TypeScript untuk memanipulasi tipe lain.
+    `Partial<T>`: Membuat semua properti T menjadi opsional.
+        Contoh: `type PartialUser = Partial<User>; // { id?: number; name?: string; ... }`
+    `Readonly<T>`: Membuat semua properti T menjadi read-only.
+        Contoh: `type ReadonlyUser = Readonly<User>; // { readonly id: number; ... }`
+    `Pick<T, K>`: Memilih properti K dari tipe T.
+        Contoh: `type UserPreview = Pick<User, "id" | "name">; // { id: number; name: string; }`
+    `Omit<T, K>`: Menghilangkan properti K dari tipe T.
+        Contoh: `type UserWithoutEmail = Omit<User, "email">;`
+    `Exclude<T, U>`: Menghilangkan tipe U dari tipe T (union types).
+        Contoh: `type ExcludeStrings = Exclude<string | number | boolean, string>; // number | boolean`
+    `Record<K, T>`: Membuat tipe objek dengan kunci K dan nilai T.
+        Contoh: `type PaginatedUsers = Record<string, User[]>; // { [key: string]: User[]; }`
+
+// ====================================================================
+// X. MODUL
+// ====================================================================
+
+Modul = Cara untuk mengorganisir kode menjadi file-file terpisah yang dapat diimpor dan diekspor. Menggunakan `import` dan `export`.
+    File `utils.ts`:
+    export function capitalize(text: string): string {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+    export const PI = 3.14159;
+
+    File `main.ts`:
+    import { capitalize, PI } from './utils'; // Mengimpor spesifik
+    // import * as Utils from './utils'; // Mengimpor semua sebagai objek
+
+    console.log(capitalize("hello"));
+    console.log(PI);
+    // console.log(Utils.capitalize("world"));
+
+// ====================================================================
+// XI. KONSEP LANJUT
+// ====================================================================
+
+Type Inference = (Sudah dijelaskan di Variabel dan Tipe Data)
+
+Union Types (`|`) = Memungkinkan variabel memiliki salah satu dari beberapa tipe.
+    Contoh: `let id: number | string = 101; id = "abc";`
+
+Intersection Types (`&`) = Menggabungkan beberapa tipe menjadi satu tipe baru yang memiliki semua properti dari tipe yang digabungkan.
+    Contoh:
+    interface Drivable { drive(): void; }
+    interface Flyable { fly(): void; }
+    type CarPlane = Drivable & Flyable;
+    let hybridVehicle: CarPlane = {
+        drive: () => console.log("Driving"),
+        fly: () => console.log("Flying")
+    };
+
+Type Guards = Mekanisme untuk mempersempit tipe suatu variabel dalam blok kode kondisional.
+    `typeof` guard: Untuk tipe primitif (`string`, `number`, `boolean`, `symbol`, `undefined`, `object`, `function`, `bigint`).
+    `instanceof` guard: Untuk objek.
+    User-Defined Type Guards: Fungsi yang mengembalikan boolean dan juga menginformasikan compiler tentang tipe.
+        Contoh: `function isDog(animal: Animal): animal is Dog { return (animal as Dog).bark !== undefined; }`
+
+Type Narrowing = Proses TypeScript memahami tipe yang lebih spesifik dari sebuah nilai dalam konteks tertentu (misalnya, setelah pemeriksaan `if`).
+
+Decorators (Experimental) = Fitur yang memungkinkan anotasi dan modifikasi kelas, metode, properti, atau parameter pada waktu desain. Digunakan di framework seperti Angular.
+    Contoh:
+    // @Component({ selector: 'my-app', template: '<h1>Hello</h1>' })
+    // class MyApp { ... }
+
+Declaration Files (`.d.ts`) = File yang hanya berisi deklarasi tipe tanpa implementasi. Digunakan untuk menyediakan informasi tipe untuk library JavaScript yang sudah ada.
+
+tsconfig.json = File konfigurasi utama untuk proyek TypeScript. Mengontrol bagaimana compiler TypeScript (tsc) mengkompilasi kode.
+    Penting untuk konfigurasi seperti `target`, `module`, `strict`, `jsx`, `outDir`, dll.
+
+Non-null Assertion Operator (`!`) = Memberi tahu compiler bahwa nilai tidak `null` atau `undefined`, meskipun tipenya menunjukkan kemungkinan itu. (Gunakan dengan hati-hati).
+    Contoh: `let myElement = document.getElementById("my-id")!; // Percaya bahwa elemen akan ditemukan`
+
+Optional Chaining (`?.`) = Mengakses properti objek yang mungkin `null` atau `undefined` dengan aman. Jika properti di tengah rantai adalah `null`/`undefined`, seluruh ekspresi akan mengembalikan `undefined` daripada error.
+    Contoh: `let street = user?.address?.street;`
+
+Nullish Coalescing Operator (`??`) = Mengembalikan operan kanan jika operan kiri adalah `null` atau `undefined` (bukan hanya falsy seperti `||`).
+    Contoh: `let username = providedName ?? "Guest";`

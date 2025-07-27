@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Code Pemrograman Lengkap</title>
+    <style>
+        /* Styling dasar untuk tampilan yang lebih baik */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #555;
+            color: #fff;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+        }
+        nav a:hover {
+            background-color: #777;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        .language-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 0;
+            list-style: none;
+        }
+        .language-list li {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            font-weight: bold;
+        }
+        .language-list li a { /* Gaya untuk tautan di dalam list */
+            text-decoration: none;
+            color: #333;
+            display: block; /* Membuat seluruh area li bisa diklik */
+            padding: 0; /* Menghilangkan padding tambahan dari a */
+        }
+        .language-list li a:hover {
+            color: #007bff; /* Warna saat di-hover */
+        }
+        .donation-box, .contact-box {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            background-color: #333;
+            color: #fff;
+        }
+        .footer-credit {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Belajar Code Pemrograman Lengkap</h1>
+        <p>Sumber daya terpadu untuk memulai perjalanan coding Anda!</p>
+    </header>
+
+    <nav>
+        <a href="#daftar-bahasa">Daftar Bahasa</a>
+        <a href="#donasi">Donasi</a>
+        <a href="#saran">Masukan & Saran</a>
+        <a href="#kontak">Kontak</a>
+    </nav>
+
+    <div class="container">
+        <section id="daftar-bahasa">
+            <h2 class="section-title">Daftar Bahasa Pemrograman & Teknologi</h2>
+            <ul class="language-list">
+                <li><a href="c#.txt" target="_blank">C#</a></li>
+                <li><a href="c.txt" target="_blank">C</a></li>
+                <li><a href="c++.txt" target="_blank">C++</a></li>
+                <li><a href="css.txt" target="_blank">CSS</a></li>
+                <li><a href="elrlang.txt" target="_blank">Erlang</a></li>
+                <li><a href="golang.txt" target="_blank">Golang</a></li>
+                <li><a href="haskal.txt" target="_blank">Haskell</a></li>
+                <li><a href="html.txt" target="_blank">HTML</a></li>
+                <li><a href="java.txt" target="_blank">Java</a></li>
+                <li><a href="javascript.txt" target="_blank">JavaScript</a></li>
+                <li><a href="kotlin.txt" target="_blank">Kotlin</a></li>
+                <li><a href="Linux.txt" target="_blank">Linux</a></li>
+                <li><a href="lisp.txt" target="_blank">LISP</a></li>
+                <li><a href="php.txt" target="_blank">PHP</a></li>
+                <li><a href="phython.txt" target="_blank">Python</a></li>
+                <li><a href="ruby.txt" target="_blank">Ruby</a></li>
+                <li><a href="sql.txt" target="_blank">SQL</a></li>
+                <li><a href="swift.txt" target="_blank">Swift</a></li>
+                <li><a href="typescript.txt" target="_blank">TypeScript</a></li>
+            </ul>
+        </section>
+
+        ---
+
+        <section id="donasi">
+            <div class="donation-box">
+                <h2 class="section-title">Dukung Kami!</h2>
+                <p>Jika Anda merasa website ini bermanfaat, Anda bisa memberikan donasi untuk mendukung pengembangan dan pemeliharaan konten. Setiap dukungan sangat berarti!</p>
+                <h3>Donasi via DANA</h3>
+                <p>Silakan transfer ke nomor DANA berikut:</p>
+                <p><strong>0858-8133-4119</strong> (muhammad wildan shubhan)</p>
+                <p>Terima kasih atas kemurahan hati Anda!</p>
+            </div>
+        </section>
+
+        ---
+
+        <section id="saran">
+            <div class="contact-box">
+                <h2 class="section-title">Masukan dan Saran</h2>
+                <p>Kami sangat menghargai masukan dan saran dari Anda untuk membuat website ini lebih baik dan lengkap. Jangan ragu untuk menyampaikan ide atau kritik Anda.</p>
+                <p>Silakan kirim masukan dan saran Anda melalui email di bawah ini.</p>
+            </div>
+        </section>
+
+        ---
+
+        <section id="kontak">
+            <div class="contact-box">
+                <h2 class="section-title">Hubungi Kami</h2>
+                <p>Untuk pertanyaan lebih lanjut atau kolaborasi, Anda bisa menghubungi saya melalui:</p>
+                <p><strong>Email:</strong> <a href="mailto:muhammadwildanshubhan@gmail.com">muhammadwildanshubhan@gmail.com</a> </p>
+                <p><strong>WhatsApp:</strong> <a href="https://wa.me/6285881334119">0858-8133-4119</a> </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Belajar Code Pemrograman Lengkap.</p>
+        <p class="footer-credit">Dibuat oleh Muhammad Wildan Shubhan.</p>
+    </footer>
+</body>
+</html>

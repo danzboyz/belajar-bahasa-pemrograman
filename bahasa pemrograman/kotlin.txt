@@ -1,0 +1,496 @@
+// Daftar Lengkap dan Mendalam Konsep Kotlin:
+
+// ====================================================================
+// I. DASAR-DASAR KOTLIN
+// ====================================================================
+
+Struktur Program Kotlin = Sebuah program Kotlin minimal terdiri dari fungsi `main()`.
+    Contoh:
+    fun main() { // Fungsi utama, program dimulai dari sini
+        println("Halo, Kotlin!") // Mencetak teks ke konsol
+    }
+
+Kompilasi dan Eksekusi = Proses mengubah kode sumber Kotlin menjadi program yang dapat dijalankan.
+    1. Kode Sumber (.kt) --Kompilasi (kotlinc)--> Bytecode (.class) --Eksekusi--> JVM (Java Virtual Machine)
+    2. Kompilasi (menggunakan Kotlin compiler atau IDE seperti IntelliJ IDEA/Android Studio): `kotlinc HaloKotlin.kt -include-runtime -d HaloKotlin.jar`
+    3. Eksekusi: `java -jar HaloKotlin.jar`
+
+Komentar = Bagian kode yang diabaikan oleh compiler, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    /* Ini komentar
+       multi-baris */
+    /**
+     * Ini komentar KDoc (Kotlin documentation)
+     * untuk dokumentasi kode.
+     */
+
+Output Dasar = Menggunakan `println()` atau `print()`.
+    Contoh:
+    println("Ini akan menambahkan baris baru.")
+    print("Ini tidak menambahkan baris baru.")
+    // String template (mirip f-strings di Python):
+    val nama = "Budi"
+    val umur = 30
+    println("Nama: $nama, Umur: $umur")
+    println("Jumlah karakter di nama: ${nama.length}")
+
+Input Pengguna = Menggunakan `readLine()`. Input selalu berupa `String?` (Nullable String).
+    Contoh:
+    print("Masukkan nama Anda: ")
+    val namaPengguna = readLine() // Mengembalikan String?
+    println("Halo, $namaPengguna!")
+
+    print("Masukkan umur Anda: ")
+    val umurString = readLine()
+    // Menggunakan safe call operator (?.) dan Elvis operator (?:)
+    val umurPengguna: Int? = umurString?.toIntOrNull() // Mengkonversi ke Int?
+    println("Umur Anda adalah: ${umurPengguna ?: "Tidak Valid"}")
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Harus dideklarasikan dengan `val` atau `var`.
+    `val` (immutable): Untuk variabel yang nilainya tidak dapat diubah setelah diinisialisasi (read-only). Mirip `final` di Java.
+        Contoh: `val angka = 10`
+    `var` (mutable): Untuk variabel yang nilainya dapat diubah.
+        Contoh: `var nama = "Ani"`
+
+Tipe Data = Kotlin memiliki tipe data bawaan yang mewakili angka, karakter, boolean, dll. Semua adalah objek (tidak ada tipe primitif murni seperti di Java).
+    Numbers:
+        Byte: 8-bit signed integer
+        Short: 16-bit signed integer
+        Int: 32-bit signed integer (paling umum untuk bilangan bulat)
+        Long: 64-bit signed integer (diakhiri 'L' atau 'l' jika literalnya besar)
+            Contoh: `val bigNum = 10000000000L`
+        Float: 32-bit floating-point (diakhiri 'f' atau 'F')
+            Contoh: `val pi = 3.14f`
+        Double: 64-bit floating-point (paling umum untuk pecahan)
+            Contoh: `val suhu = 25.5`
+    Boolean: `true` atau `false`.
+    Char: Karakter tunggal (dikelilingi kutip tunggal, e.g., `'A'`).
+    String: Urutan karakter (dikelilingi kutip ganda, e.g., `"Halo"`). Mendukung multiline string (`"""..."""`).
+
+Null Safety = Fitur inti Kotlin untuk mencegah NullPointerException.
+    Tipe Non-nullable: Secara default, variabel tidak bisa bernilai `null`.
+        Contoh: `var nama: String = "Budi"` (tidak bisa `null`)
+    Nullable Types: Untuk memungkinkan variabel bernilai `null`, tambahkan `?` setelah tipe data.
+        Contoh: `var alamat: String? = null` (bisa `null`)
+    Safe Call Operator (`?.`): Digunakan untuk mengakses properti/metode jika objek tidak `null`, jika `null` maka hasilnya `null`.
+        Contoh: `val length = alamat?.length`
+    Elvis Operator (`?:`): Memberikan nilai default jika ekspresi di sisi kiri `null`.
+        Contoh: `val displayAddress = alamat ?: "Tidak ada alamat"`
+    Non-null Asserted Call Operator (`!!`): Mengkonversi tipe nullable ke non-nullable, melempar `NullPointerException` jika nilai `null`. (Hindari jika memungkinkan).
+        Contoh: `val guaranteedLength = alamat!!.length`
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), != (tidak sama dengan), > (lebih besar), < (lebih kecil), >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND), || (OR), ! (NOT)`
+
+Range Operator = Membuat range nilai.
+    Contoh: `1..5` (inklusif: 1, 2, 3, 4, 5), `1 until 5` (eksklusif: 1, 2, 3, 4)
+
+Operator In (Keanggotaan) = Memeriksa apakah nilai ada dalam range atau koleksi.
+    Contoh: `if (x in 1..10) { ... }`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / else if / else = Melakukan eksekusi kode berdasarkan kondisi. Bisa juga sebagai ekspresi (mengembalikan nilai).
+    Contoh:
+    val nilai = 85
+    val kategori = if (nilai > 90) {
+        "Sangat Baik"
+    } else if (nilai > 70) {
+        "Baik"
+    } else {
+        "Cukup"
+    }
+    println(kategori)
+
+when (mirip switch) = Menggantikan pernyataan `switch` dari Java, lebih fleksibel dan bisa sebagai ekspresi.
+    Contoh:
+    val hari = "Senin"
+    when (hari) {
+        "Senin" -> println("Awal pekan")
+        "Jumat" -> println("Akhir pekan segera tiba")
+        else -> println("Hari biasa")
+    }
+    // Sebagai ekspresi:
+    val hasilWhen = when (nilai) {
+        in 91..100 -> "A"
+        in 81..90 -> "B"
+        else -> "C"
+    }
+    println(hasilWhen)
+
+for loop = Mengulang (iterasi) melalui item dalam range atau koleksi.
+    Contoh:
+    for (i in 0..4) {
+        print("$i ")
+    }
+    for (char in "Kotlin") {
+        print("$char ")
+    }
+    val numbers = listOf(10, 20, 30)
+    for (num in numbers) {
+        print("$num ")
+    }
+    // Dengan indeks:
+    for ((index, value) in numbers.withIndex()) {
+        println("Index $index: $value")
+    }
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh:
+    var i = 0
+    while (i < 3) {
+        print("$i ")
+        i++
+    }
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh:
+    var count = 0
+    do {
+        print("$count ")
+        count++
+    } while (count < 2)
+
+break = Menghentikan eksekusi loop secara paksa.
+    Contoh:
+    for (i in 0..10) {
+        if (i == 5) break
+        print("$i ")
+    }
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh:
+    for (i in 0..5) {
+        if (i == 2) continue
+        print("$i ")
+    }
+
+Labeled Breaks and Continues = Untuk mengontrol loop bersarang.
+    Contoh:
+    loop@ for (i in 1..3) {
+        for (j in 1..3) {
+            if (i == 2 && j == 2) break@loop // Keluar dari loop terluar
+            println("i: $i, j: $j")
+        }
+    }
+
+// ====================================================================
+// V. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dengan `fun`.
+    Contoh:
+    fun sapa(nama: String): String { // Fungsi dengan parameter dan return
+        return "Halo, $nama"
+    }
+    fun cetakPesan() { // Fungsi tanpa parameter dan tanpa return (Unit = void)
+        println("Ini pesan dari fungsi.")
+    }
+
+    val hasil = sapa("Dina") // Memanggil fungsi
+    println(hasil)
+    cetakPesan()
+
+Single-Expression Functions = Fungsi yang hanya memiliki satu ekspresi bisa disederhanakan.
+    Contoh: `fun tambah(a: Int, b: Int): Int = a + b`
+
+Default Parameters = Memberikan nilai default untuk parameter fungsi.
+    Contoh:
+    fun greet(nama: String = "Pengunjung") {
+        println("Halo, $nama")
+    }
+    greet() // Output: Halo, Pengunjung
+    greet("Ali") // Output: Halo, Ali
+
+Named Arguments = Memungkinkan pemanggilan fungsi dengan menyebutkan nama argumen, meningkatkan keterbacaan.
+    Contoh: `greet(nama = "Budi")`
+
+Variable Number of Arguments (`vararg`) = Memungkinkan fungsi menerima sejumlah argumen yang bervariasi dari tipe yang sama (sebagai array).
+    Contoh:
+    fun sumAll(vararg numbers: Int): Int {
+        return numbers.sum()
+    }
+    println(sumAll(1, 2, 3, 4)) // Output: 10
+
+Extension Functions = Memungkinkan Anda "menambahkan" fungsi baru ke kelas yang sudah ada tanpa memodifikasi kode sumber kelas tersebut.
+    Contoh:
+    fun String.hasVowels(): Boolean {
+        return "aeiouAEIOU".any { it in this }
+    }
+    println("Kotlin".hasVowels()) // Output: true
+
+Lambda Functions (Function Literals) = Fungsi anonim yang dapat diperlakukan sebagai nilai (disimpan dalam variabel, diteruskan sebagai argumen).
+    Contoh:
+    val kaliDua = { x: Int -> x * 2 }
+    println(kaliDua(5)) // Output: 10
+
+Higher-Order Functions = Fungsi yang menerima fungsi lain sebagai parameter atau mengembalikan fungsi.
+    Contoh:
+    fun applyOperation(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+        return operation(a, b)
+    }
+    val result = applyOperation(10, 5) { x, y -> x + y } // Menggunakan lambda
+    println(result) // Output: 15
+
+// ====================================================================
+// VI. ARRAY DAN KOLEKSI
+// ====================================================================
+
+Array = Koleksi elemen dengan tipe data yang sama. Ukurannya tetap setelah dibuat.
+    Deklarasi & Inisialisasi:
+    val angka = arrayOf(1, 2, 3)
+    val nama = arrayOf<String>("Alice", "Bob")
+    val zeroArray = IntArray(5) // Array integer dengan 5 elemen, semua 0
+
+    Mengakses elemen: `angka[0]` (indeks dimulai dari 0)
+    Mengubah elemen: `angka[0] = 10` (jika `var` array atau array mutabel)
+
+List = Antarmuka untuk koleksi terurut.
+    `List<T>` (immutable): List yang tidak dapat diubah setelah dibuat.
+    `MutableList<T>` (mutable): List yang dapat diubah (menambah/menghapus elemen).
+    Contoh:
+    val immutableList = listOf("Apple", "Banana", "Cherry")
+    // immutableList.add("Date") // Akan error
+
+    val mutableList = mutableListOf("Red", "Green")
+    mutableList.add("Blue")
+    println(mutableList[0]) // Output: Red
+    println(mutableList.size) // Output: 3
+
+Set = Antarmuka untuk koleksi item unik.
+    `Set<T>` (immutable): Set yang tidak dapat diubah.
+    `MutableSet<T>` (mutable): Set yang dapat diubah.
+    Contoh:
+    val uniqueNumbers = setOf(1, 2, 2, 3) // uniqueNumbers = {1, 2, 3}
+    val mutableSet = mutableSetOf("A", "B")
+    mutableSet.add("A") // Tidak menambah duplikat
+    println(mutableSet.contains("B")) // true
+
+Map = Antarmuka untuk koleksi pasangan kunci-nilai. Kunci harus unik.
+    `Map<K, V>` (immutable): Map yang tidak dapat diubah.
+    `MutableMap<K, V>` (mutable): Map yang dapat diubah.
+    Contoh:
+    val immutableMap = mapOf("Jakarta" to 10000000, "Bandung" to 2500000)
+    println(immutableMap["Jakarta"]) // Output: 10000000
+
+    val mutableMap = mutableMapOf<String, String>()
+    mutableMap["nama"] = "Alice"
+    mutableMap.put("umur", "30")
+    println(mutableMap["nama"]) // Output: Alice
+
+// ====================================================================
+// VII. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI KOTLIN
+// ====================================================================
+
+Class (Kelas) = Blueprint untuk membuat objek.
+    Contoh:
+    class Hewan {
+        // Properti
+        var nama: String = ""
+        var umur: Int = 0
+
+        // Metode
+        fun bersuara() {
+            println("Hewan ini bersuara.")
+        }
+    }
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh:
+    val kucing = Hewan() // Membuat objek kucing
+    kucing.nama = "Kitty" // Mengakses properti
+    kucing.bersuara() // Memanggil metode
+
+Constructor (Konstruktor) = Digunakan untuk menginisialisasi properti objek.
+    Primary Constructor: Bagian dari deklarasi kelas.
+        Contoh:
+        class Kucing(val nama: String, val warna: String) { // Primary Constructor
+            // Opsional: init block untuk inisialisasi tambahan
+            init {
+                println("Kucing bernama $nama, berwarna $warna telah dibuat.")
+            }
+        }
+        // Membuat objek: val myCat = Kucing("Milo", "Oranye")
+
+    Secondary Constructors: Digunakan jika ada beberapa cara untuk membuat objek atau perlu logika inisialisasi kompleks.
+        Contoh:
+        class Buku(val judul: String) {
+            var halaman: Int = 0
+            constructor(judul: String, halaman: Int) : this(judul) { // Secondary Constructor
+                this.halaman = halaman
+            }
+        }
+
+Properties = Atribut kelas. Kotlin secara otomatis menghasilkan getter/setter untuk `var` dan hanya getter untuk `val`.
+    Contoh: `val nama: String` (auto-generated getter)
+    `var umur: Int` (auto-generated getter dan setter)
+
+Access Modifiers (Penentu Akses) = Mengontrol akses ke kelas dan anggotanya.
+    `public`: Default, bisa diakses dari mana saja.
+    `private`: Hanya bisa diakses dari dalam kelas yang sama.
+    `protected`: Hanya bisa diakses dari dalam kelas yang sama atau kelas turunan.
+    `internal`: Hanya bisa diakses dari dalam modul yang sama.
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (subclass/child class) dapat mewarisi properti dan metode dari kelas lain (superclass/parent class).
+    Kelas parent harus dideklarasikan sebagai `open` agar bisa diwarisi.
+    Contoh:
+    open class Kendaraan { // Perlu 'open' agar bisa diwarisi
+        open fun bergerak() { println("Kendaraan bergerak.") } // Perlu 'open' agar bisa di-override
+    }
+    class Mobil : Kendaraan() { // Mobil mewarisi dari Kendaraan, panggil konstruktor parent
+        fun klakson() { println("Beep!") }
+        override fun bergerak() { // Override metode parent
+            super.bergerak() // Memanggil metode parent
+            println("Mobil bergerak di jalan raya.")
+        }
+    }
+    // Penggunaan: val myCar = Mobil(); myCar.bergerak(); myCar.klakson();
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk.
+    Method Overriding: Metode di child class memiliki tanda tangan yang sama dengan metode di parent class.
+        Membutuhkan `open` di parent dan `override` di child.
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi yang rumit dan hanya menampilkan fungsionalitas esensial.
+    Dicapai dengan:
+    1. Abstract Classes (Kelas Abstrak): Kelas yang tidak bisa di-instantiate secara langsung, dan bisa berisi metode abstrak (tanpa implementasi) dan non-abstrak. Ditandai dengan `abstract`.
+        Contoh:
+        abstract class HewanAbstrak {
+            abstract fun bersuara() // Metode abstrak
+            fun makan() { println("Hewan makan.") }
+        }
+        class Anjing : HewanAbstrak() {
+            override fun bersuara() { println("Guk guk!") }
+        }
+    2. Interfaces (Antarmuka): Blueprint dari sebuah kelas. Bisa berisi deklarasi metode abstrak dan implementasi metode default. Kelas yang mengimplementasikan antarmuka harus menyediakan implementasi untuk semua metode abstraknya. Ditandai dengan `interface`.
+        Contoh:
+        interface BisaTerbang {
+            fun terbang()
+            fun mendarat() { println("Mendarat dengan aman.") } // Metode default
+        }
+        class Burung : BisaTerbang {
+            override fun terbang() { println("Burung terbang.") }
+        }
+
+Data Classes = Kelas khusus yang dirancang untuk menyimpan data. Otomatis menghasilkan `equals()`, `hashCode()`, `toString()`, `copy()`, dan `componentN()` untuk destructuring.
+    Contoh: `data class User(val name: String, val age: Int)`
+    val user1 = User("Alice", 30)
+    val user2 = user1.copy(age = 31) // Menyalin dan memodifikasi
+    val (name, age) = user1 // Destructuring declaration
+
+Singleton (Object Declaration) = Cara mudah untuk membuat singleton (hanya satu instance dari kelas).
+    Contoh:
+    object DatabaseManager {
+        fun connect() { println("Connecting to database...") }
+    }
+    // Penggunaan: DatabaseManager.connect()
+
+Enums (Enumerations) = Tipe data khusus yang terdiri dari sekumpulan konstanta bernama.
+    Contoh:
+    enum class Hari {
+        SENIN, SELASA, RABU, KAMIS, JUMAT, SABTU, MINGGU
+    }
+    // Penggunaan: val today = Hari.SENIN
+
+Sealed Classes = Digunakan untuk merepresentasikan hierarki kelas yang terbatas. Memastikan semua subclass didefinisikan dalam file yang sama (atau modul yang sama jika di Kotlin 1.5+). Berguna dengan `when` ekspresi untuk memeriksa semua kemungkinan tanpa `else`.
+    Contoh:
+    sealed class Result
+    data class Success(val data: String) : Result()
+    data class Error(val message: String) : Result()
+
+// ====================================================================
+// VIII. PENANGANAN EXCEPTION (ERROR)
+// ====================================================================
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `try` = Blok kode yang mungkin menimbulkan pengecualian.
+    `catch` = Blok kode yang menangkap dan menangani tipe pengecualian tertentu.
+    `finally` = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya pengecualian.
+    `throw` = Melemparkan (menciptakan) pengecualian.
+    Contoh:
+    fun bagi(num1: Int, num2: Int): Int {
+        if (num2 == 0) {
+            throw IllegalArgumentException("Tidak bisa membagi dengan nol!")
+        }
+        return num1 / num2
+    }
+    try {
+        println(bagi(10, 2))
+        println(bagi(5, 0))
+    } catch (e: IllegalArgumentException) {
+        println("Terjadi Error: ${e.message}")
+    } catch (e: Exception) { // Menangkap semua error lain
+        println("Terjadi Error Umum: ${e.message}")
+    } finally {
+        println("Proses selesai.")
+    }
+
+// ====================================================================
+// IX. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Smart Casts = Compiler Kotlin secara otomatis melakukan casting berdasarkan pemeriksaan kondisi (misal: `if (obj is String) { ... }`).
+    Contoh:
+    fun printLength(obj: Any) {
+        if (obj is String) {
+            println("Panjang string adalah ${obj.length}") // obj secara otomatis di-cast menjadi String
+        }
+    }
+
+Scope Functions (`let`, `run`, `with`, `apply`, `also`) = Fungsi yang memungkinkan Anda menjalankan blok kode pada sebuah objek, seringkali untuk pemrosesan rantai atau inisialisasi.
+    `let`: Untuk mengeksekusi blok kode pada objek non-null.
+        Contoh: `val name: String? = "John"; name?.let { println("Nama tidak null: $it") }`
+    `apply`: Mengembalikan objek yang sama setelah melakukan konfigurasi.
+        Contoh: `val person = Person().apply { name = "Alice"; age = 30 }`
+    `also`: Mengembalikan objek yang sama setelah melakukan side effect.
+        Contoh: `val numbers = mutableListOf(1, 2).also { it.add(3) }`
+
+Coroutines = Untuk pemrograman asinkron dan konkruensi yang lebih mudah di Kotlin. Mengatasi masalah callback hell dan menawarkan cara menulis kode non-blocking secara sekuensial.
+    Contoh dasar:
+    import kotlinx.coroutines.*
+    fun main() = runBlocking { // This: CoroutineScope
+        launch { // Launch a new coroutine in background and continue
+            delay(1000L) // non-blocking delay for 1 second (default time unit is MS)
+            println("World!") // Prints after delay
+        }
+        print("Hello, ") // Main thread continues immediately
+    }
+
+Delegation = Mendeklarasikan sebuah properti atau kelas dapat mendelegasikan implementasi getter/setter-nya ke objek lain.
+    `by` keyword:
+        Contoh: `class Contoh by DelegasiImpl()`
+
+Destructuring Declarations = Memungkinkan Anda "membongkar" objek menjadi beberapa variabel. Berguna untuk data classes.
+    Contoh: `val (nama, umur) = user1`
+
+Type Aliases = Memberikan nama alternatif untuk tipe yang sudah ada. Meningkatkan keterbacaan kode.
+    Contoh: `typealias NamaPengguna = String`
+
+Inline Functions = Compiler dapat "menyisipkan" kode fungsi langsung ke tempat pemanggilannya, mengurangi overhead overhead panggilan fungsi, terutama untuk fungsi berurutan tinggi.
+
+Backing Fields and Properties = Bagaimana Kotlin mengelola properti di balik layar dengan field internal untuk getter/setter.
+
+Elvis Operator (`?:`) = (Sudah dijelaskan di Null Safety)
+
+Range Operator (`..`, `until`) = (Sudah dijelaskan di Operator)
+
+Smart Casts = (Sudah dijelaskan di atas)

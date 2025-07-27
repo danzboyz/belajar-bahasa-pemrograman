@@ -1,0 +1,492 @@
+<?php
+
+// Daftar Lengkap dan Mendalam Konsep PHP:
+
+// ====================================================================
+// I. DASAR-DASAR PHP
+// ====================================================================
+
+Cara Menjalankan Kode PHP =
+    1. Server Web (Apache, Nginx, IIS) + PHP-FPM: File .php ditempatkan di direktori web server, diakses melalui browser.
+    2. CLI (Command Line Interface): `php nama_file.php` di terminal.
+    3. PHP Fiddle / Online Editor.
+
+Tag PHP = Kode PHP harus diapit oleh tag pembuka dan penutup.
+    Contoh:
+    <?php
+    echo "Halo, PHP!";
+    ?>
+    // Tag pendek (jarang disarankan karena mungkin dinonaktifkan di server): <?="Halo";?>
+
+Pernyataan (Statements) = Setiap pernyataan di PHP harus diakhiri dengan titik koma (`;`).
+    Contoh:
+    echo "Baris pertama";
+    echo "Baris kedua";
+
+Komentar = Bagian kode yang diabaikan oleh interpreter, digunakan untuk penjelasan.
+    Contoh:
+    // Ini komentar satu baris
+    # Ini juga komentar satu baris (bash-style)
+    /*
+     * Ini komentar
+     * multi-baris
+     */
+
+Output Dasar = Menggunakan `echo`, `print`, `print_r`, `var_dump`.
+    `echo`: Untuk mencetak string, angka, dll. Lebih cepat dari `print`.
+        Contoh: echo "Halo dunia!"; echo 123;
+    `print`: Mirip `echo`, sedikit lebih lambat, mengembalikan 1 pada sukses.
+        Contoh: print "Belajar PHP";
+    `print_r()`: Untuk mencetak array atau objek secara lebih mudah dibaca.
+        Contoh: print_r([1, 2, 3]);
+    `var_dump()`: Untuk mencetak tipe data dan nilai dari variabel, termasuk detail array/objek. Sangat berguna untuk debugging.
+        Contoh: var_dump("Halo", 123, true);
+
+// ====================================================================
+// II. VARIABEL DAN TIPE DATA
+// ====================================================================
+
+Variabel = Wadah untuk menyimpan data. Dimulai dengan tanda dolar (`$`). PHP adalah bahasa dengan pengetikan dinamis.
+    Contoh:
+    $nama = "Budi";       // String
+    $umur = 25;           // Integer
+    $tinggi = 175.5;      // Float
+    $is_aktif = true;     // Boolean
+
+Tipe Data Primitif =
+    String = Urutan karakter. Bisa pakai kutip tunggal (`''`) atau ganda (`""`).
+        Kutip ganda (`""`) mengurai variabel dan escape sequence.
+        Kutip tunggal (`''`) tidak mengurai variabel atau escape sequence.
+        Contoh:
+        $nama = "Dina";
+        echo "Halo, $nama!";      // Output: Halo, Dina!
+        echo 'Halo, $nama!';      // Output: Halo, $nama!
+    Integer = Bilangan bulat (misal: -1, 0, 100).
+    Float (atau Double) = Bilangan pecahan (misal: 3.14, -0.5).
+    Boolean = Nilai Boolean (`true` atau `false`). Tidak case-sensitive.
+        Contoh: $isLogged = TRUE;
+
+Tipe Data Koleksi =
+    Array = Koleksi item. Bisa array terindeks numerik atau array asosiatif (key-value pair).
+        Terindeks Numerik:
+            $fruits = ["Apple", "Banana", "Cherry"];
+            echo $fruits[0]; // Output: Apple
+        Asosiatif:
+            $umur_orang = ["Budi" => 25, "Ani" => 30];
+            echo $umur_orang["Budi"]; // Output: 25
+        Array multi-dimensi: Array di dalam array.
+            $matriks = [[1, 2], [3, 4]];
+            echo $matriks[0][1]; // Output: 2
+    Object = Instansi dari sebuah kelas (akan dijelaskan di OOP).
+    NULL = Variabel tanpa nilai atau yang tidak ada.
+    Resource = Variabel khusus yang menampung referensi ke sumber daya eksternal (misal: koneksi database, file).
+
+Konstanta = Nilai yang tidak dapat diubah setelah didefinisikan.
+    `define()`: Untuk mendefinisikan konstanta global.
+        Contoh: define("MAX_USERS", 100);
+    `const`: Untuk mendefinisikan konstanta di dalam kelas.
+        Contoh: class MyClass { const PI = 3.14; }
+
+Konversi Tipe (Type Casting) = Mengubah tipe data suatu nilai.
+    Contoh:
+    $str_num = "123";
+    $int_num = (int)$str_num; // $int_num = 123 (integer)
+    $float_num = (float)"3.14"; // $float_num = 3.14 (float)
+
+// ====================================================================
+// III. OPERATOR
+// ====================================================================
+
+Operator Aritmatika = Melakukan operasi matematika.
+    Contoh: `+ (penjumlahan), - (pengurangan), * (perkalian), / (pembagian), % (modulus), ** (pangkat)`
+
+Operator Penugasan = Memberikan nilai ke variabel.
+    Contoh: `= (penugasan), += (tambah dan tugaskan), -= (kurang dan tugaskan), *=, /=, %=, **=`
+
+Operator Perbandingan = Membandingkan dua nilai, menghasilkan boolean.
+    Contoh: `== (sama dengan), === (identik: nilai dan tipe sama), != (tidak sama), !== (tidak identik), >, <, >=, <=`
+
+Operator Logika = Menggabungkan atau membalikkan kondisi boolean.
+    Contoh: `&& (AND logis), || (OR logis), ! (NOT logis), and, or, xor`
+
+Operator Increment/Decrement = Menambah/mengurangi nilai variabel sebesar 1.
+    Contoh: `++ (increment), -- (decrement)`
+    Pre-increment/decrement (`++$x`, `--$x`) = Perubahan nilai sebelum digunakan.
+    Post-increment/decrement (`$x++`, `$x--`) = Perubahan nilai setelah digunakan.
+
+Operator String = Menggabungkan string.
+    Contoh: `.` (concatenation)
+    `$pesan = "Halo" . " Dunia!";`
+
+Operator Ternary (Kondisional) = Operator ringkas untuk if-else.
+    Sintaks: `(kondisi) ? ekspresi_jika_true : ekspresi_jika_false;`
+    Contoh: `$status = ($umur >= 18) ? "Dewasa" : "Anak-anak";`
+
+Null Coalescing Operator (`??`) (PHP 7+) = Mengembalikan operan kiri jika tidak null, jika null mengembalikan operan kanan.
+    Contoh: `$username = $_GET['user'] ?? 'Guest';`
+
+Spaceship Operator (`<=>`) (PHP 7+) = Menggabungkan perbandingan. Mengembalikan -1 (kurang dari), 0 (sama), atau 1 (lebih dari).
+    Contoh: `$result = $a <=> $b;`
+
+// ====================================================================
+// IV. KONTROL ALIRAN
+// ====================================================================
+
+if / elseif / else = Melakukan eksekusi kode berdasarkan kondisi.
+    Contoh:
+    $nilai = 85;
+    if ($nilai > 90) {
+        echo "Sangat Baik";
+    } elseif ($nilai > 70) {
+        echo "Baik";
+    } else {
+        echo "Cukup";
+    }
+
+switch = Alternatif untuk if/elseif berantai ketika membandingkan satu nilai dengan banyak kemungkinan.
+    Contoh:
+    $hari = "Senin";
+    switch ($hari) {
+        case "Senin":
+            echo "Awal pekan";
+            break;
+        case "Jumat":
+            echo "Akhir pekan segera tiba";
+            break;
+        default:
+            echo "Hari biasa";
+    }
+
+for loop = Mengulang blok kode sejumlah kali yang ditentukan.
+    Contoh: for ($i = 0; $i < 5; $i++) { echo $i . " "; }
+
+foreach loop = Untuk iterasi melalui elemen array atau objek.
+    Contoh:
+    $colors = ["red", "green", "blue"];
+    foreach ($colors as $color) {
+        echo $color . " ";
+    }
+    // Dengan key dan value:
+    $ages = ["Budi" => 25, "Ani" => 30];
+    foreach ($ages as $name => $age) {
+        echo "$name berusia $age tahun. ";
+    }
+
+while loop = Mengulang blok kode selama kondisi tertentu terpenuhi.
+    Contoh: $i = 0; while ($i < 3) { echo $i . " "; $i++; }
+
+do...while loop = Mirip while, tetapi blok kode dieksekusi setidaknya sekali sebelum kondisi diperiksa.
+    Contoh: $count = 0; do { echo $count . " "; $count++; } while ($count < 2);
+
+break = Menghentikan eksekusi loop atau switch secara paksa.
+    Contoh: for ($i = 0; $i < 10; $i++) { if ($i == 5) break; echo $i . " "; }
+
+continue = Melewatkan iterasi saat ini dari loop dan melanjutkan ke iterasi berikutnya.
+    Contoh: for ($i = 0; $i < 5; $i++) { if ($i == 2) continue; echo $i . " "; }
+
+// ====================================================================
+// V. FUNGSI
+// ====================================================================
+
+Fungsi = Blok kode yang dapat dieksekusi, dirancang untuk melakukan tugas tertentu. Didefinisikan dengan `function`.
+    Contoh:
+    function sapa($nama) { // Fungsi dengan parameter
+        return "Halo, " . $nama;
+    }
+    function cetakPesan() { // Fungsi tanpa parameter
+        echo "Ini pesan dari fungsi.";
+    }
+
+    $hasil = sapa("Dina"); // Memanggil fungsi
+    echo $hasil;
+    cetakPesan();
+
+Parameter Fungsi =
+    Default Parameters = Memberikan nilai default untuk parameter fungsi jika tidak disediakan saat pemanggilan.
+        Contoh:
+        function greet($nama = "Pengunjung") {
+            echo "Halo, " . $nama;
+        }
+        greet(); // Output: Halo, Pengunjung
+        greet("Ali"); // Output: Halo, Ali
+
+    Variable-length Argument Lists (`...`) (PHP 5.6+) = Memungkinkan fungsi menerima sejumlah argumen yang bervariasi sebagai array.
+        Contoh:
+        function sum(...$numbers) {
+            return array_sum($numbers);
+        }
+        echo sum(1, 2, 3); // Output: 6
+
+Type Declarations (PHP 7+) = Menentukan tipe data yang diharapkan untuk parameter fungsi dan nilai kembalian.
+    Contoh:
+    function add(int $a, int $b): int {
+        return $a + $b;
+    }
+
+Anonymous Functions (Closure) = Fungsi tanpa nama, dapat disimpan dalam variabel atau diteruskan sebagai argumen.
+    Contoh:
+    $greet = function($name) {
+        echo "Halo, " . $name;
+    };
+    $greet("Alex");
+
+Arrow Functions (`fn`) (PHP 7.4+) = Sintaks ringkas untuk fungsi anonim satu baris.
+    Contoh:
+    $kali_dua = fn($x) => $x * 2;
+    echo $kali_dua(5); // Output: 10
+
+// ====================================================================
+// VI. PEMROGRAMAN BERORIENTASI OBJEK (OOP) DI PHP
+// ====================================================================
+
+Class (Kelas) = Blueprint untuk membuat objek. Didefinisikan dengan `class`.
+    Contoh:
+    class Hewan {
+        // Properti (atribut)
+        public $nama;
+        public $umur;
+
+        // Metode
+        public function bersuara() {
+            echo "Hewan ini bersuara.";
+        }
+    }
+
+Object (Objek/Instance) = Instance dari sebuah kelas.
+    Contoh:
+    $kucing = new Hewan(); // Membuat objek kucing
+    $kucing->nama = "Kitty"; // Mengakses properti
+    $kucing->bersuara(); // Memanggil metode
+
+Constructor (Konstruktor) = Metode khusus (`__construct()`) yang dipanggil secara otomatis saat objek dibuat. Digunakan untuk inisialisasi properti objek.
+    Contoh:
+    class Kucing {
+        public $nama;
+        public $warna;
+
+        public function __construct($namaKucing, $warnaKucing) { // Konstruktor
+            $this->nama = $namaKucing;
+            $this->warna = $warnaKucing;
+        }
+    }
+    // Membuat objek dengan konstruktor: $myCat = new Kucing("Milo", "Oranye");
+
+`$this` Keyword = Merujuk pada objek saat ini (instance kelas saat ini).
+
+Access Modifiers (Penentu Akses) = Mengontrol akses ke properti dan metode kelas.
+    `public`: Bisa diakses dari mana saja.
+    `private`: Hanya bisa diakses dari dalam kelas yang sama.
+    `protected`: Hanya bisa diakses dari dalam kelas yang sama atau kelas turunan.
+
+Inheritance (Pewarisan) = Mekanisme di mana sebuah kelas (child class) dapat mewarisi properti dan metode dari kelas lain (parent class). Menggunakan kata kunci `extends`.
+    Contoh:
+    class Kendaraan {
+        public function bergerak() { echo "Kendaraan bergerak."; }
+    }
+    class Mobil extends Kendaraan { // Mobil mewarisi dari Kendaraan
+        public function klakson() { echo "Beep!"; }
+    }
+    // Penggunaan: $myCar = new Mobil(); $myCar->bergerak(); $myCar->klakson();
+
+`parent` Keyword = Digunakan untuk merujuk pada anggota (metode atau properti) dari parent class.
+    Contoh:
+    class Anak extends OrangTua {
+        public function sapa() {
+            parent::sapa(); // Memanggil metode sapa() dari parent class
+            echo "Saya anak.";
+        }
+    }
+
+Polymorphism (Polimorfisme) = Kemampuan objek untuk mengambil banyak bentuk.
+    Method Overriding: Metode di child class memiliki tanda tangan yang sama dengan metode di parent class, dan akan dipanggil berdasarkan tipe objek sebenarnya.
+    Contoh:
+    class Bentuk {
+        public function gambar() { echo "Menggambar bentuk umum."; }
+    }
+    class Lingkaran extends Bentuk {
+        public function gambar() { echo "Menggambar lingkaran."; } // Override
+    }
+    // Penggunaan:
+    // $b1 = new Bentuk(); $b1->gambar(); // Output: Menggambar bentuk umum.
+    // $b2 = new Lingkaran(); $b2->gambar(); // Output: Menggambar lingkaran. (Polimorfisme)
+
+Abstraction (Abstraksi) = Menyembunyikan detail implementasi yang rumit dan hanya menampilkan fungsionalitas esensial.
+    Dicapai dengan:
+    1. Abstract Classes (Kelas Abstrak): Kelas yang tidak bisa di-instantiate secara langsung, dan bisa berisi metode abstrak (tanpa implementasi). Ditandai dengan `abstract`.
+        Contoh:
+        abstract class HewanAbstrak {
+            abstract public function bersuara(); // Metode abstrak
+            public function makan() { echo "Hewan makan."; }
+        }
+        class Anjing extends HewanAbstrak {
+            public function bersuara() { echo "Guk guk!"; }
+        }
+    2. Interfaces (Antarmuka): Blueprint dari sebuah kelas. Hanya berisi deklarasi metode tanpa implementasi. Kelas yang mengimplementasikan antarmuka harus menyediakan implementasi untuk semua metodenya. Ditandai dengan `interface`.
+        Contoh:
+        interface IBisaTerbang {
+            public function terbang();
+        }
+        class Burung implements IBisaTerbang {
+            public function terbang() { echo "Burung terbang."; }
+        }
+
+Static Properties and Methods = Properti atau metode yang milik kelas itu sendiri, bukan objek individual. Diakses menggunakan `ClassName::$staticProperty` atau `ClassName::staticMethod()`.
+    Contoh:
+    class Hitung {
+        public static $counter = 0;
+        public static function tambah() {
+            self::$counter++; // Menggunakan self:: untuk static
+        }
+    }
+    Hitung::tambah();
+    echo Hitung::$counter; // Output: 1
+
+Trait (PHP 5.4+) = Mekanisme untuk menggunakan kembali blok kode secara horizontal (seperti multiple inheritance untuk metode).
+    Contoh:
+    trait Pesan {
+        public function kirimPesan($msg) { echo "Pesan: " . $msg; }
+    }
+    class Pengguna {
+        use Pesan;
+    }
+    // Penggunaan: $user = new Pengguna(); $user->kirimPesan("Halo!");
+
+Final Keyword =
+    Untuk metode: Metode tidak bisa di-override oleh child class.
+    Untuk kelas: Kelas tidak bisa di-inherit (tidak bisa diwarisi).
+
+// ====================================================================
+// VII. PENANGANAN ERROR DAN EXCEPTION
+// ====================================================================
+
+Error Handling = PHP memiliki mekanisme bawaan untuk error. Biasanya dikonfigurasi di `php.ini`.
+    `error_reporting()`: Mengatur level error yang dilaporkan.
+    `ini_set('display_errors', 1)`: Menampilkan error di browser (hanya untuk pengembangan).
+
+Exception Handling (Penanganan Pengecualian) = Mekanisme untuk menangani error runtime agar program tidak crash.
+    `try` = Blok kode yang mungkin menimbulkan pengecualian.
+    `catch` = Blok kode yang menangkap dan menangani tipe pengecualian tertentu.
+    `finally` (PHP 5.5+) = Blok kode yang selalu dieksekusi, terlepas dari ada atau tidaknya pengecualian.
+    `throw` = Melemparkan (menciptakan) pengecualian.
+    Contoh:
+    function bagi($num1, $num2) {
+        if ($num2 == 0) {
+            throw new Exception("Tidak bisa membagi dengan nol!");
+        }
+        return $num1 / $num2;
+    }
+    try {
+        echo bagi(10, 2) . "\n";
+        echo bagi(5, 0) . "\n";
+    } catch (Exception $e) {
+        echo "Terjadi Error: " . $e->getMessage() . "\n";
+    } finally {
+        echo "Proses selesai.\n";
+    }
+
+// ====================================================================
+// VIII. SUPERGLOBAL VARIABLES
+// ====================================================================
+
+Variabel Superglobal = Variabel bawaan PHP yang selalu tersedia di semua skop.
+
+`$_GET` = Array asosiatif dari variabel yang diteruskan melalui URL query string.
+    Contoh: `www.example.com?name=Budi&age=25` -> `$_GET['name']` adalah "Budi"
+
+`$_POST` = Array asosiatif dari variabel yang diteruskan melalui HTTP POST method (biasanya dari formulir HTML).
+
+`$_REQUEST` = Array asosiatif yang berisi konten `$_GET`, `$_POST`, dan `$_COOKIE`.
+
+`$_SESSION` = Array asosiatif dari variabel sesi. Digunakan untuk menyimpan data pengguna di beberapa halaman. Membutuhkan `session_start()`.
+
+`$_COOKIE` = Array asosiatif dari variabel cookie HTTP. Digunakan untuk menyimpan data di sisi klien.
+
+`$_SERVER` = Array asosiatif dari informasi server dan lingkungan eksekusi.
+    Contoh: `$_SERVER['REQUEST_METHOD']`, `$_SERVER['PHP_SELF']`
+
+`$_FILES` = Array asosiatif dari item yang diunggah file melalui HTTP POST.
+
+`$_ENV` = Array asosiatif dari variabel lingkungan.
+
+// ====================================================================
+// IX. INTERAKSI DENGAN DATABASE (MySQLi atau PDO)
+// ====================================================================
+
+MySQLi Extension = Ekstensi PHP untuk berinteraksi dengan database MySQL.
+    Procedural Style:
+        $conn = mysqli_connect("localhost", "user", "pass", "db_name");
+        $result = mysqli_query($conn, "SELECT * FROM users");
+        while($row = mysqli_fetch_assoc($result)) { /* ... */ }
+        mysqli_close($conn);
+    Object-Oriented Style:
+        $conn = new mysqli("localhost", "user", "pass", "db_name");
+        $result = $conn->query("SELECT * FROM users");
+        while($row = $result->fetch_assoc()) { /* ... */ }
+        $conn->close();
+
+PDO (PHP Data Objects) = Antarmuka database abstraction layer yang mendukung berbagai jenis database. Lebih disarankan karena fleksibilitas dan keamanan.
+    Contoh:
+    try {
+        $pdo = new PDO("mysql:host=localhost;dbname=db_name", "user", "pass");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $pdo->query("SELECT * FROM users");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // ...
+        }
+    } catch (PDOException $e) {
+        echo "Koneksi Gagal: " . $e->getMessage();
+    }
+
+Prepared Statements = Digunakan untuk mencegah SQL Injection. Memisahkan query SQL dari data.
+    MySQLi (Object-Oriented):
+        $stmt = $conn->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+        $stmt->bind_param("ss", $name, $email); // "ss" = string, string
+        $name = "Alice"; $email = "alice@example.com";
+        $stmt->execute();
+    PDO:
+        $stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $name = "Bob"; $email = "bob@example.com";
+        $stmt->execute();
+
+// ====================================================================
+// X. KONSEP PENTING LAINNYA
+// ====================================================================
+
+Include / Require = Untuk menyisipkan konten file PHP lain.
+    `include 'file.php';`: Jika file tidak ditemukan, warning dan skrip tetap berjalan.
+    `require 'file.php';`: Jika file tidak ditemukan, fatal error dan skrip berhenti.
+    `include_once 'file.php';`: Hanya menyisipkan file sekali.
+    `require_once 'file.php';`: Hanya menyisipkan file sekali dan fatal error jika tidak ditemukan.
+
+Session = Mekanisme untuk menyimpan informasi pengguna di beberapa halaman.
+    `session_start();`: Harus dipanggil di awal setiap halaman yang menggunakan sesi.
+    `$_SESSION['key'] = 'value';`: Menyimpan data ke sesi.
+    `session_destroy();`: Menghancurkan semua data sesi.
+
+Cookie = Mekanisme untuk menyimpan informasi di browser pengguna.
+    `setcookie("nama", "nilai", time() + (86400 * 30), "/");`: Membuat cookie (86400 detik = 1 hari).
+    `$_COOKIE['nama']`: Mengakses nilai cookie.
+
+File Handling = Membaca dan menulis data ke file.
+    `fopen()`, `fclose()`, `fread()`, `fwrite()`, `fgets()`, `file_get_contents()`, `file_put_contents()`.
+
+Header Function (`header()`) = Mengirim raw HTTP header. Digunakan untuk redirect, mengatur tipe konten, dll.
+    Contoh: `header("Location: dashboard.php");` // Redirect
+    Contoh: `header("Content-Type: application/json");` // Mengatur tipe konten JSON
+
+Namespace (PHP 5.3+) = Mengorganisir kode dan menghindari konflik penamaan kelas/fungsi.
+    Contoh:
+    namespace App\Controllers;
+    class UserController { /* ... */ }
+    // Menggunakan: `use App\Controllers\UserController;`
+
+Composer = Alat manajemen dependensi untuk PHP. Digunakan untuk menginstal library dan framework.
+    `composer install`
+    `composer update`
+
+Autoloading (PSR-4) = Secara otomatis memuat kelas yang dibutuhkan tanpa perlu banyak pernyataan `require`. Digunakan oleh Composer.
+
+MVC (Model-View-Controller) = Pola arsitektur yang sering digunakan di framework PHP (Laravel, Symfony) untuk memisahkan logika aplikasi.

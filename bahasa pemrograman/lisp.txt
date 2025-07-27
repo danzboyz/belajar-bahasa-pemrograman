@@ -1,0 +1,230 @@
+;; Daftar Lengkap dan Mendalam Konsep Lisp (Common Lisp):
+
+;; ====================================================================
+;; I. DASAR-DASAR LISP
+;; ====================================================================
+
+Struktur Program Lisp = Semuanya adalah ekspresi, biasanya dalam bentuk S-expression (list).
+    Contoh:
+    (defun main ()
+      (format t "Halo, Lisp!~%")) ; Fungsi utama, program dimulai dari sini
+
+Kompilasi dan Eksekusi =
+    1. Kode Sumber (.lisp, .cl, .lsp) --Kompilasi (implementasi Lisp seperti SBCL, CCL)--> Executable/Bytecode
+    2. Interaktif (REPL - Read-Eval-Print Loop): Langsung ketik ekspresi.
+        Buka REPL: `sbcl` (jika menggunakan SBCL)
+        Lalu ketik: `(format t "Halo, Lisp!~%")`
+    3. Memuat file: `(load "nama_file.lisp")` di REPL.
+
+Komentar =
+    Contoh:
+    ;; Ini komentar satu baris
+    #| Ini komentar
+       multi-baris |#
+
+Output Dasar =
+    `format t`: Mencetak output ke stream output standar (`t` berarti true/stdout).
+        `~%`: Karakter newline.
+        `~a`: Argument auto-formatted.
+        `~s`: Argument string-formatted.
+        Contoh:
+        (format t "Angka: ~a, Pecahan: ~a~%" 10 3.14)
+        (format t "Nama: ~s~%" "Alice")
+
+Input Dasar =
+    `read-line`: Membaca baris teks.
+        Contoh:
+        (format t "Siapa nama Anda? ")
+        (let ((nama (read-line)))
+          (format t "Halo, ~a!~%" nama))
+    `read`: Membaca S-expression.
+        Contoh:
+        (format t "Masukkan angka: ")
+        (let ((angka (read)))
+          (format t "Angka Anda: ~a~%" angka))
+
+Case Sensitivity = Lisp secara tradisional tidak case-sensitive secara default (biasanya mengkonversi simbol ke uppercase). Modern Lisp seringkali bisa dikonfigurasi.
+
+// ====================================================================
+;; II. VARIABEL DAN TIPE DATA
+;; ====================================================================
+
+Variabel = Didefinisikan menggunakan `defvar`, `setf`, `let`, dll. Lisp memiliki tipe data dinamis.
+    `defvar`: Mendefinisikan variabel global (dengan inisialisasi awal).
+        Contoh: `(defvar *angka* 10)` (konvensi `*var*` untuk global)
+    `setf`: Mengatur nilai variabel (atau lokasi umum).
+        Contoh: `(setf *angka* 20)`
+    `let`: Mendefinisikan variabel lokal (binding) dalam scope terbatas.
+        Contoh: `(let ((x 10) (y "halo")) (format t "~a ~a~%" x y))`
+
+Konstanta = Didefinisikan dengan `defconstant`.
+    Contoh: `(defconstant +pi+ 3.14159)` (konvensi `+CONST+` untuk konstanta)
+
+Tipe Data Primitif =
+    Numbers: `integer`, `float`, `ratio`, `complex`.
+        Lisp memiliki dukungan bawaan untuk *arbitrary-precision integers*.
+        Contoh: `10`, `3.14`, `1/3` (ratio), `#c(1 2)` (complex)
+    `character`: Karakter tunggal (`#\A`).
+    `string`: Urutan karakter (`"Halo"`).
+    `symbol`: Representasi nama (e.g., `FOO`, `+`, `DEFTUN`). Sangat fundamental di Lisp.
+
+Tipe Data Komposit =
+    List: Struktur data fundamental di Lisp. Koleksi elemen yang diurutkan.
+        Contoh: `'(1 2 3)`, `'(A B C)`
+        -- Constructing lists: `(cons 1 '(2 3))` -> `(1 2 3)`
+        -- Accessing elements: `(car '(1 2 3))` -> `1`, `(cdr '(1 2 3))` -> `(2 3)`
+    Vector (Array): Koleksi elemen yang dapat diakses berdasarkan indeks. Ukuran bisa tetap atau dinamis.
+        Contoh: `#(1 2 3)`
+        -- Creating: `(make-array 5 :initial-element 0)`
+        -- Accessing: `(aref #("a" "b") 0)` -> `"a"`
+    Hash Table: Koleksi pasangan kunci-nilai.
+        Contoh:
+        (let ((table (make-hash-table)))
+          (setf (gethash :nama table) "Budi")
+          (setf (gethash :umur table) 25)
+          (format t "Nama: ~a~%" (gethash :nama table)))
+    Struct (Structure): Tipe data yang berisi beberapa field bernama.
+        Contoh:
+        (defstruct person
+          name
+          age)
+        (let ((p (make-person :name "Alice" :age 30)))
+          (format t "Nama: ~a, Umur: ~a~%" (person-name p) (person-age p)))
+
+// ====================================================================
+;; III. OPERATOR DAN FUNGSI
+;; ====================================================================
+
+Operator Aritmatika = Sebagian besar adalah fungsi, ditempatkan di depan argumen (prefix notation).
+    Contoh: `(+ 5 3)` -> `8`, `(- 10 2)` -> `8`, `(* 4 2)` -> `8`, `(/ 10 2)` -> `5`
+
+Operator Perbandingan = Juga fungsi.
+    Contoh: `(= 5 5)` -> `T` (true), `(/= 5 3)` -> `T`, `(> 10 5)` -> `T`
+
+Operator Logika =
+    `and`, `or`, `not`
+    Contoh: `(and T nil)` -> `nil`, `(or T nil)` -> `T`
+
+// ====================================================================
+;; IV. KONTROL ALIRAN
+;; ====================================================================
+
+`if` = Kondisional dasar.
+    Sintaks: `(if kondisi then-exp [else-exp])`
+    Contoh: `(if (> x 0) (format t "Positif~%") (format t "Non-Positif~%"))`
+
+`cond` = Mirip `switch` atau `else if` berantai.
+    Contoh:
+    (cond ((> score 90) (format t "Sangat Baik~%"))
+          ((> score 70) (format t "Baik~%"))
+          (t (format t "Cukup~%"))) ; `t` adalah true, seperti default
+
+Loops =
+    `loop`: Macro loop yang sangat fleksibel.
+        Contoh: `(loop for i from 1 to 5 do (format t "~a ~%" i))`
+    `dolist`: Iterasi melalui elemen list.
+        Contoh: `(dolist (item '(a b c)) (format t "~a ~%" item))`
+    `dotimes`: Loop sejumlah kali.
+        Contoh: `(dotimes (i 5) (format t "~a ~%" i))`
+
+`progn` = Menggabungkan beberapa ekspresi menjadi satu blok, mengembalikan nilai ekspresi terakhir. (Implisit di banyak konstruksi).
+
+`block` dan `return-from` = Untuk mengontrol alur eksekusi, mirip `break`.
+    Contoh:
+    (block my-block
+      (loop for i from 1 to 10 do
+        (when (> i 5) (return-from my-block i)) ; Keluar dari block
+        (format t "~a ~%" i)))
+
+// ====================================================================
+;; V. FUNGSI
+;; ====================================================================
+
+Fungsi = Didefinisikan dengan `defun`.
+    Sintaks: `(defun nama-fungsi (parameter1 parameter2) "Docstring" body-expressions)`
+    Contoh:
+    (defun tambah (a b)
+      "Menjumlahkan dua angka."
+      (+ a b))
+
+    (defun cetak-pesan ()
+      (format t "Ini pesan dari fungsi.~%"))
+
+Lambda Functions (Anonymous Functions) = Fungsi tanpa nama.
+    Sintaks: `(lambda (parameter1 parameter2) body-expressions)`
+    Contoh: `(mapcar (lambda (x) (* x 2)) '(1 2 3))`
+
+Higher-Order Functions = Fungsi yang menerima fungsi lain sebagai argumen atau mengembalikan fungsi.
+    `mapcar`: Mengaplikasikan fungsi ke setiap elemen list, mengembalikan list baru.
+        Contoh: `(mapcar #'1+ '(1 2 3))` -> `(2 3 4)` (#' adalah shorthand untuk `function`)
+    `remove-if`: Menghapus elemen dari list berdasarkan predikat.
+
+// ====================================================================
+;; VI. MACROS
+;; ====================================================================
+
+Macros = Kemampuan Lisp untuk menulis kode yang menulis kode. Memungkinkan ekstensi sintaksis bahasa.
+    `defmacro`: Mendefinisikan macro.
+    Digunakan untuk menciptakan *Domain-Specific Languages (DSLs)*.
+    Contoh sederhana:
+    (defmacro with-logging ((var val) &body body)
+      `(progn
+         (format t "Setting ~a to ~a~%" ',var ,val)
+         (let ((,var ,val))
+           ,@body)))
+    (with-logging (x 10) (print x))
+
+// ====================================================================
+;; VII. OBJEK (CLOS - COMMON LISP OBJECT SYSTEM)
+;; ====================================================================
+
+CLOS (Common Lisp Object System) = Sistem objek yang powerful dan dinamis.
+    `defclass`: Mendefinisikan kelas.
+        Contoh:
+        (defclass person ()
+          ((name :accessor person-name :initarg :name :initform "Anon")
+           (age :accessor person-age :initarg :age :initform 0)))
+    `make-instance`: Membuat instance objek.
+        Contoh: `(make-instance 'person :name "David" :age 40)`
+    `defmethod`: Mendefinisikan metode. CLOS mendukung multiple dispatch (metode dipilih berdasarkan tipe semua argumen).
+        Contoh:
+        (defmethod greet ((p person))
+          (format t "Halo, nama saya ~a.~%" (person-name p)))
+    Inheritance: Kelas dapat mewarisi dari kelas lain.
+        Contoh: `(defclass student (person) ((student-id :accessor student-id)))`
+
+// ====================================================================
+;; VIII. PENANGANAN KONDISI (ERROR HANDLING)
+;; ====================================================================
+
+Condition System = Sistem penanganan error dan kondisi yang sangat fleksibel.
+    `signal`: Menyetujui kondisi (tanpa menghentikan eksekusi secara default).
+    `error`: Melemparkan error (menghentikan eksekusi secara default).
+    `handler-case`: Mirip `try-catch`, menangani kondisi.
+    `restart-case`: Memungkinkan penanganan error yang lebih interaktif dengan opsi "restart".
+    Contoh:
+    (handler-case (/ 10 0)
+      (division-by-zero (c)
+        (format t "Terjadi error: ~a~%" c)
+        :error-handled))
+
+// ====================================================================
+;; IX. KONSEP PENTING LAINNYA
+;; ====================================================================
+
+REPL (Read-Eval-Print Loop) = Lingkungan interaktif inti Lisp untuk pengembangan.
+
+Garbage Collection = Otomatis mengelola memori.
+
+Dynamic Typing = Tipe diperiksa saat runtime, bukan kompilasi.
+
+Metaprogramming = Kemampuan program untuk memanipulasi atau menghasilkan kode lain. (Melalui macros).
+
+Symbol = Objek data fundamental di Lisp yang merepresentasikan nama.
+
+Quoting (`'` dan `` ` ``) = Menghentikan evaluasi ekspresi.
+    `'exp`: Mengembalikan ekspresi apa adanya (evaluasi).
+    `` `exp`: Backquote, memungkinkan sebagian evaluasi (`unquote` `,`) dan `unquote-splicing` (`,@`).
+
+Packages = Untuk mengorganisir simbol dan menghindari konflik nama.
+    `defpackage`, `in-package`, `use`, `import`.

@@ -1,0 +1,388 @@
+-- Daftar Lengkap dan Mendalam Konsep SQL:
+
+-- ====================================================================
+-- I. DASAR-DASAR SQL
+-- ====================================================================
+
+Apa itu SQL? =
+    SQL adalah bahasa standar untuk berinteraksi dengan RDBMS (Relational Database Management System) seperti MySQL, PostgreSQL, Oracle, SQL Server, SQLite, dll.
+    Terbagi menjadi beberapa sub-bahasa:
+    - DDL (Data Definition Language): Untuk mendefinisikan/mengelola struktur database (CREATE, ALTER, DROP).
+    - DML (Data Manipulation Language): Untuk memanipulasi data dalam tabel (SELECT, INSERT, UPDATE, DELETE).
+    - DCL (Data Control Language): Untuk mengelola izin akses dan kontrol (GRANT, REVOKE).
+    - TCL (Transaction Control Language): Untuk mengelola transaksi (COMMIT, ROLLBACK, SAVEPOINT).
+
+Basis Data Relasional =
+    Data disimpan dalam tabel (disebut juga relasi), yang terdiri dari baris (record/tuple) dan kolom (field/attribute).
+    Hubungan antar tabel dibangun melalui kunci (key).
+
+Tabel = Unit dasar penyimpanan data dalam database relasional.
+
+Kolom (Columns) = Atribut atau field dalam tabel, memiliki nama dan tipe data tertentu.
+
+Baris (Rows) = Record tunggal dalam tabel, berisi data untuk setiap kolom.
+
+Kunci Utama (Primary Key - PK) =
+    Kolom atau sekumpulan kolom yang secara unik mengidentifikasi setiap baris dalam tabel.
+    Tidak boleh null dan harus unik.
+    Contoh: `CustomerID`, `ProductID`.
+
+Kunci Asing (Foreign Key - FK) =
+    Kolom atau sekumpulan kolom dalam satu tabel yang merujuk ke Kunci Utama di tabel lain.
+    Membangun hubungan antar tabel.
+    Contoh: `ProductID` di tabel `Orders` yang merujuk ke `ProductID` di tabel `Products`.
+
+// ====================================================================
+-- II. DATA DEFINITION LANGUAGE (DDL)
+-- ====================================================================
+
+CREATE DATABASE = Membuat database baru.
+    Sintaks: `CREATE DATABASE nama_database;`
+    Contoh: `CREATE DATABASE TokoOnline;`
+
+DROP DATABASE = Menghapus database yang sudah ada.
+    Sintaks: `DROP DATABASE nama_database;`
+    Contoh: `DROP DATABASE TokoOnline;`
+
+CREATE TABLE = Membuat tabel baru dalam database.
+    Sintaks:
+    `CREATE TABLE nama_tabel (`
+    `    nama_kolom1 tipe_data1 [CONSTRAINT],`
+    `    nama_kolom2 tipe_data2 [CONSTRAINT],`
+    `    ...`
+    `);`
+    Contoh:
+    CREATE TABLE Pelanggan (
+        ID INT PRIMARY KEY,
+        Nama VARCHAR(255) NOT NULL,
+        Email VARCHAR(255) UNIQUE,
+        TanggalLahir DATE
+    );
+
+Tipe Data Umum (Contoh) =
+    `INT` / `INTEGER`: Bilangan bulat.
+    `VARCHAR(size)`: String dengan panjang variabel, maks `size`.
+    `TEXT`: String panjang.
+    `CHAR(size)`: String dengan panjang tetap.
+    `DATE`: Tanggal (YYYY-MM-DD).
+    `TIME`: Waktu (HH:MM:SS).
+    `DATETIME` / `TIMESTAMP`: Tanggal dan waktu.
+    `BOOLEAN` / `BOOL`: Nilai benar/salah.
+    `DECIMAL(P,S)` / `NUMERIC(P,S)`: Angka desimal dengan presisi (P) dan skala (S).
+    `FLOAT` / `DOUBLE`: Angka floating-point.
+
+Constraints (Batasan) = Aturan yang diterapkan pada kolom tabel untuk membatasi jenis data yang dapat dimasukkan.
+    `NOT NULL`: Memastikan kolom tidak dapat memiliki nilai NULL.
+    `UNIQUE`: Memastikan semua nilai dalam kolom berbeda.
+    `PRIMARY KEY`: Gabungan `NOT NULL` dan `UNIQUE`, kunci unik tabel.
+    `FOREIGN KEY`: Membangun hubungan ke Primary Key tabel lain.
+    `DEFAULT value`: Menetapkan nilai default jika tidak ada nilai yang ditentukan.
+    `CHECK (kondisi)`: Memastikan semua nilai dalam kolom memenuhi kondisi tertentu.
+    `AUTO_INCREMENT` / `IDENTITY` (SQL Server) / `SERIAL` (PostgreSQL): Otomatis menghasilkan nilai unik untuk kolom numerik (sering untuk PK).
+
+ALTER TABLE = Mengubah struktur tabel yang sudah ada.
+    `ADD COLUMN`: Menambah kolom baru.
+        Contoh: `ALTER TABLE Pelanggan ADD COLUMN Telepon VARCHAR(15);`
+    `DROP COLUMN`: Menghapus kolom.
+        Contoh: `ALTER TABLE Pelanggan DROP COLUMN TanggalLahir;`
+    `MODIFY COLUMN` / `ALTER COLUMN`: Mengubah tipe data atau batasan kolom.
+        Contoh (MySQL): `ALTER TABLE Pelanggan MODIFY COLUMN Email VARCHAR(100);`
+        Contoh (PostgreSQL): `ALTER TABLE Pelanggan ALTER COLUMN Email TYPE VARCHAR(100);`
+    `ADD CONSTRAINT`: Menambah batasan.
+        Contoh: `ALTER TABLE Pesanan ADD CONSTRAINT FK_Pelanggan FOREIGN KEY (PelangganID) REFERENCES Pelanggan(ID);`
+    `DROP CONSTRAINT`: Menghapus batasan.
+        Contoh: `ALTER TABLE Pesanan DROP CONSTRAINT FK_Pelanggan;`
+
+DROP TABLE = Menghapus tabel yang sudah ada.
+    Sintaks: `DROP TABLE nama_tabel;`
+    Contoh: `DROP TABLE Pelanggan;`
+
+TRUNCATE TABLE = Menghapus semua baris dari tabel, tetapi mempertahankan struktur tabel dan mereset `AUTO_INCREMENT`. Lebih cepat dari `DELETE` tanpa `WHERE`.
+    Sintaks: `TRUNCATE TABLE nama_tabel;`
+    Contoh: `TRUNCATE TABLE Pesanan;`
+
+// ====================================================================
+-- III. DATA MANIPULATION LANGUAGE (DML)
+-- ====================================================================
+
+SELECT = Mengambil data dari satu atau lebih tabel.
+    Sintaks Dasar: `SELECT kolom1, kolom2 FROM nama_tabel;`
+    Mengambil semua kolom: `SELECT * FROM nama_tabel;`
+    Contoh:
+    SELECT Nama, Email FROM Pelanggan;
+    SELECT * FROM Produk;
+
+DISTINCT = Mengambil hanya nilai unik dari sebuah kolom.
+    Contoh: `SELECT DISTINCT Kota FROM Pelanggan;`
+
+WHERE Clause = Memfilter baris berdasarkan kondisi.
+    Operator Perbandingan: `=`, `!=` (atau `<>`), `>`, `<`, `>=`, `<=`.
+    Operator Logika: `AND`, `OR`, `NOT`.
+    Operator Lain:
+        `BETWEEN value1 AND value2`: Dalam rentang inklusif.
+        `LIKE pattern`: Mencari pola string ( `%` untuk nol atau lebih karakter, `_` untuk satu karakter).
+        `IN (value1, value2, ...)`: Mencocokkan salah satu nilai dalam daftar.
+        `IS NULL`: Memeriksa nilai NULL.
+        `IS NOT NULL`: Memeriksa nilai non-NULL.
+    Contoh:
+    SELECT * FROM Produk WHERE Harga > 50000;
+    SELECT Nama FROM Pelanggan WHERE Umur BETWEEN 20 AND 30 AND Kota = 'Jakarta';
+    SELECT * FROM Produk WHERE Nama LIKE 'Kaos%';
+    SELECT * FROM Pesanan WHERE Status IN ('Pending', 'Processing');
+
+ORDER BY = Mengurutkan hasil berdasarkan satu atau lebih kolom.
+    `ASC`: Ascending (default).
+    `DESC`: Descending.
+    Contoh:
+    SELECT Nama, Harga FROM Produk ORDER BY Harga DESC;
+    SELECT Nama, TanggalLahir FROM Pelanggan ORDER BY TanggalLahir ASC, Nama ASC;
+
+LIMIT (MySQL/PostgreSQL) / TOP (SQL Server) / ROWNUM (Oracle) = Membatasi jumlah baris yang dikembalikan.
+    Contoh (MySQL/PostgreSQL): `SELECT * FROM Produk LIMIT 10;`
+    Contoh (SQL Server): `SELECT TOP 10 * FROM Produk;`
+
+OFFSET (MySQL/PostgreSQL) = Melewatkan sejumlah baris sebelum memulai mengambil data. Digunakan untuk pagination.
+    Contoh: `SELECT * FROM Produk LIMIT 10 OFFSET 20;` (Ambil 10 baris mulai dari baris ke-21)
+
+INSERT INTO = Menambahkan baris baru ke tabel.
+    Sintaks:
+    `INSERT INTO nama_tabel (kolom1, kolom2, ...) VALUES (nilai1, nilai2, ...);`
+    `INSERT INTO nama_tabel VALUES (nilai1, nilai2, ...);` (Jika menyertakan semua kolom sesuai urutan)
+    Contoh:
+    INSERT INTO Pelanggan (ID, Nama, Email) VALUES (1, 'Budi Santoso', 'budi@example.com');
+    INSERT INTO Produk VALUES (101, 'Baju', 150000, 50);
+
+UPDATE = Memodifikasi data yang sudah ada di tabel.
+    Sintaks: `UPDATE nama_tabel SET kolom1 = nilai1, kolom2 = nilai2 WHERE kondisi;`
+    **PENTING**: Selalu gunakan `WHERE` clause untuk menghindari update semua baris.
+    Contoh:
+    UPDATE Pelanggan SET Email = 'budi.s@example.com' WHERE ID = 1;
+    UPDATE Produk SET Stok = Stok - 1 WHERE ID = 101;
+
+DELETE FROM = Menghapus baris dari tabel.
+    Sintaks: `DELETE FROM nama_tabel WHERE kondisi;`
+    **PENTING**: Selalu gunakan `WHERE` clause untuk menghindari hapus semua baris.
+    Contoh:
+    DELETE FROM Pelanggan WHERE ID = 1;
+    DELETE FROM Pesanan WHERE Tanggal < '2023-01-01';
+
+// ====================================================================
+-- IV. FUNGSI AGREGASI
+-- ====================================================================
+
+Fungsi Agregasi = Melakukan perhitungan pada sekumpulan baris dan mengembalikan satu nilai.
+    `COUNT()`: Menghitung jumlah baris.
+        `COUNT(*)`: Menghitung semua baris (termasuk NULL).
+        `COUNT(kolom)`: Menghitung baris non-NULL dalam kolom.
+        `COUNT(DISTINCT kolom)`: Menghitung nilai unik non-NULL.
+    `SUM(kolom)`: Menjumlahkan nilai numerik dalam kolom.
+    `AVG(kolom)`: Menghitung rata-rata nilai numerik dalam kolom.
+    `MIN(kolom)`: Mengambil nilai terkecil dari kolom.
+    `MAX(kolom)`: Mengambil nilai terbesar dari kolom.
+    Contoh:
+    SELECT COUNT(*) FROM Pelanggan;
+    SELECT SUM(TotalHarga) FROM Pesanan;
+    SELECT AVG(Harga) FROM Produk;
+    SELECT MIN(TanggalPesanan) FROM Pesanan;
+    SELECT MAX(Stok) FROM Produk;
+
+GROUP BY = Mengelompokkan baris yang memiliki nilai yang sama dalam satu atau lebih kolom, sehingga fungsi agregasi dapat diterapkan ke setiap grup.
+    Contoh:
+    SELECT Kategori, AVG(Harga) AS RataRataHarga FROM Produk GROUP BY Kategori;
+    SELECT PelangganID, COUNT(*) AS JumlahPesanan FROM Pesanan GROUP BY PelangganID;
+
+HAVING = Memfilter grup yang dihasilkan oleh `GROUP BY` berdasarkan kondisi. Digunakan setelah `GROUP BY`.
+    `WHERE` memfilter baris sebelum pengelompokan.
+    `HAVING` memfilter grup setelah pengelompokan.
+    Contoh:
+    SELECT PelangganID, COUNT(*) AS JumlahPesanan
+    FROM Pesanan
+    GROUP BY PelangganID
+    HAVING COUNT(*) > 5; -- Hanya tampilkan pelanggan dengan lebih dari 5 pesanan
+
+// ====================================================================
+-- V. JOIN
+-- ====================================================================
+
+JOIN = Menggabungkan baris dari dua atau lebih tabel berdasarkan kolom terkait.
+
+INNER JOIN = Mengembalikan baris saat ada kecocokan di kedua tabel.
+    Sintaks: `SELECT ... FROM TabelA INNER JOIN TabelB ON TabelA.kolom = TabelB.kolom;`
+    Contoh:
+    SELECT P.Nama, O.TotalHarga
+    FROM Pelanggan P
+    INNER JOIN Pesanan O ON P.ID = O.PelangganID;
+
+LEFT JOIN (LEFT OUTER JOIN) = Mengembalikan semua baris dari tabel kiri, dan baris yang cocok dari tabel kanan. Jika tidak ada kecocokan di kanan, hasilnya NULL.
+    Sintaks: `SELECT ... FROM TabelA LEFT JOIN TabelB ON TabelA.kolom = TabelB.kolom;`
+    Contoh:
+    SELECT P.Nama, O.ID AS PesananID
+    FROM Pelanggan P
+    LEFT JOIN Pesanan O ON P.ID = O.PelangganID; -- Akan tampilkan semua pelanggan, bahkan yang belum punya pesanan
+
+RIGHT JOIN (RIGHT OUTER JOIN) = Mengembalikan semua baris dari tabel kanan, dan baris yang cocok dari tabel kiri. Jika tidak ada kecocokan di kiri, hasilnya NULL.
+    Sintaks: `SELECT ... FROM TabelA RIGHT JOIN TabelB ON TabelA.kolom = TabelB.kolom;`
+    Contoh:
+    SELECT P.Nama, O.ID AS PesananID
+    FROM Pelanggan P
+    RIGHT JOIN Pesanan O ON P.ID = O.PelangganID; -- Akan tampilkan semua pesanan, bahkan jika pelanggan tidak ada (misal data kotor)
+
+FULL JOIN (FULL OUTER JOIN) = Mengembalikan semua baris saat ada kecocokan di salah satu tabel (kiri atau kanan). Jika tidak ada kecocokan, hasilnya NULL. (Tidak didukung oleh MySQL, bisa disimulasikan dengan `UNION` dari `LEFT JOIN` dan `RIGHT JOIN`).
+    Sintaks: `SELECT ... FROM TabelA FULL OUTER JOIN TabelB ON TabelA.kolom = TabelB.kolom;`
+
+SELF JOIN = Menggabungkan tabel dengan dirinya sendiri. Berguna untuk membandingkan baris dalam tabel yang sama.
+    Contoh (Asumsikan tabel Karyawan dengan Kolom ID, Nama, ManagerID):
+    SELECT K1.Nama AS Karyawan, K2.Nama AS Manager
+    FROM Karyawan K1
+    INNER JOIN Karyawan K2 ON K1.ManagerID = K2.ID;
+
+// ====================================================================
+-- VI. SUBQUERIES (NESTED QUERIES)
+-- ====================================================================
+
+Subquery = Query di dalam query lain. Dapat digunakan dalam `SELECT`, `FROM`, `WHERE`, dan `HAVING` clause.
+    Contoh (Subquery dalam WHERE):
+    SELECT Nama, Harga
+    FROM Produk
+    WHERE Harga > (SELECT AVG(Harga) FROM Produk); -- Produk yang harganya di atas rata-rata
+
+    Contoh (Subquery dalam SELECT - Scalar Subquery):
+    SELECT P.Nama,
+           (SELECT COUNT(*) FROM Pesanan WHERE PelangganID = P.ID) AS JumlahPesanan
+    FROM Pelanggan P;
+
+    Contoh (Subquery dalam FROM - Derived Table):
+    SELECT sq.Kategori, sq.RataRataHarga
+    FROM (SELECT Kategori, AVG(Harga) AS RataRataHarga FROM Produk GROUP BY Kategori) AS sq
+    WHERE sq.RataRataHarga > 100000;
+
+EXISTS / NOT EXISTS = Menguji keberadaan baris yang dikembalikan oleh subquery.
+    Contoh:
+    SELECT Nama FROM Pelanggan P
+    WHERE EXISTS (SELECT 1 FROM Pesanan O WHERE O.PelangganID = P.ID); -- Pelanggan yang memiliki setidaknya satu pesanan
+
+// ====================================================================
+-- VII. SET OPERATOR
+-- ====================================================================
+
+UNION = Menggabungkan hasil dari dua atau lebih pernyataan SELECT. Menghilangkan baris duplikat.
+    `UNION ALL`: Menggabungkan hasil tanpa menghilangkan duplikat.
+    **Penting**: Setiap SELECT harus memiliki jumlah kolom dan tipe data yang sama.
+    Contoh:
+    SELECT Nama FROM Pelanggan
+    UNION
+    SELECT Nama FROM Karyawan;
+
+INTERSECT = Mengembalikan hanya baris yang ada di kedua pernyataan SELECT.
+    Contoh:
+    SELECT ID FROM Produk WHERE Kategori = 'Elektronik'
+    INTERSECT
+    SELECT ID FROM Produk WHERE Harga > 500000;
+
+EXCEPT (MINUS di Oracle) = Mengembalikan baris yang ada di pernyataan SELECT pertama tetapi tidak ada di pernyataan SELECT kedua.
+    Contoh:
+    SELECT ID FROM Produk
+    EXCEPT
+    SELECT ProdukID FROM DetailPesanan; -- Produk yang belum pernah dipesan
+
+// ====================================================================
+-- VIII. INDEXES DAN VIEWS
+-- ====================================================================
+
+INDEX = Struktur data khusus yang meningkatkan kecepatan pengambilan data dari database.
+    `CREATE INDEX`: Membuat indeks.
+        Contoh: `CREATE INDEX idx_pelanggan_nama ON Pelanggan (Nama);`
+    `DROP INDEX`: Menghapus indeks.
+        Contoh (MySQL): `DROP INDEX idx_pelanggan_nama ON Pelanggan;`
+
+VIEW = Tabel virtual berdasarkan hasil dari query SELECT.
+    Tidak menyimpan data sendiri, hanya definisi query.
+    `CREATE VIEW`: Membuat view.
+        Contoh:
+        CREATE VIEW PelangganAktif AS
+        SELECT ID, Nama, Email
+        FROM Pelanggan
+        WHERE Status = 'Aktif';
+    `DROP VIEW`: Menghapus view.
+        Contoh: `DROP VIEW PelangganAktif;`
+
+// ====================================================================
+-- IX. TRANSAKSI (TRANSACTION CONTROL LANGUAGE - TCL)
+-- ====================================================================
+
+Transaction (Transaksi) = Urutan operasi yang dilakukan sebagai satu unit logis. Bersifat Atomic, Consistent, Isolated, Durable (ACID).
+    `BEGIN TRANSACTION` / `START TRANSACTION`: Memulai transaksi.
+    `COMMIT`: Menyimpan perubahan yang dilakukan dalam transaksi secara permanen ke database.
+    `ROLLBACK`: Mengembalikan database ke keadaan sebelum transaksi dimulai (membatalkan semua perubahan).
+    `SAVEPOINT`: Menetapkan titik di dalam transaksi di mana Anda dapat melakukan rollback sebagian.
+    Contoh:
+    START TRANSACTION;
+    UPDATE Rekening SET Saldo = Saldo - 100000 WHERE ID = 1;
+    UPDATE Rekening SET Saldo = Saldo + 100000 WHERE ID = 2;
+    -- Jika ada error, bisa ROLLBACK;
+    COMMIT;
+
+// ====================================================================
+-- X. ADVANCED CONCEPTS (Konsep Lanjutan)
+-- ====================================================================
+
+Common Table Expressions (CTEs) - `WITH` clause =
+    Mendefinisikan himpunan hasil sementara yang hanya ada selama durasi query tunggal.
+    Meningkatkan keterbacaan query kompleks. Mendukung rekursif.
+    Contoh:
+    WITH TotalPesananPelanggan AS (
+        SELECT PelangganID, COUNT(*) AS JumlahPesanan
+        FROM Pesanan
+        GROUP BY PelangganID
+    )
+    SELECT P.Nama, T.JumlahPesanan
+    FROM Pelanggan P
+    JOIN TotalPesananPelanggan T ON P.ID = T.PelangganID
+    WHERE T.JumlahPesanan > 2;
+
+Window Functions =
+    Melakukan perhitungan di seluruh set baris tabel yang terkait dengan baris saat ini.
+    Berbeda dengan fungsi agregasi, window function tidak mengelompokkan baris menjadi satu output, melainkan mengembalikan nilai untuk setiap baris.
+    Contoh: `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `LAG()`, `LEAD()`, `NTILE()`, `SUM() OVER (...)`, `AVG() OVER (...)`.
+    Sintaks: `Fungsi_Agregasi() OVER ([PARTITION BY kolom] [ORDER BY kolom])`
+    Contoh:
+    SELECT
+        NamaProduk,
+        Harga,
+        AVG(Harga) OVER (PARTITION BY Kategori) AS RataRataHargaKategori,
+        RANK() OVER (PARTITION BY Kategori ORDER BY Harga DESC) AS PeringkatHarga
+    FROM Produk;
+
+Stored Procedures =
+    Kumpulan pernyataan SQL yang disimpan di database dan dapat dieksekusi sebagai satu unit.
+    Meningkatkan performa, keamanan, dan reusability.
+    Sintaks (bervariasi antar DBMS):
+    `CREATE PROCEDURE GetPelangganById (IN p_id INT) BEGIN SELECT * FROM Pelanggan WHERE ID = p_id; END;`
+    Eksekusi: `CALL GetPelangganById(1);`
+
+Functions (User-Defined Functions - UDFs) =
+    Fungsi kustom yang ditulis oleh pengguna untuk melakukan perhitungan atau mengembalikan nilai tunggal.
+    Dapat digunakan dalam query SQL.
+    Sintaks (bervariasi antar DBMS):
+    `CREATE FUNCTION HitungTotalHargaPesanan (p_pesanan_id INT) RETURNS DECIMAL(10,2) BEGIN ... RETURN total; END;`
+
+Triggers =
+    Blok kode SQL yang secara otomatis dieksekusi sebagai respons terhadap peristiwa tertentu (INSERT, UPDATE, DELETE) pada tabel.
+    Contoh: `CREATE TRIGGER AfterInsertPesanan AFTER INSERT ON Pesanan FOR EACH ROW BEGIN ... END;`
+
+Constraints Lanjutan =
+    `CASCADE`: Digunakan dengan FOREIGN KEY untuk menentukan perilaku saat baris di tabel induk dihapus atau diperbarui.
+        `ON DELETE CASCADE`: Hapus baris anak jika baris induk dihapus.
+        `ON UPDATE CASCADE`: Perbarui baris anak jika kunci induk diperbarui.
+    `SET NULL`: Setel nilai FK anak menjadi NULL jika PK induk dihapus/diperbarui.
+
+Normalisasi Database =
+    Proses pengorganisasian kolom dan tabel dalam database relasional untuk meminimalkan redundansi data dan meningkatkan integritas data.
+    Normal Forms (Bentuk Normal): 1NF, 2NF, 3NF, BCNF, 4NF, 5NF.
+
+Denormalisasi =
+    Meningkatkan redundansi data untuk tujuan performa (misalnya, dengan menggabungkan tabel untuk mengurangi JOIN yang kompleks).
+
+SQL Injection =
+    Kerentanan keamanan di mana penyerang dapat memasukkan kode SQL berbahaya ke dalam input pengguna untuk memanipulasi database.
+    Pencegahan: Prepared Statements, Parameterized Queries, Escaping Input.
